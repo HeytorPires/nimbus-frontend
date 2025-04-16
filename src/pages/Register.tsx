@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { authService } from "@/service/authService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 
 const Register = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,19 +14,22 @@ const Register = () => {
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // previne o comportamento padrão
-    if (!email || !password) {
+    if (!email || !password || !name) {
       toast.error("Preencha todos os dados");
+      return;
     }
     try {
-      const { data, error } = await authService.signUp(email, password);
+      const { data, error } = await authService.signUp(email, password, name);
       if (error) {
+        console.log(error.message);
         toast.error(error.message);
         return;
       }
       console.log("Usuário logado com sucesso:", data);
+      toast("Success");
       navigate("/home");
     } catch (err: any) {
-      toast.error(err);
+      toast.error(err || "Erro ao registrar");
     }
   };
   const toLogin = () => {
@@ -36,14 +39,18 @@ const Register = () => {
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex flex-col justify-center items-center gap-4 p-4 w-96 ">
         <form
-          className="flex flex-col justify-center items-center gap-4 p-4 w-96 "
+          className="flex flex-col justify-center items-center gap-4 p-4 w-full"
           onSubmit={handleSubmit}
         >
           <h1 className="text-8xl">Taskly</h1>
           <DecryptedText
             text="Suas tarefas de maneira mais fácil"
-            speed={75}
+            speed={50}
+            maxIterations={50}
             animateOn="view"
+            revealDirection="start"
+            useOriginalCharsOnly={false}
+            sequential={true}
           />
           <h2 className="text-3xl">Cadastre-se</h2>
           <Input
