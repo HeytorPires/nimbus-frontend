@@ -6,11 +6,13 @@ import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+type ErrorRequest = { AuthApiError: string; Error: boolean };
+
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | undefined>("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // previne o comportamento padrão
@@ -18,9 +20,13 @@ const Login = () => {
       setError("Preencha todos os dados");
     }
     try {
-      await authService.signIn(email, password);
+      const { data, error } = await authService.signIn(email, password);
+      console.log(data);
+      console.log(error);
+      setError(error?.message);
+      console.log(error);
     } catch (err: any) {
-      setError("Erro"); // ou err.message se tiver
+      setError(err);
     }
   };
   const toRegister = () => {
@@ -40,7 +46,7 @@ const Login = () => {
         onSubmit={handleSubmit}
       >
         <h1 className="text-8xl">Taskly</h1>
-        <p>Sua tarefas de maneira mais fácil</p>
+        <p>Suas tarefas de maneira mais fácil</p>
         <h2 className="text-3xl">Entre</h2>
         <Input
           type="email"
