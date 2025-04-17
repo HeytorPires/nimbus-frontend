@@ -1,37 +1,64 @@
 import "./App.css";
 import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import { AuthProvider } from "@/contexts/auth";
 import { useAuth } from "@/hooks/useAuth";
 import { Toaster } from "sonner";
-//Pages
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+
+// Pages
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Home from "@/pages/Home";
-// Se estiver usando contexto (como AuthProvider), envolve dentro do Router
+
 interface PrivateProps {
   Item: React.ElementType;
 }
 
 const Private: React.FC<PrivateProps> = ({ Item }) => {
   const { user } = useAuth();
-  // if (loading) return <div>Carregando...</div>;
   return user ? <Item /> : <Login />;
 };
 
+// Esse componente pode usar useLocation, pois está dentro do <Router>
+const AppRoutes: React.FC = () => {
+  const location = useLocation();
+  const shouldShowSidebar = !["/login", "/register"].includes(
+    location.pathname
+  );
+
+  return (
+    <AuthProvider>
+      <SidebarProvider>
+        {shouldShowSidebar && <AppSidebar />}
+        <main className="w-full min-h-screen flex ">
+          <header>{shouldShowSidebar && <SidebarTrigger />}</header>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/home" element={<Private Item={Home} />} />
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </main>
+        <Toaster />
+      </SidebarProvider>
+    </AuthProvider>
+  );
+};
+
+// Aqui o <Router> envolve o componente que usa useLocation
 const App: React.FC = () => {
   return (
     <Router>
-      <AuthProvider>
-        <Routes>
-          {/* element={<Private Item={Home} />} */}
-          <Route path="*" element={<Login />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="home" element={<Private Item={Home} />} />
-        </Routes>
-        <Toaster />
-      </AuthProvider>
+      <AppRoutes />
     </Router>
   );
 };

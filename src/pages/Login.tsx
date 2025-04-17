@@ -43,9 +43,7 @@ const Login = () => {
   }, [user, navigate]);
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen relative overflow-hidden ">
-        {" "}
-        {/* Adicionado relative e overflow-hidden */}
+      <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
         <div
           style={{
             position: "absolute",
@@ -75,7 +73,7 @@ const Login = () => {
           >
             <h1 className="text-8xl">Taskly</h1>
             <DecryptedText
-              text="Suas tarefas de maneira mais fácil"
+              text="Your tasks made easier"
               speed={50}
               maxIterations={50}
               animateOn="view"
@@ -98,12 +96,12 @@ const Login = () => {
               required
             />
             <p className="text-[10px]">
-              Não tem conta cadastrada? Clique{" "}
+              Don't have an account? Click{" "}
               <span
                 className="text-blue-700 underline cursor-pointer"
                 onClick={toRegister}
               >
-                Aqui
+                here
               </span>
             </p>
             <Button className="cursor-pointer" type="submit">

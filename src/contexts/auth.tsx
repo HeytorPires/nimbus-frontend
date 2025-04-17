@@ -14,6 +14,8 @@ interface AuthContextType {
   signUp: (email: string, password: string, name: string) => Promise<void>; // Função assíncrona para registrar um novo usuário. Recebe o email, a senha e o nome do usuário como argumentos e retorna uma Promise que resolve quando o registro é bem-sucedido.
   signIn: (email: string, password: string) => Promise<void>; // Função assíncrona para fazer login de um usuário existente. Recebe o email e a senha como argumentos e retorna uma Promise que resolve quando o login é bem-sucedido.
   signOut: () => Promise<void>; // Função assíncrona para fazer logout do usuário atual. Retorna uma Promise que resolve quando o logout é bem-sucedido.
+  setUser: (user: User | null) => void;
+  setSession: (session: Session | null) => void;
 }
 
 // Cria um Contexto React chamado `AuthContext`. Este contexto irá armazenar e fornecer os valores definidos em `AuthContextType` para os componentes que o consumirem.
@@ -110,6 +112,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Cria um objeto `value` que contém todos os valores que serão fornecidos pelo Contexto de Autenticação.
   const value = {
     user,
+    setUser,
+    setSession,
     session,
     loading,
     error,
