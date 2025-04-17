@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // services/authService.ts
 import { supabase } from "../lib/supabaseClient";
 
@@ -45,5 +46,6 @@ export const authService = {
     } else {
       console.log("User signed out!");
     }
+    return error;
   },
 };
