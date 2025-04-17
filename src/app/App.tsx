@@ -1,5 +1,4 @@
 import "./App.css";
-("");
 import React, { ElementType } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AuthProvider } from "@/contexts/auth";
