@@ -2,13 +2,14 @@ import Particles from "@/components/background/particules";
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { authService } from "@/service/authService";
-import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { user, signIn, error } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -18,20 +19,28 @@ const Login = () => {
       toast.error("Preencha todos os dados");
     }
     try {
-      const { data, error } = await authService.signIn(email, password);
+      await signIn(email, password);
       if (error) {
-        toast.error(error.message);
+        toast.error(error);
         return;
       }
-      console.log("Usuário logado com sucesso:", data);
+      toast("Success");
       navigate("/home");
     } catch (err: any) {
       toast.error(err);
     }
   };
+  //trocar de aba
   const toRegister = () => {
     navigate("/register");
   };
+
+  //caso estiver logado, ir para o home direto
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user, navigate]);
   return (
     <>
       <div className="flex justify-center items-center min-h-screen relative overflow-hidden ">
