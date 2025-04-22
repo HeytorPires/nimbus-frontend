@@ -17,6 +17,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Home from "@/pages/Home";
+import Tasks from "@/pages/Tasks";
 
 interface PrivateProps {
   Item: React.ElementType;
@@ -45,6 +46,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Private Item={Home} />} />
+            <Route path="/tasks" element={<Private Item={Tasks} />} />
             <Route path="*" element={<Login />} />
           </Routes>
         </main>

@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, signIn, error } = useAuth();
+  const { user, signIn, error, data } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -22,6 +22,10 @@ const Login = () => {
       await signIn(email, password);
       if (error) {
         toast.error(error);
+        return;
+      }
+      if (error || data === undefined) {
+        toast.error("Error for login");
         return;
       }
       toast("Success");

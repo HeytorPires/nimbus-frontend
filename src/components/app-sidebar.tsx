@@ -29,8 +29,8 @@ const items = [
     icon: Home,
   },
   {
-    title: "Cards",
-    url: "#",
+    title: "Tasks",
+    url: "tasks",
     icon: ClipboardList,
   },
   {
@@ -69,7 +69,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Taskly</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -82,16 +82,17 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild onClick={handleLogout}>
+                  <a className="cursor-pointer">
+                    <LogOut />
+                    <span>Log out</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild onClick={handleLogout}>
-              <a>
-                <LogOut />
-                <span>Log out</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
