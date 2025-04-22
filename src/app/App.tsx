@@ -18,6 +18,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Home from "@/pages/Home";
 import Tasks from "@/pages/Tasks";
+import NotFound from "@/pages/NotFound";
 
 interface PrivateProps {
   Item: React.ElementType;
@@ -25,42 +26,59 @@ interface PrivateProps {
 
 const Private: React.FC<PrivateProps> = ({ Item }) => {
   const { user } = useAuth();
-  return user ? <Item /> : <Login />;
+  return user ? <Item /> : <Navigate to="/login" replace />;
 };
 
-// Esse componente pode usar useLocation, pois está dentro do <Router>
-const AppRoutes: React.FC = () => {
+const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const shouldShowSidebar = !["/login", "/register"].includes(
+  const shouldShowSidebar = !["/login", "/register", "/not-found"].includes(
     location.pathname
   );
 
   return (
-    <AuthProvider>
-      <SidebarProvider>
-        {shouldShowSidebar && <AppSidebar />}
-        <main className="w-full min-h-screen flex ">
-          <header>{shouldShowSidebar && <SidebarTrigger />}</header>
-          <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/home" element={<Private Item={Home} />} />
-            <Route path="/tasks" element={<Private Item={Tasks} />} />
-            <Route path="*" element={<Login />} />
-          </Routes>
-        </main>
-        <Toaster />
-      </SidebarProvider>
-    </AuthProvider>
+    <>
+      {shouldShowSidebar && <AppSidebar />}
+      <main
+        className={`w-full min-h-screen flex ${
+          shouldShowSidebar ? "" : "justify-center items-center"
+        }`}
+      >
+        {shouldShowSidebar && <header>{<SidebarTrigger />}</header>}
+        <div className={`flex-grow ${shouldShowSidebar ? "ml-..." : ""}`}>
+          {children}
+        </div>
+      </main>
+    </>
   );
 };
 
-// Aqui o <Router> envolve o componente que usa useLocation
+// Esse componente agora apenas define as rotas dentro do layout apropriado
+const AppRoutes: React.FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/home" element={<Private Item={Home} />} />
+      <Route path="/tasks" element={<Private Item={Tasks} />} />
+      <Route path="/not-found" element={<NotFound />} />
+      <Route path="*" element={<Navigate to="/not-found" replace />} />{" "}
+      {/* Redireciona rotas não encontradas para /not-found */}
+    </Routes>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <Router>
-      <AppRoutes />
+      <AuthProvider>
+        <SidebarProvider>
+          <AppLayout>
+            <AppRoutes />
+          </AppLayout>
+          <Toaster />
+        </SidebarProvider>
+      </AuthProvider>
     </Router>
   );
 };
