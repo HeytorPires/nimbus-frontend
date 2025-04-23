@@ -83,21 +83,21 @@ const Register = () => {
             {/* <h2 className="text-3xl">Cadastre-se</h2> */}
             <Input
               type="text"
-              placeholder="Escreva seu nome"
+              placeholder="Write your name"
               value={name}
               onChange={(e) => setName(e.target.value)} // também atualiza
               required
             />
             <Input
               type="email"
-              placeholder="Escreva seu email"
+              placeholder="Write your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)} // atualiza o state
               required
             />
             <Input
               type="password"
-              placeholder="Escreva sua senha"
+              placeholder="Write your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)} // também atualiza
               required

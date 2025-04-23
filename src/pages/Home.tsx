@@ -2,7 +2,7 @@ import Particles from "@/components/background/particules";
 
 const Home = () => {
   return (
-    <div className="flex justify-center items-center max-h-screen relative overflow-hidden ">
+    <div className="flex  h-screen max-w-screen relative overflow-hidden ">
       {" "}
       {/* Adicionado relative e overflow-hidden */}
       <div

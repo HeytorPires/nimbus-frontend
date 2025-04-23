@@ -43,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(data.user);
       }
       // Se houver um erro, armazena a mensagem de erro no estado `error`.
+      console.log(error?.message);
       setError(error?.message || null);
       // Define o estado de carregamento como `false` após a conclusão da chamada à API.
       setLoading(false);
@@ -86,13 +87,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     const { data, error } = await authService.signIn(email, password);
+    console.log(error);
+
     // Se o login for bem-sucedido e houver dados de usuário, atualiza os estados `user` e `session` e navega para a página inicial (`/home`).
     if (data?.user) {
       setUser(data.user);
       setSession(data.session);
+      console.log(error);
     } else if (error) {
+      console.log(error);
       setError(error.message);
     }
+    console.log(error);
     setLoading(false);
   };
 

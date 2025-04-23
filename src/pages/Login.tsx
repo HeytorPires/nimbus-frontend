@@ -9,9 +9,10 @@ import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, signIn, error, data } = useAuth();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const { user, signIn, error } = useAuth();
+  const [erro, setErro] = useState<string | null>(null);
+  const [email, setEmail] = useState("heytor.cacho28@gmail.com");
+  const [password, setPassword] = useState("galdino18");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // previne o comportamento padrão
@@ -20,14 +21,11 @@ const Login = () => {
     }
     try {
       await signIn(email, password);
-      if (error) {
-        toast.error(error);
+      if (error !== null) {
+        toast.error(erro);
         return;
       }
-      if (error || data === undefined) {
-        toast.error("Error for login");
-        return;
-      }
+      setErro(null);
       toast("Success");
       navigate("/home");
     } catch (err: any) {
@@ -87,17 +85,17 @@ const Login = () => {
             />
             <Input
               type="email"
-              placeholder="Escreva seu email"
+              placeholder="Write your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)} // atualiza o state
-              required
+              // required
             />
             <Input
               type="password"
-              placeholder="Escreva sua senha"
+              placeholder="Write your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)} // também atualiza
-              required
+              // required
             />
             <p className="text-[10px]">
               Don't have an account? Click{" "}

@@ -28,6 +28,7 @@ export const authService = {
 
     console.log("SignIn Response:", data);
     console.error("SignIn Error:", error);
+    console.log(error);
     return { data, error };
   },
 
