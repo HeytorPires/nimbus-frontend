@@ -11,8 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { user, signIn, error } = useAuth();
   const [erro, setErro] = useState<string | null>(null);
-  const [email, setEmail] = useState("heytor.cacho28@gmail.com");
-  const [password, setPassword] = useState("galdino18");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // previne o comportamento padrão
