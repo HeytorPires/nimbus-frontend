@@ -134,6 +134,7 @@ function SidebarProvider({
               "--sidebar-width": SIDEBAR_WIDTH,
               "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
               ...style,
+              zIndex: 11,
             } as React.CSSProperties
           }
           className={cn(
@@ -265,6 +266,7 @@ function SidebarTrigger({
       variant="ghost"
       size="icon"
       className={cn("size-7", className)}
+      style={{ zIndex: 20 }}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();

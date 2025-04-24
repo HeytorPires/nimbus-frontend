@@ -28,7 +28,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           shouldShowSidebar ? "" : "justify-center items-center"
         }`}
       >
-        {shouldShowSidebar && <header>{<SidebarTrigger />}</header>}
+        {shouldShowSidebar && (
+          <header className="z-20">{<SidebarTrigger />}</header>
+        )}
         <div className={`flex-grow ${shouldShowSidebar ? "ml-..." : ""}`}>
           {children}
         </div>

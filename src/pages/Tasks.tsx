@@ -93,12 +93,25 @@ const tasks = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
     date: 28092005,
   },
+  {
+    name: "Fazer trabalho",
+    category: "Trabalho",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
+    date: 28092005,
+  },
+  {
+    name: "Fazer trabalho",
+    category: "Trabalho",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
+    date: 28092005,
+  },
 ];
 
 const Tasks = () => {
   return (
-    <div className="flex flex-wrap justify-start items-start relative overflow-hidden min-h-screen w-full gap-2 grid-cols-3 p-5">
-      {" "}
+    <>
       <div
         style={{
           position: "absolute",
@@ -112,7 +125,7 @@ const Tasks = () => {
         {" "}
         <Particles
           particleColors={["#000000", "#000000"]}
-          particleCount={200}
+          particleCount={1000}
           particleSpread={10}
           speed={0.1}
           particleBaseSize={100}
@@ -120,15 +133,17 @@ const Tasks = () => {
           alphaParticles={false}
           disableRotation={false}
         />
+      </div>{" "}
+      <div className="flex flex-wrap justify-start items-start relative overflow-hidden min-h-screen w-full gap-2 grid-cols-3 p-5 z-10">
+        {tasks.map((task) => (
+          <TaskCard
+            name={task.name}
+            description={task.description}
+            category={task.category}
+          />
+        ))}{" "}
       </div>
-      {tasks.map((task) => (
-        <TaskCard
-          name={task.name}
-          description={task.description}
-          category={task.category}
-        />
-      ))}{" "}
-    </div>
+    </>
   );
 };
 
