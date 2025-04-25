@@ -42,8 +42,8 @@ const AppRoutes: React.FC = () => {
           <Route path="/home" element={<Private Item={Home} />} />
           <Route path="/tasks" element={<Private Item={Tasks} />} />
           <Route path="/not-found" element={<NotFound />} />
-          <Route path="/" element={<Navigate to="/not-found" replace />} />{" "}
-          <Route path="*" element={<Navigate to="/home" replace />} />{" "}
+          <Route path="/" element={<Navigate to="/home" replace />} />{" "}
+          <Route path="*" element={<Navigate to="/not-found" replace />} />{" "}
           {/* Redireciona rotas não encontradas para /not-found */}
         </>
       ) : (
@@ -51,8 +51,8 @@ const AppRoutes: React.FC = () => {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/not-found" element={<NotFound />} /> */}
-          <Route path="*" element={<Navigate to="/login" replace />} />{" "}
+          <Route path="/not-found" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />{" "}
         </>
       )}
     </Routes>
