@@ -1,11 +1,11 @@
 import {
-  Bookmark,
-  ClipboardList,
   Home,
-  Search,
   Settings,
   CircleUserRound,
   LogOut,
+  Plus,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 
 import {
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
-
+import { authService } from "@/service/authService";
 // Menu items.
 const items = [
   {
@@ -29,19 +29,19 @@ const items = [
     icon: Home,
   },
   {
-    title: "Tasks",
+    title: "Add",
     url: "tasks",
-    icon: ClipboardList,
+    icon: Plus,
   },
   {
-    title: "Categorys",
+    title: "Edit",
     url: "#",
-    icon: Bookmark,
+    icon: Pencil,
   },
   {
-    title: "Search",
+    title: "Delete",
     url: "#",
-    icon: Search,
+    icon: Trash2,
   },
   {
     title: "Account",
@@ -56,15 +56,17 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { setUser, signOut } = useAuth();
+  const { setUser, setSession } = useAuth();
   const Navigate = useNavigate();
 
   const handleLogout = async () => {
-    await signOut();
+    await authService.signOut();
     setUser(null);
-    Navigate("/login");
+    setSession(null);
+    setTimeout(() => {
+      Navigate("/");
+    }, 5);
   };
-
   return (
     <Sidebar>
       <SidebarContent>

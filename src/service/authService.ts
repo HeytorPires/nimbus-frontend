@@ -25,10 +25,6 @@ export const authService = {
       email,
       password,
     });
-
-    console.log("SignIn Response:", data);
-    console.error("SignIn Error:", error);
-    console.log(error);
     return { data, error };
   },
 

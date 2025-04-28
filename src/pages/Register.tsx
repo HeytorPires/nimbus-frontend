@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "@/service/authService";
 import { toast } from "sonner";
 
 const Register = () => {
-  const { user, signUp, error } = useAuth();
+  const { user, setUser, setSession } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -21,19 +22,18 @@ const Register = () => {
       return;
     }
     try {
-      await signUp(email, password, name);
+      const { data, error } = await authService.signUp(email, password, name);
       if (error) {
-        toast.error(error);
+        toast.error(error.message);
         return;
       }
+      setUser(data.user);
+      setSession(data.session);
       toast("Success");
       navigate("/home");
     } catch (err: any) {
       toast.error(err || "Erro ao registrar");
     }
-  };
-  const toLogin = () => {
-    navigate("/login");
   };
   useEffect(() => {
     if (user) {
@@ -106,7 +106,7 @@ const Register = () => {
               You already have an account? Click{" "}
               <span
                 className="text-blue-700 underline cursor-pointer"
-                onClick={toLogin}
+                onClick={() => navigate("/login")}
               >
                 here
               </span>

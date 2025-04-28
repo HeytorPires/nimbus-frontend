@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -30,16 +30,20 @@ const Private: React.FC<PrivateProps> = ({ Item }) => {
 
 // Esse componente agora apenas define as rotas dentro do layout apropriado
 const AppRoutes: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
-  if (loading) {
-    return <div></div>; // Ou um componente de loading mais elaborado
-  }
+  useEffect(() => {
+    console.log(user);
+  });
+
   return (
     <Routes>
       {user ? (
         <>
           <Route path="/home" element={<Private Item={Home} />} />
+          <Route path="/tasks/add" element={<Private Item={Tasks} />} />
+          <Route path="/tasks/edit/:id" element={<Private Item={Tasks} />} />
+          <Route path="/tasks/exclude/:id" element={<Private Item={Tasks} />} />
           <Route path="/tasks" element={<Private Item={Tasks} />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="/" element={<Navigate to="/home" replace />} />{" "}
@@ -52,7 +56,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/not-found" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/not-found" replace />} />{" "}
+          <Route path="*" element={<Navigate to="/login" replace />} />{" "}
         </>
       )}
     </Routes>

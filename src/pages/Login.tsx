@@ -3,14 +3,14 @@ import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/service/authService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, signIn, error } = useAuth();
-  const [erro, setErro] = useState<string | null>(null);
+  const { setUser, setSession, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,31 +18,32 @@ const Login = () => {
     event.preventDefault(); // previne o comportamento padrão
     if (!email || !password) {
       toast.error("Preencha todos os dados");
+      return;
     }
+    // console.log(error);
     try {
-      await signIn(email, password);
+      const { data, error } = await authService.signIn(email, password);
       if (error !== null) {
-        toast.error(erro);
+        toast.error(error.message);
         return;
       }
-      setErro(null);
+      setUser(data.user);
+      setSession(data.session);
       toast("Success");
-      navigate("/home");
+      setTimeout(() => {
+        navigate("/home");
+      }, 5);
     } catch (err: any) {
       toast.error(err);
     }
   };
   //trocar de aba
-  const toRegister = () => {
-    navigate("/register");
-  };
-
-  //caso estiver logado, ir para o home direto
   useEffect(() => {
     if (user) {
       navigate("/home");
     }
-  }, [user, navigate]);
+  });
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
@@ -101,7 +102,7 @@ const Login = () => {
               Don't have an account? Click{" "}
               <span
                 className="text-blue-700 underline cursor-pointer"
-                onClick={toRegister}
+                onClick={() => navigate("/register")}
               >
                 here
               </span>

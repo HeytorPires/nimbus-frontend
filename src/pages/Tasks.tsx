@@ -1,147 +1,20 @@
-import Particles from "@/components/background/particules";
-import { TaskCard } from "@/components/task";
-
-const tasks = [
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-];
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 const Tasks = () => {
   return (
     <>
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-        }}
-      >
-        {" "}
-        <Particles
-          particleColors={["#000000", "#000000"]}
-          particleCount={1000}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover={false}
-          alphaParticles={false}
-          disableRotation={false}
-        />
-      </div>{" "}
-      <div className="flex flex-wrap justify-start items-start relative overflow-hidden min-h-screen w-full gap-2 grid-cols-3 p-5 z-10">
-        {tasks.map((task) => (
-          <TaskCard
-            name={task.name}
-            description={task.description}
-            category={task.category}
-          />
-        ))}{" "}
+      <div className="grid grid-cols-5 gap-2 justify-start items-start relative overflow-hidden min-h-screen w-full p-10 z-10">
+        <Card className="w-full h-full flex flex-col">
+          {/* <CardHeader className="flex justify-center items-center">
+            Add Task
+          </CardHeader> */}
+          <CardContent className=" flex flex-1 flex-col justify-center items-center">
+            <button className="cursor-pointer">
+              <Plus size={100} />
+            </button>
+          </CardContent>
+        </Card>
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
   return (
     <>
       <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
@@ -47,7 +47,7 @@ const NotFound = () => {
           <p className="text-sm text-gray-500">
             The URL you tried to access does not exist.
           </p>
-          {user ? (
+          {isAuthenticated ? (
             <Link to="/home">Back to home page</Link>
           ) : (
             <Link to="/login">Back to Login</Link>
