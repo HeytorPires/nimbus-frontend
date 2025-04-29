@@ -1,79 +1,23 @@
-import "./App.css";
-import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import { AuthProvider } from "@/contexts/auth";
-import { useAuth } from "@/hooks/useAuth";
-import { Toaster } from "sonner";
-import { SidebarProvider } from "@/components/ui/sidebar";
-
-// Pages
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
-import Home from "@/pages/Home";
-import Tasks from "@/pages/Tasks";
-import NotFound from "@/pages/NotFound";
 import AppLayout from "@/components/layout/layout";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AuthProvider } from "@/contexts/auth";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Toaster } from "sonner";
+import { AppRoutes } from "./appRoutes"; // ou onde você separou o AppRoutes
 
-interface PrivateProps {
-  Item: React.ElementType;
-}
-
-const Private: React.FC<PrivateProps> = ({ Item }) => {
-  const { user } = useAuth();
-  return user ? <Item /> : <Navigate to="/login" replace />;
-};
-
-// Esse componente agora apenas define as rotas dentro do layout apropriado
-const AppRoutes: React.FC = () => {
-  const { user } = useAuth();
-
-  useEffect(() => {
-    console.log(user);
-  });
-
+const App: React.FC = () => {
   return (
-    <Routes>
-      {user ? (
-        <>
-          <Route path="/home" element={<Private Item={Home} />} />
-          <Route path="/tasks/" element={<Private Item={Tasks} />} />
-          <Route path="/tasks/:id" element={<Private Item={Tasks} />} />
-          <Route path="/tasks/exclude/:id" element={<Private Item={Tasks} />} />
-          <Route path="/tasks" element={<Private Item={Tasks} />} />
-          <Route path="/not-found" element={<NotFound />} />
-          <Route path="/" element={<Navigate to="/home" replace />} />{" "}
-          <Route path="*" element={<Navigate to="/not-found" replace />} />{" "}
-          {/* Redireciona rotas não encontradas para /not-found */}
-        </>
-      ) : (
-        <>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/not-found" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />{" "}
-        </>
-      )}
-    </Routes>
+    <Router>
+      <AuthProvider>
+        <SidebarProvider>
+          <AppLayout>
+            <AppRoutes />
+          </AppLayout>
+          <Toaster />
+        </SidebarProvider>
+      </AuthProvider>
+    </Router>
   );
 };
-
-const App: React.FC = () => (
-  <Router>
-    <AuthProvider>
-      <SidebarProvider>
-        <AppLayout>
-          <AppRoutes />
-        </AppLayout>
-        <Toaster />
-      </SidebarProvider>
-    </AuthProvider>
-  </Router>
-);
 
 export default App;

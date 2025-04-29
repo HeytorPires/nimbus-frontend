@@ -1,0 +1,87 @@
+import "./App.css";
+import React, { JSX, useContext } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { AuthContext } from "@/contexts/auth";
+
+// Pages
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import Home from "@/pages/Home";
+import Tasks from "@/pages/TaskView";
+import NotFound from "@/pages/NotFound";
+import TasksEdit from "@/pages/TasksEdit";
+
+// interface PrivateProps {
+//   Item: React.ElementType;
+// }
+
+const Private = ({ children }: { children: JSX.Element }) => {
+  const auth = useContext(AuthContext);
+
+  if (auth?.loading) return <div>Carregando...</div>;
+  if (!auth?.isAuthenticated) return <Navigate to="/login" />;
+
+  return children;
+};
+
+// Esse componente agora apenas define as rotas dentro do layout apropriado
+export const AppRoutes: React.FC = () => {
+  const auth = useContext(AuthContext);
+
+  if (auth?.loading) return <div>Carregando rotas...</div>;
+  return (
+    <Routes>
+      {/* Rotas públicas */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Rotas protegidas */}
+      <Route
+        path="/home"
+        element={
+          <Private>
+            <Home />
+          </Private>
+        }
+      />
+      <Route
+        path="/tasks"
+        element={
+          <Private>
+            <Tasks />
+          </Private>
+        }
+      />
+      <Route
+        path="/tasks/:id"
+        element={
+          <Private>
+            <TasksEdit />
+          </Private>
+        }
+      />
+      <Route
+        path="/tasks/exclude/:id"
+        element={
+          <Private>
+            <Tasks />
+          </Private>
+        }
+      />
+
+      {/* Redirecionamentos e NotFound */}
+      <Route path="/not-found" element={<NotFound />} />
+      <Route
+        path="/"
+        element={
+          auth?.isAuthenticated ? (
+            <Navigate to="/home" />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route path="*" element={<Navigate to="/not-found" />} />
+    </Routes>
+  );
+};
