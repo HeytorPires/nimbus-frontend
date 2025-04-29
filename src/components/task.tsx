@@ -47,11 +47,14 @@ export function TaskCard({
   type,
 }: TaskCardProps) {
   const navigate = useNavigate();
+
   const handleEdit = () => {
     navigate(`/task/${id}`);
   };
-  const handleRemove = () => {
-    navigate(`/task/${id}`);
+  const handleRemove = async () => {
+    // navigate(`/task/${id}`);
+    // const dataTask = await taskService.getAll();
+    // console.log(dataTask);
   };
 
   return (
@@ -98,7 +101,11 @@ export function TaskCard({
                 </DialogHeader>
               </DialogContent>
             </Dialog>
-            <Button variant="outline" className="cursor-pointer">
+            <Button
+              variant="outline"
+              className="cursor-pointer"
+              onClick={handleRemove}
+            >
               <Trash />
               Remove Task
             </Button>

@@ -1,130 +1,25 @@
 import { TaskCard } from "@/components/task";
 import { Input } from "@/components/ui/input";
-
-const tasks = [
-  {
-    id: "1",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "2",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "3",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "4",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "5",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "6",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "7",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "8",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "9",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "10",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "11",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "12",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "13",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "14",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-  {
-    id: "15",
-    name: "Fazer trabalho",
-    category: "Trabalho",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti labore minima modi voluptatibus at accusantium aperiam excepturi architecto, nobis nihil eius odit, voluptates reprehenderit minus veritatis voluptas tempore commodi. Dicta.",
-    date: 28092005,
-  },
-];
+import { taskService } from "@/service/taskService";
+import { Task } from "@/types/Task";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const Home = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dataTask: Task[] = await taskService.getAll();
+        setTasks(dataTask);
+        console.log(tasks);
+      } catch (error: any) {
+        toast.error(error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <>
       <div className="flex flex-col h-screen max-w-screen relative overflow-hidden ">
@@ -134,9 +29,9 @@ const Home = () => {
             {tasks.map((task) => (
               <TaskCard
                 id={task.id}
-                name={task.name}
+                name={task.title}
                 description={task.description}
-                category={task.category}
+                category={task.tags}
                 type="home"
               />
             ))}{" "}

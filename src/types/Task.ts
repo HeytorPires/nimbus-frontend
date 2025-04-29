@@ -1,7 +1,9 @@
 export interface Task {
   id: string;
-  name: string;
-  category: string;
+  title: string;
+  tags: string;
   description: string;
-  date?: Date;
+  created_at?: Date;
+  state: string;
+  created_by: Date;
 }
