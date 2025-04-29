@@ -41,8 +41,8 @@ const AppRoutes: React.FC = () => {
       {user ? (
         <>
           <Route path="/home" element={<Private Item={Home} />} />
-          <Route path="/tasks/add" element={<Private Item={Tasks} />} />
-          <Route path="/tasks/edit/:id" element={<Private Item={Tasks} />} />
+          <Route path="/tasks/" element={<Private Item={Tasks} />} />
+          <Route path="/tasks/:id" element={<Private Item={Tasks} />} />
           <Route path="/tasks/exclude/:id" element={<Private Item={Tasks} />} />
           <Route path="/tasks" element={<Private Item={Tasks} />} />
           <Route path="/not-found" element={<NotFound />} />

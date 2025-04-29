@@ -5,11 +5,11 @@ const Tasks = () => {
   return (
     <>
       <div className="grid grid-cols-5 gap-2 justify-start items-start relative overflow-hidden min-h-screen w-full p-10 z-10">
-        <Card className="w-full h-full flex flex-col">
+        <Card className=" flex flex-col">
           {/* <CardHeader className="flex justify-center items-center">
             Add Task
           </CardHeader> */}
-          <CardContent className=" flex flex-1 flex-col justify-center items-center">
+          <CardContent className=" flex flex-row justify-center items-center">
             <button className="cursor-pointer">
               <Plus size={100} />
             </button>

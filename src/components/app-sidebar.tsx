@@ -3,9 +3,7 @@ import {
   Settings,
   CircleUserRound,
   LogOut,
-  Plus,
-  Pencil,
-  Trash2,
+  NotepadText,
 } from "lucide-react";
 
 import {
@@ -29,19 +27,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Add",
+    title: "Task",
     url: "tasks",
-    icon: Plus,
-  },
-  {
-    title: "Edit",
-    url: "#",
-    icon: Pencil,
-  },
-  {
-    title: "Delete",
-    url: "#",
-    icon: Trash2,
+    icon: NotepadText,
   },
   {
     title: "Account",

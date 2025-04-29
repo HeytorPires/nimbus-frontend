@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 
 const tasks = [
   {
+    id: "1",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -10,6 +11,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "2",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -17,6 +19,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "3",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -24,6 +27,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "4",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -31,6 +35,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "5",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -38,6 +43,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "6",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -45,6 +51,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "7",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -52,6 +59,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "8",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -59,6 +67,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "9",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -66,6 +75,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "10",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -73,6 +83,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "11",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -80,6 +91,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "12",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -87,6 +99,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "13",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -94,6 +107,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "14",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -101,6 +115,7 @@ const tasks = [
     date: 28092005,
   },
   {
+    id: "15",
     name: "Fazer trabalho",
     category: "Trabalho",
     description:
@@ -115,13 +130,14 @@ const Home = () => {
       <div className="flex flex-col h-screen max-w-screen relative overflow-hidden ">
         <div className="p-5">
           <Input placeholder="Search Task" type="search" className="z-30" />
-          <div className="grid grid-cols-5 gap-2 justify-start items-start relative overflow-hidden min-h-screen w-full p-10 z-10">
+          <div className=" flex flex-wrap gap-8 mt-5 justify-start items-start relative overflow-hidden min-h-screen w-full z-10">
             {tasks.map((task) => (
               <TaskCard
-                key={task.name}
+                id={task.id}
                 name={task.name}
                 description={task.description}
                 category={task.category}
+                type="home"
               />
             ))}{" "}
           </div>
