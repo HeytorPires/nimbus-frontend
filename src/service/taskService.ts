@@ -11,11 +11,22 @@ export const taskService = {
     return data ?? [];
   },
 
-  async getById(id: string): Promise<Task | null> {
+  async getByIdUser(id: string): Promise<Task | null> {
     const { data, error } = await supabase
       .from(table)
       .select("*")
       .eq("created_by", id)
+      .single();
+
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
+  async getById(id: string): Promise<Task | null> {
+    const { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .eq("id", id)
       .single();
 
     if (error) throw new Error(error.message);

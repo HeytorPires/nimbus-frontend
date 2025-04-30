@@ -3,43 +3,58 @@ import { Typography } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/hooks/useAuth";
 import { taskService } from "@/service/taskService";
 import { Task } from "@/types/Task";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
-const TasksEdit = () => {
-  const params = useParams();
-  const [task, setTask] = useState<Task | null>(null);
+const TasksCreate = () => {
+  const { user } = useAuth();
+  const [task, setTask] = useState<Task>({
+    title: "",
+    description: "",
+    repository: "",
+    var_env: "",
+    created_by: user?.id || "",
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { id } = params;
-      try {
-        const dataTask: Task | null = await taskService.getById(id || "2");
-        setTask(dataTask);
-      } catch (error: any) {
-        toast.error("Erro ao buscar tasks", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setTask({
+      ...task,
+      [name]: value,
+    });
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const taskCreated: Task = await taskService.create(task);
+      console.log(taskCreated);
+    } catch (error: any) {
+      toast.error(error);
+      console.error(error);
+    }
+  };
 
   return (
     <div className="p-10">
       <Typography as="h1">Create new Env Project</Typography>
       <Separator className="my-5" />
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <Typography as="p">Project Name</Typography>
           <Input
             type="text"
             id="projectName"
+            name="title"
             placeholder="My awesome project"
             required
-            value={task?.title}
+            value={task.title}
+            onChange={handleChange}
           />
         </div>
 
@@ -48,9 +63,11 @@ const TasksEdit = () => {
           <Input
             type="text"
             id="description"
+            name="description"
             placeholder="Short description of the project"
             required
-            value={task?.description}
+            value={task.description}
+            onChange={handleChange}
           />
         </div>
 
@@ -58,9 +75,11 @@ const TasksEdit = () => {
           <Typography as="p">Repository URL</Typography>
           <Input
             type="url"
-            id="repoUrl"
+            id="repository"
+            name="repository"
             placeholder="https://github.com/user/repo"
-            value={task?.repository}
+            value={task.repository}
+            onChange={handleChange}
           />
         </div>
 
@@ -68,22 +87,23 @@ const TasksEdit = () => {
           <Typography as="p">Environment Variables</Typography>
           <Textarea
             placeholder="VAR1=value1\nVAR2=value2"
+            id="var_env"
+            name="var_env"
             className="h-48"
             required
-            value={task?.var_env}
+            value={task.var_env}
+            onChange={handleChange}
           />
         </div>
 
-        <div className="mt-5 flex justify-between">
+        <div className="mt-5">
           <Button type="submit" variant="default">
             Create
           </Button>
-
-          <Button>Exit</Button>
         </div>
       </form>
     </div>
   );
 };
 
-export default TasksEdit;
+export default TasksCreate;

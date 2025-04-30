@@ -18,6 +18,7 @@ import {
 import { Pencil, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Task } from "@/types/Task";
 
 const LimitedText = ({
   text,
@@ -31,25 +32,20 @@ const LimitedText = ({
   return <p>{displayText}</p>;
 };
 
-type TaskCardProps = {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  type: string;
-};
-
 export function TaskCard({
   id,
-  name,
+  title,
   description,
-  category,
+  repository,
+  var_env,
+  created_at,
   type,
-}: TaskCardProps) {
+}: Task & { type?: "home" | "default" }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleEdit = () => {
+    console.log(id);
     navigate(`/tasks/${id}`);
   };
 
@@ -60,12 +56,15 @@ export function TaskCard({
   if (type === "home") {
     return (
       <>
-        <Card className="w-[300px] h-[200px]" key={id}>
+        <Card
+          className="flex flex-col w-[300px] h-[250px] cursor-pointer"
+          key={id}
+        >
           <CardHeader>
-            <CardTitle>{name}</CardTitle>
-            <CardDescription>{category}</CardDescription>
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>{created_at?.toString()}</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <LimitedText text={description} />
           </CardContent>
           <CardFooter className="flex justify-between">
@@ -75,8 +74,10 @@ export function TaskCard({
               </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader className="m-5">
-                  <DialogTitle>{name}</DialogTitle>
+                  <DialogTitle>{title}</DialogTitle>
                   <DialogDescription>{description}</DialogDescription>
+                  <br />
+                  {/* <DialogDescription>{var_env}</DialogDescription> */}
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -96,14 +97,14 @@ export function TaskCard({
   return (
     <>
       <Card
-        className="w-[300px] h-[200px] cursor-pointer"
+        className=" flex flex-col w-[300px] h-[250px] cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
         <CardHeader>
-          <CardTitle>{name}</CardTitle>
-          <CardDescription>{category}</CardDescription>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{repository}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-1">
           <LimitedText text={description} />
         </CardContent>
         <CardFooter className="flex justify-between">
@@ -133,8 +134,8 @@ export function TaskCard({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader className="m-5">
-            <DialogTitle>{name}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{var_env}</DialogDescription>
           </DialogHeader>
         </DialogContent>
       </Dialog>

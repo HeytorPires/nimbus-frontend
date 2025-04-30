@@ -15,6 +15,7 @@ const Tasks = () => {
         console.log(tasks);
       } catch (error: any) {
         toast.error(error);
+        console.log(error);
       }
     };
     fetchData();

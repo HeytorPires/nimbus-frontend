@@ -10,6 +10,7 @@ import Home from "@/pages/Home";
 import Tasks from "@/pages/TaskView";
 import NotFound from "@/pages/NotFound";
 import TasksEdit from "@/pages/TasksEdit";
+import TasksCreate from "@/pages/TasksCreate";
 
 // interface PrivateProps {
 //   Item: React.ElementType;
@@ -53,18 +54,18 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/tasks/:id"
+        path="/tasks/create"
         element={
           <Private>
-            <TasksEdit />
+            <TasksCreate />
           </Private>
         }
       />
       <Route
-        path="/tasks/exclude/:id"
+        path="/tasks/:id"
         element={
           <Private>
-            <Tasks />
+            <TasksEdit />
           </Private>
         }
       />

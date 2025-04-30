@@ -1,9 +1,10 @@
 export interface Task {
-  id: string;
+  id?: string;
   title: string;
-  tags: string;
+  tags?: string;
   description: string;
+  repository: string;
+  var_env: string;
   created_at?: Date;
-  state: string;
-  created_by: Date;
+  created_by: string;
 }

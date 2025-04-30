@@ -31,9 +31,9 @@ const Home = () => {
           <Input placeholder="Search Task" type="search" className="z-30" />
           <div className="flex">
             <button
-              className="w-[300px] h-[200px] m-2 border rounded-lg flex items-center justify-center shadow-md hover:bg-gray-100 transition cursor-pointer"
+              className="w-[300px] h-[250px] m-2 border rounded-lg flex items-center justify-center shadow-md hover:bg-gray-100 transition cursor-pointer"
               aria-label="Adicionar nova tarefa"
-              onClick={() => navigate("/tasks/")}
+              onClick={() => navigate("/tasks/create")}
             >
               <Plus size={48} />
             </button>
@@ -41,9 +41,12 @@ const Home = () => {
               {tasks.map((task) => (
                 <TaskCard
                   id={task.id}
-                  name={task.title}
+                  title={task.title}
                   description={task.description}
-                  category={task.tags}
+                  repository={task.repository}
+                  var_env={task.var_env}
+                  created_at={task.created_at}
+                  created_by="eu"
                   type="home"
                 />
               ))}{" "}
