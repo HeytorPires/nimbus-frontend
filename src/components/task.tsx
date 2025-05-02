@@ -57,7 +57,7 @@ export function TaskCard({
     return (
       <>
         <Card
-          className="flex flex-col w-[300px] h-[250px] cursor-pointer"
+          className="flex flex-col w-[300px] h-[290px] cursor-pointer"
           key={id}
         >
           <CardHeader>

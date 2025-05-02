@@ -14,8 +14,7 @@ export const taskService = {
   async getByIdUser(id: string): Promise<Task | null> {
     const { data, error } = await supabase
       .from(table)
-      .select("*")
-      .eq("created_by", id)
+      .select.eq("created_by", id)
       .single();
 
     if (error) throw new Error(error.message);
@@ -44,7 +43,7 @@ export const taskService = {
     return data;
   },
 
-  async update(id: string, payload: Partial<Task>): Promise<Task> {
+  async update(id: string, payload: Task | null): Promise<Task> {
     const { data, error } = await supabase
       .from(table)
       .update(payload)
