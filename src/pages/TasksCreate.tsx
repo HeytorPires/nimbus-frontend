@@ -7,10 +7,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { taskService } from "@/service/taskService";
 import { Task } from "@/types/Task";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const TasksCreate = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [task, setTask] = useState<Task>({
     title: "",
     description: "",
@@ -32,6 +34,7 @@ const TasksCreate = () => {
     e.preventDefault();
     try {
       const taskCreated: Task = await taskService.create(task);
+      navigate(-1);
       console.log(taskCreated);
     } catch (error: any) {
       toast.error(error);

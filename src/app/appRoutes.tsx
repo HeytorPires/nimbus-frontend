@@ -46,14 +46,6 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/tasks"
-        element={
-          <Private>
-            <Tasks />
-          </Private>
-        }
-      />
-      <Route
         path="/tasks/create"
         element={
           <Private>

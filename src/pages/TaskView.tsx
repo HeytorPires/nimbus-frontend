@@ -1,16 +1,17 @@
 import { TaskCard } from "@/components/task";
+import { useAuth } from "@/hooks/useAuth";
 import { taskService } from "@/service/taskService";
 import { Task } from "@/types/Task";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-
+  const [tasks, setTasks] = useState<Task[] | null>([]);
+  const { user } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dataTask: Task[] = await taskService.getAll();
+        const dataTask: Task[] | null = await taskService.getByIdUser(user?.id);
         setTasks(dataTask);
         console.log(tasks);
       } catch (error: any) {

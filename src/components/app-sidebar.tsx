@@ -1,10 +1,4 @@
-import {
-  Home,
-  Settings,
-  CircleUserRound,
-  LogOut,
-  NotepadText,
-} from "lucide-react";
+import { Home, Settings, CircleUserRound, LogOut } from "lucide-react";
 
 import {
   Sidebar,
@@ -25,11 +19,6 @@ const items = [
     title: "Home",
     url: "home",
     icon: Home,
-  },
-  {
-    title: "Task",
-    url: "tasks",
-    icon: NotepadText,
   },
   {
     title: "Account",
