@@ -17,8 +17,9 @@ import {
 } from "./ui/dialog";
 import { Pencil, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Task } from "@/types/Task";
+import { toast } from "sonner";
 
 const LimitedText = ({
   text,
@@ -43,14 +44,23 @@ export function TaskCard({
 }: Task & { type?: "home" | "default" }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const textAreaRef = useRef(null);
 
   const handleEdit = () => {
     console.log(id);
     navigate(`/tasks/${id}`);
   };
-
   const handleRemove = async () => {
     // lógica de remoção
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(var_env);
+      toast.success("Text copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
   };
 
   if (type === "home") {
@@ -73,12 +83,19 @@ export function TaskCard({
                 <Button type="button">See More</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
-                <DialogHeader className="m-5">
+                <DialogHeader className="m-5 flex flex-col gap-2">
                   <DialogTitle>{title}</DialogTitle>
-                  <DialogDescription>{description}</DialogDescription>
-                  <br />
-                  {/* <DialogDescription>{var_env}</DialogDescription> */}
+                  <p className="text-sm text-muted-foreground">{description}</p>
+                  <pre
+                    className="break-words whitespace-pre-wrap max-h-60 overflow-auto text-sm text-muted-foreground font-mono"
+                    ref={textAreaRef}
+                  >
+                    {var_env}
+                  </pre>
                 </DialogHeader>
+                <Button className="mt-2 w-fit self-start" onClick={handleCopy}>
+                  Copy var
+                </Button>
               </DialogContent>
             </Dialog>
             <Button
@@ -135,6 +152,7 @@ export function TaskCard({
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader className="m-5">
             <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
             <DialogDescription>{var_env}</DialogDescription>
           </DialogHeader>
         </DialogContent>
