@@ -19,6 +19,7 @@ import { Layers2, Link2 as LinkIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Task } from "@/types/Task";
 import { toast } from "sonner";
+import { toast } from "sonner";
 
 const LimitedText = ({
   text,
