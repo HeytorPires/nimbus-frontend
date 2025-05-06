@@ -38,7 +38,7 @@ export function TaskCard({
   description,
   repository,
   var_env,
-  created_at,
+  updated_at,
 }: Task & { type?: "home" | "default" }) {
   const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ export function TaskCard({
       >
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CardDescription>{created_at?.toString()}</CardDescription>
+          <CardDescription>{updated_at?.toString()}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1">
           <LimitedText text={description} />
@@ -79,6 +79,9 @@ export function TaskCard({
               <DialogHeader className="m-5">
                 <DialogTitle>{title}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
+                <DialogDescription>
+                  Updated at {updated_at?.toString()}
+                </DialogDescription>
                 <DialogDescription>
                   <Link
                     to={repository}

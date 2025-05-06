@@ -59,8 +59,9 @@ const Home = () => {
                 description={task.description}
                 repository={task.repository}
                 var_env={task.var_env}
+                updated_at={task.updated_at}
                 created_at={task.created_at}
-                created_by="eu"
+                created_by=""
                 type="home"
               />
             ))}
