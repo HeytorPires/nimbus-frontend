@@ -4,13 +4,12 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { AuthContext } from "@/contexts/auth";
 
 // Pages
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
+import Login from "@/pages/login/Login";
+import Register from "@/pages/register/Register";
 import Home from "@/pages/Home";
-import Tasks from "@/pages/TaskView";
-import NotFound from "@/pages/NotFound";
-import TasksEdit from "@/pages/TasksEdit";
-import TasksCreate from "@/pages/TasksCreate";
+import NotFound from "@/pages/notFound/NotFound";
+import TasksEdit from "@/pages/tasks/TasksEdit";
+import TasksCreate from "@/pages/tasks/TasksCreate";
 
 // interface PrivateProps {
 //   Item: React.ElementType;
