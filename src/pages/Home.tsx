@@ -12,27 +12,34 @@ const Home = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[] | null>([]);
-
+  const [filter, setFilter] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dataTask: Task[] | null = await taskService.getByIdUser(user?.id);
-        console.log(dataTask);
+        const dataTask: Task[] | null =
+          filter !== ""
+            ? await taskService.getByName(user?.id, filter)
+            : await taskService.getByIdUser(user?.id);
+
         setTasks(dataTask);
-        console.log(tasks);
       } catch (error: any) {
-        toast.error(error);
-        console.log(error);
+        toast.error(error.message || error);
+        console.error(error);
       }
     };
+
     fetchData();
-  }, []);
+  }, [filter, user?.id]);
   return (
     <>
       <div className="flex flex-wrap gap-4 m-2 justify-start items-start relative min-h-screen w-full">
         <div className="flex flex-col w-full mx-6">
           <div className="flex flex-col">
-            <Input placeholder="Search Task" type="search" className="" />
+            <Input
+              placeholder="Search Task"
+              type="search"
+              onChange={(e) => setFilter(e.target.value)}
+            />
           </div>
 
           <div className="flex flex-wrap gap-3 mt-5 justify-start items-start relative overflow-hidden w-full">

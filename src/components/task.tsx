@@ -60,7 +60,7 @@ export function TaskCard({
   return (
     <>
       <Card
-        className="flex flex-col w-[300px] h-[290px] cursor-pointer"
+        className="flex flex-col w-[290px] h-[290px] cursor-pointer"
         key={id}
       >
         <CardHeader>

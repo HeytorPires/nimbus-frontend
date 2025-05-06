@@ -99,9 +99,12 @@ const TasksCreate = () => {
           />
         </div>
 
-        <div className="mt-5">
+        <div className="mt-5 flex justify-between">
           <Button type="submit" variant="default">
             Create
+          </Button>
+          <Button type="button" onClick={() => navigate(-1)}>
+            Exit
           </Button>
         </div>
       </form>

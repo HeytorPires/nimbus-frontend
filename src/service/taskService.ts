@@ -20,6 +20,19 @@ export const taskService = {
     if (error) throw new Error(error.message);
     return data;
   },
+  async getByName(
+    id: string | undefined,
+    name: string
+  ): Promise<Task[] | null> {
+    const { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .eq("created_by", id)
+      .like("title", `%${name}%`);
+
+    if (error) throw new Error(error.message);
+    return data;
+  },
 
   async getById(id: string): Promise<Task | null> {
     const { data, error } = await supabase
