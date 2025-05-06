@@ -31,7 +31,7 @@ const NotFound = () => {
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-4 p-4 w-96 z-10">
-          <h1 className="text-8xl">Taskly</h1>
+          <h1 className="text-8xl">Nimbus</h1>
           <DecryptedText
             text="Your tasks made easier"
             speed={50}

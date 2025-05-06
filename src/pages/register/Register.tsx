@@ -65,14 +65,14 @@ const Register = () => {
             disableRotation={false}
           />
         </div>
-        <div className="flex flex-col justify-center items-center gap-4 p-4 w-96 z-10">
+        <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
           <form
             className="flex flex-col justify-center items-center gap-4 p-4 w-full"
             onSubmit={handleSubmit}
           >
-            <h1 className="text-8xl">Taskly</h1>
+            <h1 className="text-8xl">Nimbus</h1>
             <DecryptedText
-              text="Your tasks made easier"
+              text="Manage your environment powerfully and easily"
               speed={50}
               maxIterations={50}
               animateOn="view"
