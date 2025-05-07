@@ -68,7 +68,6 @@ const Home = () => {
           </div>
         </div>{" "}
       </div>
-      {/* Adicionado relative e overflow-hidden */}
     </>
   );
 };

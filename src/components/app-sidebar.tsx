@@ -1,5 +1,8 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/service/authService";
 import { Home, Settings, CircleUserRound, LogOut } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -10,9 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
-import { authService } from "@/service/authService";
+import DialogSettings from "@/components/dialog/DialogSettings"; // ajuste o path conforme seu projeto
 // Menu items.
 const items = [
   {
@@ -25,16 +26,12 @@ const items = [
     url: "#",
     icon: CircleUserRound,
   },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
 ];
 
 export function AppSidebar() {
-  const { setUser, setSession } = useAuth();
   const Navigate = useNavigate();
+  const { setUser, setSession } = useAuth();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     await authService.signOut();
@@ -45,35 +42,50 @@ export function AppSidebar() {
     }, 5);
   };
   return (
-    <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Nimbus</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+    <>
+      <Sidebar>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Nimbus</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+
+                <SidebarMenuItem>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
+                    <a
+                      className="cursor-pointer"
+                      onClick={() => setDialogOpen(true)}
+                    >
+                      <Settings />
+                      <span>Settings</span>
+                    </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild onClick={handleLogout}>
-                  <a className="cursor-pointer">
-                    <LogOut />
-                    <span>Log out</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild onClick={handleLogout}>
+                    <a className="cursor-pointer">
+                      <LogOut />
+                      <span>Log out</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <DialogSettings open={dialogOpen} setOpenChange={setDialogOpen} />
+    </>
   );
 }
