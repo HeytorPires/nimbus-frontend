@@ -3,46 +3,51 @@ import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/service/authService";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/service/authService";
 import { toast } from "sonner";
 
-const Register = () => {
-  const { user, setUser, setSession } = useAuth();
-  const [email, setEmail] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
+const LoginEmail = () => {
   const navigate = useNavigate();
+  const { setUser, setSession, user } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // previne o comportamento padrão
-    if (!email || !password || !name) {
+    if (!email || !password) {
       toast.error("Preencha todos os dados");
       return;
     }
+    // console.log(error);
     try {
-      const { data, error } = await authService.signUp(email, password, name);
-      if (error) {
+      const { data, error } = await authService.signIn(email, password);
+      if (error !== null) {
         toast.error(error.message);
         return;
       }
       setUser(data.user);
       setSession(data.session);
       toast("Success");
-      navigate("/home");
+      setTimeout(() => {
+        navigate("/home");
+      }, 5);
     } catch (err: any) {
-      toast.error(err || "Erro ao registrar");
+      toast.error(err);
     }
   };
+  //trocar de aba
   useEffect(() => {
     if (user) {
       navigate("/home");
     }
-  }, [user, navigate]);
+  });
+
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen relative overflow-hidden w-full">
+      <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
         <div
           style={{
             position: "absolute",
@@ -65,7 +70,7 @@ const Register = () => {
             disableRotation={false}
           />
         </div>
-        <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
+        <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410] z-10">
           <form
             className="flex flex-col justify-center items-center gap-4 p-4 w-full"
             onSubmit={handleSubmit}
@@ -77,47 +82,41 @@ const Register = () => {
               maxIterations={50}
               animateOn="view"
               revealDirection="start"
-              useOriginalCharsOnly={false}
+              useOriginalCharsOnly={true}
               sequential={true}
-            />
-            {/* <h2 className="text-3xl">Cadastre-se</h2> */}
-            <Input
-              type="text"
-              placeholder="Write your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)} // também atualiza
-              required
             />
             <Input
               type="email"
               placeholder="Write your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)} // atualiza o state
-              required
+              // required
             />
             <Input
               type="password"
               placeholder="Write your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)} // também atualiza
-              required
+              // required
             />
-            <p className="text-[10px]">
-              You already have an account? Click{" "}
-              <span
-                className="text-blue-700 underline cursor-pointer"
-                onClick={() => navigate(-1)}
-              >
-                here
-              </span>
-            </p>
+
             <Button
               className="cursor-pointer w-full"
               type="submit"
               // variant="outline"
             >
-              Cadastrar-se
+              Entrar
             </Button>
+            <p className="text-[10px] flex items-center justify-center gap-1">
+              <ArrowLeft size={15} className="text-blue-700" />
+
+              <span
+                className="text-blue-700 cursor-pointer"
+                onClick={() => navigate(-1)}
+              >
+                Other Login options
+              </span>
+            </p>
           </form>
         </div>
       </div>
@@ -125,4 +124,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default LoginEmail;

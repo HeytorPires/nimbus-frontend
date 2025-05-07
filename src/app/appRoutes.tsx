@@ -10,6 +10,7 @@ import Home from "@/pages/Home";
 import NotFound from "@/pages/notFound/NotFound";
 import TasksEdit from "@/pages/tasks/TasksEdit";
 import TasksCreate from "@/pages/tasks/TasksCreate";
+import LoginEmail from "@/pages/login/LoginEmail";
 
 // interface PrivateProps {
 //   Item: React.ElementType;
@@ -32,6 +33,7 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Rotas públicas */}
+      <Route path="/login/email" element={<LoginEmail />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 

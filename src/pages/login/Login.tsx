@@ -1,9 +1,9 @@
 import Particles from "@/components/background/particules";
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { authService } from "@/service/authService";
+import { ArrowRight, Github } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -70,47 +70,41 @@ const Login = () => {
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410] z-10">
-          <form
-            className="flex flex-col justify-center items-center gap-4 p-4 w-full"
-            onSubmit={handleSubmit}
-          >
-            <h1 className="text-8xl">Nimbus</h1>
-            <DecryptedText
-              text="Manage your environment powerfully and easily"
-              speed={50}
-              maxIterations={50}
-              animateOn="view"
-              revealDirection="start"
-              useOriginalCharsOnly={true}
-              sequential={true}
-            />
-            <Input
-              type="email"
-              placeholder="Write your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} // atualiza o state
-              // required
-            />
-            <Input
-              type="password"
-              placeholder="Write your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} // também atualiza
-              // required
-            />
-            <p className="text-[10px]">
-              Don't have an account? Click{" "}
-              <span
-                className="text-blue-700 underline cursor-pointer"
-                onClick={() => navigate("/register")}
-              >
-                here
-              </span>
-            </p>
-            <Button className="cursor-pointer" type="submit">
-              Entrar
+          <h1 className="text-8xl">Nimbus</h1>
+          <DecryptedText
+            text="Manage your environment powerfully and easily"
+            speed={50}
+            maxIterations={50}
+            animateOn="view"
+            revealDirection="start"
+            useOriginalCharsOnly={true}
+            sequential={true}
+          />
+
+          <div className="flex flex-col justify-around w-full gap-2">
+            <Button
+              className="cursor-pointer"
+              variant="outline"
+              onClick={() => navigate("email")}
+            >
+              Continue with Email <ArrowRight />
             </Button>
-          </form>
+            <Button className="cursor-pointer" color="#00000">
+              <Github />
+              Login com GitHub
+            </Button>
+            <div className="flex justify-center">
+              <p className="text-[10px]">
+                Don't have an account? Click{" "}
+                <span
+                  className="text-blue-700 underline cursor-pointer"
+                  onClick={() => navigate("/register")}
+                >
+                  here
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>
