@@ -46,7 +46,7 @@ const Home = () => {
             <button
               className="w-[290px] h-[290px] border rounded-lg flex items-center justify-center shadow-md hover:bg-gray-100 transition cursor-pointer"
               aria-label="Adicionar nova tarefa"
-              onClick={() => navigate("/tasks/create")}
+              onClick={() => navigate("/task")}
             >
               <Plus size={48} />
             </button>

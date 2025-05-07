@@ -54,7 +54,7 @@ export function TaskCard({
 
   const handleEdit = () => {
     console.log(id);
-    navigate(`/tasks/${id}`);
+    navigate(`/task/${id}`);
   };
 
   return (
