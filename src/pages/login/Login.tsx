@@ -2,39 +2,23 @@ import Particles from "@/components/background/particules";
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { authService } from "@/service/authService";
+import { supabase } from "@/lib/supabaseClient";
 import { ArrowRight, Github } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser, setSession, user } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const Auth = useAuth();
+  const session = Auth.session;
+  const user = session?.user;
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // previne o comportamento padrão
-    if (!email || !password) {
-      toast.error("Preencha todos os dados");
-      return;
-    }
-    // console.log(error);
-    try {
-      const { data, error } = await authService.signIn(email, password);
-      if (error !== null) {
-        toast.error(error.message);
-        return;
-      }
-      setUser(data.user);
-      setSession(data.session);
-      toast("Success");
-      setTimeout(() => {
-        navigate("/home");
-      }, 5);
-    } catch (err: any) {
-      toast.error(err);
+  const signInWithGitHub = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+    });
+    if (error) {
+      console.log("error ao fazer login", error.message);
     }
   };
   //trocar de aba
@@ -42,7 +26,7 @@ const Login = () => {
     if (user) {
       navigate("/home");
     }
-  });
+  }, [user, navigate]);
 
   return (
     <>
@@ -69,7 +53,7 @@ const Login = () => {
             disableRotation={false}
           />
         </div>
-        <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410] z-10">
+        <div className="flex flex-col justify-center items-center gap-4 p-4 w-96 z-10">
           <h1 className="text-8xl">Nimbus</h1>
           <DecryptedText
             text="Manage your environment powerfully and easily"
@@ -80,7 +64,6 @@ const Login = () => {
             useOriginalCharsOnly={true}
             sequential={true}
           />
-
           <div className="flex flex-col justify-around w-full gap-2">
             <Button
               className="cursor-pointer"
@@ -89,9 +72,13 @@ const Login = () => {
             >
               Continue with Email <ArrowRight />
             </Button>
-            <Button className="cursor-pointer" color="#00000">
+            <Button
+              className="cursor-pointer"
+              color="#00000"
+              onClick={signInWithGitHub}
+            >
               <Github />
-              Login com GitHub
+              Login with GitHub
             </Button>
             <div className="flex justify-center">
               <p className="text-[10px]">
