@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { authService } from "@/service/authService";
-import { Home, Settings, CircleUserRound, LogOut } from "lucide-react";
+import {
+  Home,
+  Settings,
+  CircleUserRound,
+  LogOut,
+  Bookmark,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,12 +20,18 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import DialogSettings from "@/components/dialog/DialogSettings"; // ajuste o path conforme seu projeto
-// Menu items.
+import { tagService } from "@/service/tagService";
+import { Tag } from "@/types/Tag";
 const items = [
   {
     title: "Home",
     url: "home",
     icon: Home,
+  },
+  {
+    title: "Markers",
+    url: "markers",
+    icon: Bookmark,
   },
   {
     title: "Account",
@@ -30,9 +42,10 @@ const items = [
 
 export function AppSidebar() {
   const Navigate = useNavigate();
+  const { user } = useAuth();
   const { setUser, setSession } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
-
+  const [tags, setTags] = useState<Tag[] | null>([]);
   const handleLogout = async () => {
     await authService.signOut();
     setUser(null);
@@ -41,6 +54,20 @@ export function AppSidebar() {
       Navigate("/");
     }, 5);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const idUser = user?.id;
+        const dataTag: Tag[] | null = await tagService.getAllByIdUser(idUser);
+        setTags(dataTag);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  });
   return (
     <>
       <Sidebar>
