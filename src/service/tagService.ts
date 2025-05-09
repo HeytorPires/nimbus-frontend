@@ -9,7 +9,6 @@ export const tagService = {
       .from(table)
       .select("*")
       .eq("created_by", id);
-
     if (error) throw new Error(error.message);
     return data;
   },

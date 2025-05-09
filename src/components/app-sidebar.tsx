@@ -8,6 +8,7 @@ import {
   CircleUserRound,
   LogOut,
   Bookmark,
+  ChevronRight,
 } from "lucide-react";
 import {
   Sidebar,
@@ -19,10 +20,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import DialogSettings from "@/components/dialog/DialogSettings"; // ajuste o path conforme seu projeto
+import DialogSettings from "@/components/dialog/DialogSettings";
 import { tagService } from "@/service/tagService";
 import { Tag } from "@/types/Tag";
-const items = [
+
+interface Item {
+  title: string;
+  url: string;
+  icon: React.ComponentType;
+  items?: Tag[];
+}
+
+const itemss: Item[] = [
   {
     title: "Home",
     url: "home",
@@ -31,7 +40,8 @@ const items = [
   {
     title: "Markers",
     url: "markers",
-    icon: Bookmark,
+    icon: ChevronRight,
+    items: [],
   },
   {
     title: "Account",
@@ -42,10 +52,10 @@ const items = [
 
 export function AppSidebar() {
   const Navigate = useNavigate();
-  const { user } = useAuth();
-  const { setUser, setSession } = useAuth();
+  const { user, setUser, setSession } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [tags, setTags] = useState<Tag[] | null>([]);
+  const [items, setItems] = useState<Item[]>(itemss);
+
   const handleLogout = async () => {
     await authService.signOut();
     setUser(null);
@@ -59,15 +69,22 @@ export function AppSidebar() {
     const fetchData = async () => {
       try {
         const idUser = user?.id;
-        const dataTag: Tag[] | null = await tagService.getAllByIdUser(idUser);
-        setTags(dataTag);
+        const dataTag = await tagService.getAllByIdUser(idUser);
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item.title === "Markers" ? { ...item, items: dataTag || [] } : item
+          )
+        );
       } catch (err) {
         console.log(err);
       }
     };
 
-    fetchData();
-  });
+    if (user?.id) {
+      fetchData();
+    }
+  }, [user]);
+
   return (
     <>
       <Sidebar>
@@ -84,6 +101,23 @@ export function AppSidebar() {
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
+                    {/* Render tags se existirem */}
+                    {item.title === "Markers" &&
+                      item.items &&
+                      item.items.length > 0 && (
+                        <SidebarMenu className="pl-6">
+                          {item.items.map((tag) => (
+                            <SidebarMenuItem key={tag.id}>
+                              <SidebarMenuButton asChild>
+                                <Link to={`/markers/${tag.id}`}>
+                                  <Bookmark />
+                                  <span>{tag.name}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          ))}
+                        </SidebarMenu>
+                      )}
                   </SidebarMenuItem>
                 ))}
 
@@ -107,11 +141,19 @@ export function AppSidebar() {
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <a className="cursor-pointer">
+                      <span>{user?.email}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
+
       <DialogSettings open={dialogOpen} setOpenChange={setDialogOpen} />
     </>
   );
