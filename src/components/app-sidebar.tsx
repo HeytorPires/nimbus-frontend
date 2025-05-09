@@ -9,6 +9,7 @@ import {
   LogOut,
   Bookmark,
   ChevronRight,
+  Plus,
 } from "lucide-react";
 import {
   Sidebar,
@@ -122,6 +123,14 @@ export function AppSidebar() {
 
                         <CollapsibleContent>
                           <SidebarMenu className="pl-6">
+                            <SidebarMenuItem>
+                              <SidebarMenuButton asChild>
+                                <button className="cursor-pointer">
+                                  <Plus />
+                                  <span>Add</span>
+                                </button>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
                             {item.items?.map((tag) => (
                               <SidebarMenuItem key={tag.id}>
                                 <SidebarMenuButton asChild>
