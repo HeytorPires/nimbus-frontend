@@ -18,7 +18,7 @@ interface iProps {
   onCreated?: () => void;
 }
 
-const DialogCreateMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
+const DialogMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
   const { user } = useAuth();
   const [name, setName] = useState("");
 
@@ -77,4 +77,4 @@ const DialogCreateMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
   );
 };
 
-export default DialogCreateMarkers;
+export default DialogMarkers;

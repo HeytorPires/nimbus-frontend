@@ -25,7 +25,8 @@ import DialogSettings from "@/components/dialog/DialogSettings";
 import { tagService } from "@/service/tagService";
 import { Tag } from "@/types/Tag";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-import DialogCreateMarkers from "./dialog/DialogCreateMarkers";
+import DialogMarkers from "./dialog/DialogMarkers";
+import DialogMarkersEdit from "./dialog/DialogMarkersEdit";
 interface Item {
   title: string;
   url: string;
@@ -34,16 +35,18 @@ interface Item {
 }
 
 export function AppSidebar() {
-  const Collapsible = CollapsiblePrimitive.Root;
-
-  const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
-
-  const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
   const navigate = useNavigate();
   const { user, setUser, setSession } = useAuth();
+  const [selectedTag, setSelectedTag] = useState<Tag>(); // Guardar a tag selecionada
+  //Dialogs Opens
+  const [markersOpen, setMarkersOpen] = useState(true); // controla o colapso
   const [dialogSettingsOpen, setDialogSettingsOpen] = useState(false);
   const [dialogMarkerOpen, setDialogMarkersOpen] = useState(false);
-  const [markersOpen, setMarkersOpen] = useState(true); // controla o colapso
+  const [dialogMarkerEditOpen, setDialogMarkerEdit] = useState(false);
+  //Collapsible
+  const Collapsible = CollapsiblePrimitive.Root;
+  const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
+  const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
   const [items, setItems] = useState<Item[]>([
     {
       title: "Home",
@@ -137,10 +140,15 @@ export function AppSidebar() {
                             {item.items?.map((tag) => (
                               <SidebarMenuItem key={tag.id}>
                                 <SidebarMenuButton asChild>
-                                  <Link to={`/markers/${tag.id}`}>
+                                  <button
+                                    onClick={() => {
+                                      setSelectedTag(tag);
+                                      setDialogMarkerEdit(true);
+                                    }}
+                                  >
                                     <Bookmark />
                                     <span>{tag.name}</span>
-                                  </Link>
+                                  </button>
                                 </SidebarMenuButton>
                               </SidebarMenuItem>
                             ))}
@@ -198,10 +206,16 @@ export function AppSidebar() {
         open={dialogSettingsOpen}
         setOpenChange={setDialogSettingsOpen}
       />
-      <DialogCreateMarkers
+      <DialogMarkers
         open={dialogMarkerOpen}
         setOpenChange={setDialogMarkersOpen}
         onCreated={fetchData}
+      />
+      <DialogMarkersEdit
+        open={dialogMarkerEditOpen}
+        setOpenChange={setDialogMarkerEdit}
+        onCreated={fetchData}
+        tagInitial={selectedTag}
       />
     </>
   );
