@@ -25,6 +25,7 @@ import DialogSettings from "@/components/dialog/DialogSettings";
 import { tagService } from "@/service/tagService";
 import { Tag } from "@/types/Tag";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+import DialogCreateMarkers from "./dialog/DialogCreateMarkers";
 interface Item {
   title: string;
   url: string;
@@ -40,7 +41,9 @@ export function AppSidebar() {
   const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
   const navigate = useNavigate();
   const { user, setUser, setSession } = useAuth();
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogSettingsOpen, setDialogSettingsOpen] = useState(false);
+  const [dialogMarkerOpen, setDialogMarkersOpen] = useState(false);
+  const [markersOpen, setMarkersOpen] = useState(true); // controla o colapso
   const [items, setItems] = useState<Item[]>([
     {
       title: "Home",
@@ -60,8 +63,6 @@ export function AppSidebar() {
     },
   ]);
 
-  const [markersOpen, setMarkersOpen] = useState(true); // controla o colapso
-
   const handleLogout = async () => {
     await authService.signOut();
     setUser(null);
@@ -70,22 +71,21 @@ export function AppSidebar() {
       navigate("/");
     }, 5);
   };
+  const fetchData = async () => {
+    try {
+      const idUser = user?.id;
+      const dataTag = await tagService.getAllByIdUser(idUser);
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.title === "Markers" ? { ...item, items: dataTag || [] } : item
+        )
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const idUser = user?.id;
-        const dataTag = await tagService.getAllByIdUser(idUser);
-        setItems((prevItems) =>
-          prevItems.map((item) =>
-            item.title === "Markers" ? { ...item, items: dataTag || [] } : item
-          )
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     if (user?.id) {
       fetchData();
     }
@@ -109,7 +109,7 @@ export function AppSidebar() {
                       >
                         <SidebarMenuItem>
                           <CollapsibleTrigger asChild>
-                            <SidebarMenuButton className="flex items-center gap-2 w-full">
+                            <SidebarMenuButton className="flex items-center gap-2 w-full cursor-pointer">
                               <Bookmark />
                               <span>{item.title}</span>
                               <ChevronRight
@@ -125,7 +125,10 @@ export function AppSidebar() {
                           <SidebarMenu className="pl-6">
                             <SidebarMenuItem>
                               <SidebarMenuButton asChild>
-                                <button className="cursor-pointer">
+                                <button
+                                  className="cursor-pointer"
+                                  onClick={() => setDialogMarkersOpen(true)}
+                                >
                                   <Plus />
                                   <span>Add</span>
                                 </button>
@@ -163,7 +166,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <a
                       className="cursor-pointer"
-                      onClick={() => setDialogOpen(true)}
+                      onClick={() => setDialogSettingsOpen(true)}
                     >
                       <Settings />
                       <span>Settings</span>
@@ -191,7 +194,15 @@ export function AppSidebar() {
         </SidebarContent>
       </Sidebar>
 
-      <DialogSettings open={dialogOpen} setOpenChange={setDialogOpen} />
+      <DialogSettings
+        open={dialogSettingsOpen}
+        setOpenChange={setDialogSettingsOpen}
+      />
+      <DialogCreateMarkers
+        open={dialogMarkerOpen}
+        setOpenChange={setDialogMarkersOpen}
+        onCreated={fetchData}
+      />
     </>
   );
 }

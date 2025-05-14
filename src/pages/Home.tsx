@@ -38,7 +38,9 @@ const Home = () => {
             <Input
               placeholder="Search Task"
               type="search"
+              name="search"
               onChange={(e) => setFilter(e.target.value)}
+              autoComplete="off"
             />
           </div>
 
