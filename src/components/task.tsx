@@ -59,10 +59,7 @@ export function TaskCard({
 
   return (
     <>
-      <Card
-        className="flex flex-col w-[290px] h-[290px] cursor-pointer"
-        key={id}
-      >
+      <Card className="flex flex-col w-[290px] h-[290px]" key={id}>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{updated_at?.toString()}</CardDescription>
@@ -73,7 +70,9 @@ export function TaskCard({
         <CardFooter className="flex justify-between">
           <Dialog>
             <DialogTrigger asChild>
-              <Button type="button">See More</Button>
+              <Button type="button" className="cursor-pointer">
+                See More
+              </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
               <DialogHeader className="m-5">
@@ -105,7 +104,7 @@ export function TaskCard({
                     </DialogDescription>
                     <br />
                     <Button
-                      className="w-min"
+                      className="w-min cursor-pointer"
                       onClick={() => handleCopy(var_env)}
                     >
                       {" "}

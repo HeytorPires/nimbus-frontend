@@ -7,7 +7,7 @@ import {
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tag } from "@/types/Tag";
 import { tagService } from "@/service/tagService";
 import { toast } from "sonner";
@@ -26,13 +26,15 @@ const DialogMarkersEdit = ({
   tagInitial,
 }: iProps) => {
   const [tag, setTag] = useState<Tag | undefined>(tagInitial);
-  const oldName = tag?.name;
+  const oldName = tagInitial?.name;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTag((prevTag) => ({
       ...prevTag,
       name: e.target.value,
     }));
   };
+
   const handleEdit = async () => {
     try {
       if (!tag?.id) {
@@ -50,13 +52,35 @@ const DialogMarkersEdit = ({
     }
     onCreated?.();
   };
-
+  const handleDelete = async () => {
+    setTag((prevTag) => ({
+      ...prevTag,
+      name: "",
+    }));
+    try {
+      const id = tag?.id;
+      if (id) {
+        await tagService.delete(id);
+        toast.success("tag deletada com sucesso!");
+        setOpenChange(false);
+      }
+    } catch (error: any) {
+      toast.error("Erro ao atualizar a task");
+      console.error(error);
+    }
+    onCreated?.();
+  };
+  useEffect(() => {
+    if (tagInitial) {
+      setTag({ ...tagInitial });
+    }
+  }, [tagInitial]);
   return (
     <Dialog open={open} onOpenChange={setOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader className="m-5">
           <DialogTitle>Edit markers</DialogTitle>
-          <DialogDescription>Edit your bookmarks</DialogDescription>
+          <DialogDescription>Set a new name</DialogDescription>
           <p>Old name: {oldName}</p>
           <Input
             placeholder="Name marker"
@@ -71,9 +95,9 @@ const DialogMarkersEdit = ({
             <Button
               className="w-min"
               variant="destructive"
-              onClick={() => setOpenChange(false)}
+              onClick={handleDelete}
             >
-              Cancel
+              Remove
             </Button>
           </div>
         </DialogHeader>

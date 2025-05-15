@@ -32,10 +32,11 @@ const Home = () => {
   }, [filter, user?.id]);
   return (
     <>
-      <div className="flex flex-wrap gap-4 m-2 justify-start items-start relative min-h-screen w-full">
+      <div className="flex flex-wrap gap-4  justify-start items-start relative h-screen w-full ">
         <div className="flex flex-col w-full mx-6">
           <div className="flex flex-col">
             <Input
+              className="my-2"
               placeholder="Search Task"
               type="search"
               name="search"
