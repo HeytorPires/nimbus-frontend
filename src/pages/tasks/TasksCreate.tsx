@@ -87,6 +87,18 @@ const TasksCreate = () => {
         </div>
 
         <div>
+          <Typography as="p">Markers</Typography>
+          <Input
+            type="url"
+            id="repository"
+            name="repository"
+            placeholder="https://github.com/user/repo"
+            value={task.repository}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
           <Typography as="p">Environment Variables</Typography>
           <Textarea
             placeholder="VAR1=value1\nVAR2=value2"
