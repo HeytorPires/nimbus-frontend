@@ -1,3 +1,4 @@
+import { ComboBox } from "@/components/combox";
 import { Separator } from "@/components/Separator";
 import { Typography } from "@/components/typography";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/hooks/useAuth";
+import { tagService } from "@/service/tagService";
 import { taskService } from "@/service/taskService";
+import { Tag } from "@/types/Tag";
 import { Task } from "@/types/Task";
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -19,33 +23,50 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const TasksEdit = () => {
+  const { user } = useAuth();
   const params = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [task, setTask] = useState<Task | null>(null);
+  const [tags, setTags] = useState<Tag[]>([]);
+
+  const fetchTags = async () => {
+    const userId = user?.id;
+    try {
+      if (userId) {
+        const data = await tagService.getAllByIdUser(userId);
+        setTags(data ?? []);
+      }
+    } catch (err) {
+      console.error("Erro ao buscar tags:", err);
+      setTags([]);
+    }
+  };
+
+  const fetchData = async () => {
+    const { id } = params;
+    if (!id) {
+      toast.error("ID da task não encontrado.");
+      return;
+    }
+
+    try {
+      const dataTask: Task | null = await taskService.getById(id);
+      if (dataTask) {
+        setTask(dataTask);
+      } else {
+        toast.error("Task não encontrada.");
+      }
+    } catch (error: any) {
+      toast.error("Erro ao buscar task");
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { id } = params;
-      if (!id) {
-        toast.error("ID da task não encontrado.");
-        return;
-      }
-
-      try {
-        const dataTask: Task | null = await taskService.getById(id);
-        if (dataTask) {
-          setTask(dataTask);
-        } else {
-          toast.error("Task não encontrada.");
-        }
-      } catch (error: any) {
-        toast.error("Erro ao buscar task");
-        console.error(error);
-      }
-    };
     fetchData();
-  }, [params]);
+    fetchTags();
+  }, []);
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,16 +82,17 @@ const TasksEdit = () => {
       console.error(error);
     }
   };
+
   const handleDelete = async () => {
     try {
       const id = task?.id;
       if (id) {
         await taskService.delete(id);
-        toast.success("Task Deletado com sucesso!");
+        toast.success("Task deletada com sucesso!");
         navigate(-1);
       }
     } catch (error: any) {
-      toast.error("Erro ao atualizar a task");
+      toast.error("Erro ao deletar a task");
       console.error(error);
     }
   };
@@ -82,17 +104,20 @@ const TasksEdit = () => {
     setTask((prev) => (prev ? { ...prev, [name]: value } : prev));
   };
 
+  const handleTagChange = (value: string | undefined) => {
+    setTask((prev) => ({
+      ...prev!,
+      tag_id: value ?? null, // ✅ undefined vira null
+    }));
+  };
+
   return (
     <div className="p-10">
       <div className="flex flex-row items-center justify-between">
         <Typography as="h1">Update Env Project</Typography>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={() => setOpen(true)}
-            >
+            <Button type="button" variant="destructive">
               <Trash />
               Remove
             </Button>
@@ -100,7 +125,6 @@ const TasksEdit = () => {
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader className="m-5">
               <DialogTitle>Do you want to remove this task?</DialogTitle>
-
               <DialogDescription className="flex flex-row justify-between mt-3">
                 <Button
                   type="button"
@@ -131,7 +155,6 @@ const TasksEdit = () => {
             <Typography as="p">Project Name</Typography>
             <Input
               type="text"
-              id="projectName"
               name="title"
               placeholder="My awesome project"
               value={task.title}
@@ -143,7 +166,6 @@ const TasksEdit = () => {
             <Typography as="p">Description</Typography>
             <Input
               type="text"
-              id="description"
               name="description"
               placeholder="Short description of the project"
               value={task.description}
@@ -155,11 +177,20 @@ const TasksEdit = () => {
             <Typography as="p">Repository URL</Typography>
             <Input
               type="url"
-              id="repoUrl"
               name="repository"
               placeholder="https://github.com/user/repo"
               value={task.repository}
               onChange={handleChange}
+            />
+          </div>
+
+          <div className="w-min">
+            <Typography as="p">Markers</Typography>
+            <ComboBox
+              options={tags}
+              value={task.tag_id ?? null}
+              onChange={handleTagChange}
+              placeholder="Selecione uma tag"
             />
           </div>
 
@@ -178,7 +209,6 @@ const TasksEdit = () => {
             <Button type="submit" variant="default">
               Update
             </Button>
-
             <Button type="button" onClick={() => navigate(-1)}>
               Exit
             </Button>

@@ -1,4 +1,4 @@
-import { TaskCard } from "@/components/task";
+import { TaskCard } from "@/components/TaskCard";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { taskService } from "@/service/taskService";
@@ -64,6 +64,7 @@ const Home = () => {
                 var_env={task.var_env}
                 updated_at={task.updated_at}
                 created_at={task.created_at}
+                tag_id={task.tag_id}
                 created_by=""
                 type="home"
               />

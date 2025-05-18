@@ -8,5 +8,5 @@ export interface Task {
   created_at?: Date;
   updated_at?: Date;
   created_by: string;
-  tag_id?: string;
+  tag_id?: string | null;
 }

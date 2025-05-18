@@ -1,26 +1,43 @@
+import { ComboBox } from "@/components/combox";
 import { Separator } from "@/components/Separator";
 import { Typography } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
+import { tagService } from "@/service/tagService";
 import { taskService } from "@/service/taskService";
+import { Tag } from "@/types/Tag";
 import { Task } from "@/types/Task";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const TasksCreate = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [tags, setTags] = useState<Tag[]>([]);
   const [task, setTask] = useState<Task>({
     title: "",
     description: "",
     repository: "",
     var_env: "",
+    tag_id: "",
     created_by: user?.id || "",
   });
 
+  const fetchTags = async () => {
+    const userId = user?.id;
+    try {
+      if (userId) {
+        const data = await tagService.getAllByIdUser(userId);
+        setTags(data ?? []);
+      }
+    } catch (err) {
+      console.error("Erro ao buscar tags:", err);
+      setTags([]);
+    }
+  };
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -41,6 +58,10 @@ const TasksCreate = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchTags();
+  }, [user]);
 
   return (
     <div className="p-10">
@@ -86,15 +107,13 @@ const TasksCreate = () => {
           />
         </div>
 
-        <div>
+        <div className="w-min">
           <Typography as="p">Markers</Typography>
-          <Input
-            type="url"
-            id="repository"
-            name="repository"
-            placeholder="https://github.com/user/repo"
-            value={task.repository}
-            onChange={handleChange}
+          <ComboBox
+            options={tags}
+            value={task.tag_id}
+            onChange={(value) => setTask({ ...task, tag_id: value })}
+            placeholder="Selecione uma tag"
           />
         </div>
 
