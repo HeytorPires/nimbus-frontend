@@ -3,8 +3,8 @@ import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
+  base: "/nimbus/", // <- ESSENCIAL para GitHub Pages
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
