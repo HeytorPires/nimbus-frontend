@@ -7,6 +7,7 @@ import {
 } from "../ui/dialog";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { ThemeSwitch } from "../ThemeSwitch";
 
 interface iProps {
   open: boolean;
@@ -18,9 +19,9 @@ const DialogSettings = ({ open, setOpenChange }: iProps) => {
     <Dialog open={open} onOpenChange={setOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader className="m-5">
-          <DialogTitle>title</DialogTitle>
-          <DialogDescription>description</DialogDescription>
+          <DialogTitle>Configurações</DialogTitle>
           <DialogDescription>Updated at updated_at?.toString</DialogDescription>
+          <ThemeSwitch />
           <DialogDescription>
             <Link
               target="_blank"
