@@ -15,7 +15,7 @@ export function ThemeSwitch() {
   const handleToggle = (checked: boolean) => {
     setEnabled(checked);
     setTheme(checked ? "dark" : "light");
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
