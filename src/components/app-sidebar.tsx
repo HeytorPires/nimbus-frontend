@@ -51,7 +51,7 @@ export function AppSidebar() {
   const [items, setItems] = useState<Item[]>([
     { title: "Home", url: "home", icon: Home },
     { title: "Markers", url: "markers", icon: ChevronRight, items: [] },
-    { title: "Account", url: "#", icon: CircleUserRound },
+    { title: "Account", url: "account", icon: CircleUserRound },
   ]);
 
   const handleLogout = async () => {

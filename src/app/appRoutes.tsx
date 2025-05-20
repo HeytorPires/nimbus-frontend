@@ -11,6 +11,7 @@ import NotFound from "@/pages/notFound/NotFound";
 import TasksEdit from "@/pages/tasks/TasksEdit";
 import TasksCreate from "@/pages/tasks/TasksCreate";
 import LoginEmail from "@/pages/login/LoginEmail";
+import Account from "@/pages/account/Account";
 
 // interface PrivateProps {
 //   Item: React.ElementType;
@@ -59,6 +60,14 @@ export const AppRoutes: React.FC = () => {
         element={
           <Private>
             <TasksEdit />
+          </Private>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <Private>
+            <Account />
           </Private>
         }
       />
