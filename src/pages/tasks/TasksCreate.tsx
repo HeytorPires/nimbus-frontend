@@ -79,6 +79,7 @@ const TasksCreate = () => {
             required
             value={task.title}
             onChange={handleChange}
+            className="bg-white"
           />
         </div>
 
@@ -92,6 +93,7 @@ const TasksCreate = () => {
             required
             value={task.description}
             onChange={handleChange}
+            className="bg-white"
           />
         </div>
 
@@ -104,6 +106,7 @@ const TasksCreate = () => {
             placeholder="https://github.com/user/repo"
             value={task.repository}
             onChange={handleChange}
+            className="bg-white"
           />
         </div>
 
@@ -123,7 +126,7 @@ const TasksCreate = () => {
             placeholder="VAR1=value1\nVAR2=value2"
             id="var_env"
             name="var_env"
-            className="h-48"
+            className="h-48 bg-white"
             required
             value={task.var_env}
             onChange={handleChange}

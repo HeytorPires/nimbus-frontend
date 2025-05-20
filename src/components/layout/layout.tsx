@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth"; // Importe o useAuth aqui
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import ParticlesWrapper from "../background/ParticlesWrapper";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           <header className="z-20">{<SidebarTrigger />}</header>
         )}
         <div className={`flex-grow ${shouldShowSidebar ? "ml-..." : ""}`}>
-          {children}
+          <ParticlesWrapper> {children}</ParticlesWrapper>
         </div>
       </main>
     </>
