@@ -16,12 +16,11 @@ const LoginEmail = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // previne o comportamento padrão
+    event.preventDefault();
     if (!email || !password) {
       toast.error("Preencha todos os dados");
       return;
     }
-    // console.log(error);
     try {
       const { data, error } = await authService.signIn(email, password);
       if (error !== null) {
@@ -89,22 +88,17 @@ const LoginEmail = () => {
               type="email"
               placeholder="Write your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // atualiza o state
+              onChange={(e) => setEmail(e.target.value)}
               // required
             />
             <Input
               type="password"
               placeholder="Write your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // também atualiza
-              // required
+              onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Button
-              className="cursor-pointer w-full"
-              type="submit"
-              // variant="outline"
-            >
+            <Button className="cursor-pointer w-full" type="submit">
               Entrar
             </Button>
             <p className="text-[10px] flex items-center justify-center gap-1">

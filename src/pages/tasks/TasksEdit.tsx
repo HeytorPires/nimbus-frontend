@@ -38,7 +38,7 @@ const TasksEdit = () => {
         setTags(data ?? []);
       }
     } catch (err) {
-      console.error("Erro ao buscar tags:", err);
+      console.error("Error to search tags:", err);
       setTags([]);
     }
   };
@@ -46,7 +46,7 @@ const TasksEdit = () => {
   const fetchData = async () => {
     const { id } = params;
     if (!id) {
-      toast.error("ID da task não encontrado.");
+      toast.error("ID task not found.");
       return;
     }
 
@@ -55,10 +55,10 @@ const TasksEdit = () => {
       if (dataTask) {
         setTask(dataTask);
       } else {
-        toast.error("Task não encontrada.");
+        toast.error("Task not found.");
       }
     } catch (error: any) {
-      toast.error("Erro ao buscar task");
+      toast.error("Error to search tags:");
       console.error(error);
     }
   };
@@ -74,11 +74,11 @@ const TasksEdit = () => {
       const id = task?.id;
       if (id) {
         await taskService.update(id, task);
-        toast.success("Task atualizada com sucesso!");
+        toast.success("Task updated successfully!");
         navigate("/");
       }
     } catch (error: any) {
-      toast.error("Erro ao atualizar a task");
+      toast.error("Error to update task");
       console.error(error);
     }
   };
@@ -88,11 +88,11 @@ const TasksEdit = () => {
       const id = task?.id;
       if (id) {
         await taskService.delete(id);
-        toast.success("Task deletada com sucesso!");
+        toast.success("Task deleted successfully!");
         navigate(-1);
       }
     } catch (error: any) {
-      toast.error("Erro ao deletar a task");
+      toast.error("Error to delete task");
       console.error(error);
     }
   };
@@ -107,7 +107,7 @@ const TasksEdit = () => {
   const handleTagChange = (value: string | undefined) => {
     setTask((prev) => ({
       ...prev!,
-      tag_id: value ?? null, // ✅ undefined vira null
+      tag_id: value ?? null,
     }));
   };
 

@@ -34,7 +34,7 @@ const TasksCreate = () => {
         setTags(data ?? []);
       }
     } catch (err) {
-      console.error("Erro ao buscar tags:", err);
+      console.error("Erro to search tags:", err);
       setTags([]);
     }
   };

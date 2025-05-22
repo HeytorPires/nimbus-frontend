@@ -38,17 +38,17 @@ const DialogMarkersEdit = ({
   const handleEdit = async () => {
     try {
       if (!tag?.id) {
-        toast.error("Impossivel atualizar uma tag sem ID");
+        toast.error("impossible update a tag without ID");
         onCreated?.();
         return;
       }
       await tagService.update(tag?.id, tag);
-      toast.success("Tag atualizada com sucesso!");
+      toast.success("Tag create successfully!");
       setOpenChange(false);
       onCreated?.();
     } catch (error) {
-      console.error("Erro ao atualizar tag:", error);
-      alert("Erro ao atualizar a tag. Tente novamente.");
+      console.error("Erro to update tag:", error);
+      toast.error("Erro to update tag. try again.");
     }
     onCreated?.();
   };
@@ -61,11 +61,11 @@ const DialogMarkersEdit = ({
       const id = tag?.id;
       if (id) {
         await tagService.delete(id);
-        toast.success("tag deletada com sucesso!");
+        toast.success("tag deleted successfully!");
         setOpenChange(false);
       }
     } catch (error: any) {
-      toast.error("Erro ao atualizar a task");
+      toast.error("Error to update task");
       console.error(error);
     }
     onCreated?.();

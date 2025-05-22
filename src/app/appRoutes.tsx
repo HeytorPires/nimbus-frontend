@@ -20,7 +20,7 @@ import Account from "@/pages/account/Account";
 const Private = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext);
 
-  if (auth?.loading) return <div>Carregando...</div>;
+  if (auth?.loading) return <div>loading...</div>;
   if (!auth?.isAuthenticated) return <Navigate to="/login" />;
 
   return children;
@@ -30,7 +30,7 @@ const Private = ({ children }: { children: JSX.Element }) => {
 export const AppRoutes: React.FC = () => {
   const auth = useContext(AuthContext);
 
-  if (auth?.loading) return <div>Carregando rotas...</div>;
+  if (auth?.loading) return <div>loading routes...</div>;
   return (
     <Routes>
       {/* Rotas públicas */}

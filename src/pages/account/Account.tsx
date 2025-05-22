@@ -13,7 +13,6 @@ const Account = () => {
   const fetchUser = async () => {
     const { data } = await authService.getUser();
     setUser(data.user);
-    console.log("Foto de perfil:", data.user?.user_metadata?.avatar_url);
   };
 
   useEffect(() => {

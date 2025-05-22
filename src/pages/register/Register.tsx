@@ -16,9 +16,9 @@ const Register = () => {
 
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // previne o comportamento padrão
+    event.preventDefault();
     if (!email || !password || !name) {
-      toast.error("Preencha todos os dados");
+      toast.error("Fill in all the data");
       return;
     }
     try {
@@ -32,7 +32,7 @@ const Register = () => {
       toast("Success");
       navigate("/home");
     } catch (err: any) {
-      toast.error(err || "Erro ao registrar");
+      toast.error(err || "Error to register");
     }
   };
   useEffect(() => {
@@ -80,26 +80,25 @@ const Register = () => {
               useOriginalCharsOnly={false}
               sequential={true}
             />
-            {/* <h2 className="text-3xl">Cadastre-se</h2> */}
             <Input
               type="text"
               placeholder="Write your name"
               value={name}
-              onChange={(e) => setName(e.target.value)} // também atualiza
+              onChange={(e) => setName(e.target.value)}
               required
             />
             <Input
               type="email"
               placeholder="Write your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // atualiza o state
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <Input
               type="password"
               placeholder="Write your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // também atualiza
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <p className="text-[10px]">
@@ -111,12 +110,8 @@ const Register = () => {
                 here
               </span>
             </p>
-            <Button
-              className="cursor-pointer w-full"
-              type="submit"
-              // variant="outline"
-            >
-              Cadastrar-se
+            <Button className="cursor-pointer w-full" type="submit">
+              Register
             </Button>
           </form>
         </div>

@@ -11,14 +11,14 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
-  const { user, loading } = useAuth(); // Obtenha loading do useAuth
+  const { user, loading } = useAuth();
   const shouldShowSidebar =
     !loading &&
     !["/login", "/register", "/not-found"].includes(location.pathname) &&
     user;
 
   if (loading) {
-    return <div></div>; // Ou seu componente de loading
+    return <div></div>;
   }
 
   return (

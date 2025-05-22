@@ -12,59 +12,52 @@ import { tagService } from "@/service/tagService";
 import { useAuth } from "@/hooks/useAuth";
 import { Tag } from "@/types/Tag";
 import { toast } from "sonner";
-
-interface DialogMarkersProps {
+interface iProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  setOpenChange: (open: boolean) => void;
   onCreated?: () => void;
 }
 
-const DialogMarkers = ({
-  open,
-  onOpenChange,
-  onCreated,
-}: DialogMarkersProps) => {
+const DialogMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
   const { user } = useAuth();
-  const [tagName, setTagName] = useState("");
+  const [name, setName] = useState("");
 
   const handleSubmit = async () => {
-    if (!tagName.trim()) {
+    if (!name.trim()) {
       toast.error("Tag name is required.");
       return;
     }
 
     if (!user) {
-      toast.error("User not authenticated.");
+      toast.error("user not authenticated.");
       return;
     }
-
     const newTag: Tag = {
-      name: tagName.trim(),
+      name: name.trim(),
       created_by: user.id,
     };
 
     try {
       await tagService.create(newTag);
-      setTagName("");
-      toast.success("Tag created successfully!");
-      onOpenChange(false);
+      setName("");
+      toast.success("Tag create successfully");
+      setOpenChange(false);
       onCreated?.();
     } catch (error) {
-      console.error("Error creating tag:", error);
-      alert("Failed to create tag. Please try again.");
+      console.error("Error to search tags", error);
+      alert("Erro to create tag. try again.");
     }
   };
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader className="m-5">
-          <DialogTitle>Create new tag</DialogTitle>
-          <DialogDescription>Create your own tag</DialogDescription>
+          <DialogTitle>Create new marker</DialogTitle>
+          <DialogDescription>Create your own bookmark</DialogDescription>
           <Input
-            placeholder="Tag name"
+            placeholder="Name marker"
             className="my-5"
-            onChange={(e) => setTagName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
           <div className="flex justify-between">
             <Button className="w-min" onClick={handleSubmit}>
@@ -73,7 +66,7 @@ const DialogMarkers = ({
             <Button
               className="w-min"
               variant="destructive"
-              onClick={() => onOpenChange(false)}
+              onClick={() => setOpenChange(false)}
             >
               Cancel
             </Button>

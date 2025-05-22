@@ -1,14 +1,5 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
-import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { ThemeSwitch } from "../ThemeSwitch";
-import { Typography } from "@/components/typography";
 
 interface iProps {
   open: boolean;
@@ -19,7 +10,7 @@ const DialogSettings = ({ open, setOpenChange }: iProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
-        <DialogTitle>Configurações</DialogTitle>
+        <DialogTitle>Settings</DialogTitle>
         <DialogHeader className="m-5 ">
           <ThemeSwitch />
         </DialogHeader>

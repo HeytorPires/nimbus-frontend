@@ -1,5 +1,5 @@
 import React from "react";
-import Particles from "./particules"; // ou "./particles" se for typo corrigido
+import Particles from "./particules";
 import { useTheme } from "../theme-provider";
 
 type ParticlesWrapperProps = {
@@ -16,7 +16,6 @@ const ParticlesWrapper: React.FC<ParticlesWrapperProps> = ({ children }) => {
 
   return (
     <div className="relative w-full h-full">
-      {/* Fundo com partículas */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Particles
           particleColors={[particleColors, particleColors]}
@@ -30,7 +29,6 @@ const ParticlesWrapper: React.FC<ParticlesWrapperProps> = ({ children }) => {
         />
       </div>
 
-      {/* Conteúdo do React por cima */}
       <div className="relative z-10">{children}</div>
     </div>
   );

@@ -41,7 +41,7 @@ export function AppSidebar() {
   const [selectedTag, setSelectedTag] = useState<Tag>();
   const [markersOpen, setMarkersOpen] = useState(true);
   const [dialogSettingsOpen, setDialogSettingsOpen] = useState(false);
-  const [dialogMarkerOpen, setDialogMarkersOpen] = useState(false);
+  const [dialogMarkerOpen, setDialogMarkersOpen] = useState<boolean>(false);
   const [dialogMarkerEditOpen, setDialogMarkerEdit] = useState(false);
 
   const Collapsible = CollapsiblePrimitive.Root;
@@ -50,7 +50,7 @@ export function AppSidebar() {
 
   const [items, setItems] = useState<Item[]>([
     { title: "Home", url: "home", icon: Home },
-    { title: "Markers", url: "markers", icon: ChevronRight, items: [] },
+    { title: "Tags", url: "markers", icon: ChevronRight, items: [] },
     { title: "Account", url: "account", icon: CircleUserRound },
   ]);
 
@@ -65,15 +65,15 @@ export function AppSidebar() {
 
   const fetchData = async () => {
     try {
-      const idUser = user?.id;
-      const dataTag = await tagService.getAllByIdUser(idUser);
+      const userId = user?.id;
+      const tags = await tagService.getAllByIdUser(userId);
       setItems((prevItems) =>
         prevItems.map((item) =>
-          item.title === "Markers" ? { ...item, items: dataTag || [] } : item
+          item.title === "Tags" ? { ...item, items: tags || [] } : item
         )
       );
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -91,10 +91,10 @@ export function AppSidebar() {
             <SidebarGroupLabel>Nimbus</SidebarGroupLabel>
             <SidebarGroupContent className="h-full">
               <div className="flex flex-col h-full justify-between">
-                {/* Parte de cima */}
+                {/* Top section */}
                 <SidebarMenu>
                   {items.map((item) => {
-                    if (item.title === "Markers") {
+                    if (item.title === "Tags") {
                       return (
                         <Collapsible
                           key={item.title}
@@ -162,7 +162,7 @@ export function AppSidebar() {
                   })}
                 </SidebarMenu>
 
-                {/* Parte inferior grudada no fundo */}
+                {/* Bottom section */}
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
@@ -203,7 +203,7 @@ export function AppSidebar() {
       />
       <DialogMarkers
         open={dialogMarkerOpen}
-        setOpenChange={setDialogMarkersOpen}
+        onOpenChange={setDialogMarkersOpen}
         onCreated={fetchData}
       />
       <DialogMarkersEdit

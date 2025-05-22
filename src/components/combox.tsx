@@ -27,7 +27,7 @@ export const ComboBox = ({
   options,
   value,
   onChange,
-  placeholder = "Selecione",
+  placeholder = "Select",
 }: ComboBoxProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -42,16 +42,15 @@ export const ComboBox = ({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {selectedOption?.name || "Nenhuma tag selecionada"}
+          {selectedOption?.name || "No tag selected"}
           <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput placeholder={placeholder} />
-          <CommandEmpty>Nenhuma opção encontrada.</CommandEmpty>
+          <CommandEmpty>No options found.</CommandEmpty>
           <CommandGroup>
-            {/* Opção para desmarcar a tag */}
             <CommandItem
               key="no-tag"
               onSelect={() => {
@@ -65,7 +64,7 @@ export const ComboBox = ({
                   value === undefined ? "opacity-100" : "opacity-0"
                 )}
               />
-              Nenhuma tag
+              No tag
             </CommandItem>
 
             {options.map((option) => (

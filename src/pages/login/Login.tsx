@@ -1,4 +1,3 @@
-import Particles from "@/components/background/particules";
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -18,7 +17,7 @@ const Login = () => {
       provider: "github",
     });
     if (error) {
-      console.log("error ao fazer login", error.message);
+      console.error(error.message);
     }
   };
   //trocar de aba
