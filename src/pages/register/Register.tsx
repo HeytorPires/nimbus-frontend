@@ -43,28 +43,6 @@ const Register = () => {
   return (
     <>
       <div className="flex justify-center items-center min-h-screen relative overflow-hidden w-full">
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 0,
-          }}
-        >
-          {" "}
-          <Particles
-            particleColors={["#000000 ", "#000000 "]}
-            particleCount={200}
-            particleSpread={10}
-            speed={0.1}
-            particleBaseSize={100}
-            moveParticlesOnHover={false}
-            alphaParticles={false}
-            disableRotation={false}
-          />
-        </div>
         <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
           <form
             className="flex flex-col justify-center items-center gap-4 p-4 w-full"

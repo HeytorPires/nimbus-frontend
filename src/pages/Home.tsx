@@ -6,16 +6,20 @@ import { Task } from "@/types/Task";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../components/theme-provider";
 import { toast } from "sonner";
 
 const Home = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [tasks, setTasks] = useState<Task[] | null>([]);
   const [filter, setFilter] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(theme);
+
         const dataTask: Task[] | null =
           filter !== ""
             ? await taskService.getByName(user?.id, filter)
@@ -47,7 +51,11 @@ const Home = () => {
 
           <div className="flex flex-wrap gap-3 mt-5 justify-start items-start relative overflow-hidden w-full">
             <button
-              className="w-[290px] h-[290px] border rounded-lg flex items-center justify-center shadow-md hover:bg-gray-100 transition cursor-pointer"
+              className={
+                theme === "dark"
+                  ? "w-[290px] h-[290px] border border-gray-300 rounded-lg flex items-center justify-center shadow-md hover:bg-stone-900 transition cursor-pointer"
+                  : "w-[290px] h-[290px] border rounded-lg flex items-center justify-center shadow-md  hover:bg-gray-100 transition cursor-pointer"
+              }
               aria-label="Adicionar nova tarefa"
               onClick={() => navigate("/task")}
             >
