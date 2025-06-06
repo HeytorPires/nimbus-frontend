@@ -1,4 +1,3 @@
-import Particles from "@/components/background/particules";
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
