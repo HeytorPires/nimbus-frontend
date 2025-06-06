@@ -13,10 +13,6 @@ import TasksCreate from "@/pages/tasks/TasksCreate";
 import LoginEmail from "@/pages/login/LoginEmail";
 import Account from "@/pages/account/Account";
 
-// interface PrivateProps {
-//   Item: React.ElementType;
-// }
-
 const Private = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext);
 
@@ -26,17 +22,29 @@ const Private = ({ children }: { children: JSX.Element }) => {
   return children;
 };
 
-// Esse componente agora apenas define as rotas dentro do layout apropriado
 export const AppRoutes: React.FC = () => {
   const auth = useContext(AuthContext);
 
   if (auth?.loading) return <div>loading routes...</div>;
+
   return (
     <Routes>
       {/* Rotas públicas */}
       <Route path="/login/email" element={<LoginEmail />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Redirecionar / para /home se autenticado, senão /login */}
+      <Route
+        path="/"
+        element={
+          auth?.isAuthenticated ? (
+            <Navigate to="/home" replace />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
 
       {/* Rotas protegidas */}
       <Route
@@ -72,18 +80,8 @@ export const AppRoutes: React.FC = () => {
         }
       />
 
-      {/* Redirecionamentos e NotFound */}
+      {/* Rota 404 */}
       <Route path="/not-found" element={<NotFound />} />
-      <Route
-        path="/"
-        element={
-          auth?.isAuthenticated ? (
-            <Navigate to="/home" />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
       <Route path="*" element={<Navigate to="/not-found" />} />
     </Routes>
   );
