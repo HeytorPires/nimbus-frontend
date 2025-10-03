@@ -1,76 +1,87 @@
-import { toast } from "sonner";
-import { supabase } from "../lib/supabaseClient";
-import { Task } from "../types/Task";
+import api from "../api/api";
+import { Project } from "../types/Project";
 
-const table = "task";
-
-export const taskService = {
-  async getAll(): Promise<Task[]> {
-    const { data, error } = await supabase.from(table).select("*");
-    if (error) toast.error(error.message);
-    return data ?? [];
+export const projectService = {
+  async getAll(): Promise<Project[]> {
+    try {
+      const response = await api.get("/projects");
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
-  async getByIdUser(id: string | undefined): Promise<Task[] | null> {
-    const { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .eq("created_by", id);
-
-    if (error) throw new Error(error.message);
-    return data;
+  async getByIdUser(id: string | undefined): Promise<Project[] | null> {
+    try {
+      const response = await api.get(`/projects`, {
+        params: { created_by: id },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
+
   async getByName(
     id: string | undefined,
     name: string
-  ): Promise<Task[] | null> {
-    const { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .eq("created_by", id)
-      .like("title", `%${name}%`);
-
-    if (error) throw new Error(error.message);
-    return data;
+  ): Promise<Project[] | null> {
+    try {
+      const response = await api.get(`/projects`, {
+        params: { created_by: id, name },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
-  async getById(id: string): Promise<Task | null> {
-    const { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
+  async getById(id: string): Promise<Project | null> {
+    try {
+      const response = await api.get(`/projects/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
-  async create(payload: Omit<Task, "id" | "created_at">): Promise<Task> {
-    const { data, error } = await supabase
-      .from(table)
-      .insert(payload)
-      .select()
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
+  async create(payload: Omit<Project, "id" | "created_at">): Promise<Project> {
+    try {
+      const response = await api.post(`/projects`, payload);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
-  async update(id: string, payload: Task | null): Promise<Task> {
-    const { data, error } = await supabase
-      .from(table)
-      .update(payload)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
+  async update(id: string, payload: Project | null): Promise<Project> {
+    try {
+      const response = await api.put(`/projects/${id}`, payload);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
   async delete(id: string): Promise<void> {
-    const { error } = await supabase.from(table).delete().eq("id", id);
-
-    if (error) throw new Error(error.message);
+    try {
+      await api.delete(`/projects/${id}`);
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 };

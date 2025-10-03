@@ -1,55 +1,58 @@
-import { supabase } from "../lib/supabaseClient";
+import api from "../api/api";
 import { Tag } from "../types/Tag";
 
-const table = "tag";
-
 export const tagService = {
-  async getAllByIdUser(id: string | undefined): Promise<Tag[] | null> {
-    const { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .eq("created_by", id);
-    if (error) throw new Error(error.message);
-    return data;
+  async getAll(): Promise<Tag[]> {
+    try {
+      const response = await api.get("/tags");
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
   async getById(id: string): Promise<Tag | null> {
-    const { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const response = await api.get(`/tags/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
   async create(payload: Omit<Tag, "id" | "created_at">): Promise<Tag> {
-    const { data, error } = await supabase
-      .from(table)
-      .insert(payload)
-      .select()
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const response = await api.post(`/tags`, payload);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
   async update(id: string, payload: Tag | null): Promise<Tag> {
-    const { data, error } = await supabase
-      .from(table)
-      .update(payload)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const response = await api.put(`/tags/${id}`, payload);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 
   async delete(id: string): Promise<void> {
-    const { error } = await supabase.from(table).delete().eq("id", id);
-
-    if (error) throw new Error(error.message);
+    try {
+      await api.delete(`/tags/${id}`);
+    } catch (error) {
+      throw new Error(
+        (error as any).response?.data?.message || (error as Error).message
+      );
+    }
   },
 };
