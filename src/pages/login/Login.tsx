@@ -8,9 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const Auth = useAuth();
-  const session = Auth.session;
-  const user = session?.user;
+  const { user } = useAuth();
 
   const signInWithGitHub = async () => {
     const { error } = await supabase.auth.signInWithOAuth({

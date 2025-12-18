@@ -8,9 +8,9 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import { tagService } from "@/service/tagService";
+import { useTagService } from "@/services/useTagService";
 import { useAuth } from "@/hooks/useAuth";
-import { Tag } from "@/types/Tag";
+import { ITag } from "@/interfaces/ITag";
 import { toast } from "sonner";
 
 interface DialogMarkersProps {
@@ -26,10 +26,11 @@ const DialogMarkers = ({
 }: DialogMarkersProps) => {
   const { user } = useAuth();
   const [tagName, setTagName] = useState("");
+  const { create } = useTagService();
 
   const handleSubmit = async () => {
     if (!tagName.trim()) {
-      toast.error("Tag name is required.");
+      toast.error("ITag name is required.");
       return;
     }
 
@@ -38,15 +39,15 @@ const DialogMarkers = ({
       return;
     }
 
-    const newTag: Tag = {
+    const newTag: ITag = {
       name: tagName.trim(),
       created_by: user.id,
     };
 
     try {
-      await tagService.create(newTag);
+      await create(newTag);
       setTagName("");
-      toast.success("Tag created successfully!");
+      toast.success("ITag created successfully!");
       onOpenChange(false);
       onCreated?.();
     } catch (error) {
@@ -62,7 +63,7 @@ const DialogMarkers = ({
           <DialogTitle>Create new tag</DialogTitle>
           <DialogDescription>Create your own tag</DialogDescription>
           <Input
-            placeholder="Tag name"
+            placeholder="ITag name"
             className="my-5"
             onChange={(e) => setTagName(e.target.value)}
           />

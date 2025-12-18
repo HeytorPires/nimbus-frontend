@@ -14,10 +14,10 @@ import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { Tag } from "@/types/Tag";
+import { ITag } from "@/interfaces/ITag";
 
 type ComboBoxProps = {
-  options: Tag[];
+  options: ITag[];
   value: string | undefined | null;
   onChange: (value: string | undefined) => void;
   placeholder?: string;

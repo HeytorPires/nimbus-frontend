@@ -2,7 +2,6 @@ import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
-import { authService } from "@/service/authService";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,7 @@ import { toast } from "sonner";
 
 const LoginEmail = () => {
   const navigate = useNavigate();
-  const { setUser, setSession, user } = useAuth();
+  const { user, signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,21 +19,7 @@ const LoginEmail = () => {
       toast.error("Preencha todos os dados");
       return;
     }
-    try {
-      const { data, error } = await authService.signIn(email, password);
-      if (error !== null) {
-        toast.error(error.message);
-        return;
-      }
-      setUser(data.user);
-      setSession(data.session);
-      toast("Success");
-      setTimeout(() => {
-        navigate("/home");
-      }, 5);
-    } catch (err: any) {
-      toast.error(err);
-    }
+    await signIn(email, password);
   };
   //trocar de aba
   useEffect(() => {

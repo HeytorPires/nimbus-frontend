@@ -1,39 +1,33 @@
-import { TaskCard } from "@/components/TaskCard";
+import { IProjectCard } from "@/components/TaskCard";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/hooks/useAuth";
-import { taskService } from "@/service/taskService";
-import { Task } from "@/types/Task";
+import { useProjectService } from "@/services/useProjectService";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../components/theme-provider";
 import { toast } from "sonner";
+import { IProject } from "@/interfaces/IProject";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { theme } = useTheme();
-  const [tasks, setTasks] = useState<Task[] | null>([]);
+  const { getAll } = useProjectService();
+  const [projects, setProjects] = useState<IProject[] | null>([]);
   const [filter, setFilter] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(theme);
+        const dataProject: IProject[] | null =
+          filter !== "" ? await getAll() : await getAll();
 
-        const dataTask: Task[] | null =
-          filter !== ""
-            ? await taskService.getByName(user?.id, filter)
-            : await taskService.getByIdUser(user?.id);
-
-        setTasks(dataTask);
+        setProjects(dataProject);
       } catch (error: any) {
         toast.error(error.message || error);
-        console.error(error);
       }
     };
 
     fetchData();
-  }, [filter, user?.id]);
+  }, [filter]);
   return (
     <>
       <div className="flex flex-wrap gap-4  justify-start items-start relative h-screen w-full ">
@@ -62,23 +56,23 @@ const Home = () => {
               <Plus size={48} />
             </button>
 
-            {tasks?.map((task) => (
-              <TaskCard
-                key={task.id}
-                id={task.id}
-                title={task.title}
-                description={task.description}
-                repository={task.repository}
-                var_env={task.var_env}
-                updated_at={task.updated_at}
-                created_at={task.created_at}
-                tag_id={task.tag_id}
+            {projects?.map((project) => (
+              <IProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                description={project.description}
+                repository={project.repository}
+                variablesEnvironment={project.variablesEnvironment}
+                updated_at={project.updated_at}
+                created_at={project.created_at}
+                tag_id={project.tag_id}
                 created_by=""
                 type="home"
               />
             ))}
           </div>
-        </div>{" "}
+        </div>
       </div>
     </>
   );

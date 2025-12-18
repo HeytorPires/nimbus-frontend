@@ -1,9 +1,10 @@
-export interface Project {
+export interface IProject {
   id?: string;
-  name: string;
+  title: string;
   description: string;
   repository: string;
-  var_env: string;
+  tag_id?: string;
+  variablesEnvironment: string;
   created_at?: Date;
   updated_at?: Date;
   created_by: string;

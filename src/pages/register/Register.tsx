@@ -4,35 +4,35 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/service/authService";
+import { useAuthService } from "@/services/useAuthService";
 import { toast } from "sonner";
 
 const Register = () => {
-  const { user, setUser, setSession } = useAuth();
+  const { user, setUser } = useAuth();
+  const { signUp } = useAuthService();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email || !password || !name) {
       toast.error("Fill in all the data");
       return;
     }
-    try {
-      const { data, error } = await authService.signUp(email, password, name);
-      if (error) {
-        toast.error(error.message);
+
+    await signUp(email, password, name)
+      .then((response) => {
+        setUser(response);
+        toast("Success");
+        navigate("/home");
         return;
-      }
-      setUser(data.user);
-      setSession(data.session);
-      toast("Success");
-      navigate("/home");
-    } catch (err: any) {
-      toast.error(err || "Error to register");
-    }
+      })
+      .catch((error) => {
+        toast.error("Error to register: " + error.message);
+      });
   };
   useEffect(() => {
     if (user) {

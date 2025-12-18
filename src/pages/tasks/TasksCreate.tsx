@@ -4,55 +4,48 @@ import { Typography } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/hooks/useAuth";
-import { tagService } from "@/service/tagService";
-import { taskService } from "@/service/taskService";
-import { Tag } from "@/types/Tag";
-import { Task } from "@/types/Task";
+import { useTagService } from "@/services/useTagService";
+import { useProjectService } from "@/services/useProjectService";
+import { IProject } from "@/interfaces/IProject";
+import { ITag } from "@/interfaces/ITag";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const TasksCreate = () => {
-  const { user } = useAuth();
+  const { getAll } = useTagService();
+  const { create } = useProjectService();
   const navigate = useNavigate();
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [task, setTask] = useState<Task>({
-    title: "",
-    description: "",
-    repository: "",
-    var_env: "",
-    tag_id: "",
-    created_by: user?.id || "",
-  });
+
+  const [tags, setTags] = useState<ITag[]>([]);
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [repository, setRepository] = useState("");
+  const [variablesEnvironment, setVariablesEnvironment] = useState("");
+  const [tagId, setTagId] = useState("");
+  const [createdBy] = useState("");
 
   const fetchTags = async () => {
-    const userId = user?.id;
-    try {
-      if (userId) {
-        const data = await tagService.getAllByIdUser(userId);
-        setTags(data ?? []);
-      }
-    } catch (err) {
-      console.error("Erro to search tags:", err);
-      setTags([]);
-    }
+    const data = await getAll();
+    setTags(data ?? []);
   };
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setTask({
-      ...task,
-      [name]: value,
-    });
-  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const project: IProject = {
+      title,
+      description,
+      repository,
+      variablesEnvironment,
+      tag_id: tagId,
+      created_by: createdBy,
+    };
+
     try {
-      const taskCreated: Task = await taskService.create(task);
+      await create(project);
       navigate(-1);
-      console.log(taskCreated);
     } catch (error: any) {
       toast.error(error);
       console.error(error);
@@ -61,24 +54,22 @@ const TasksCreate = () => {
 
   useEffect(() => {
     fetchTags();
-  }, [user]);
+  }, []);
 
   return (
     <div className="p-10">
-      <Typography as="h1">Create new Env Project</Typography>
+      <Typography as="h1">Create new Env IProject</Typography>
       <Separator className="my-5" />
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <Typography as="p">Project Name</Typography>
+          <Typography as="p">IProject Name</Typography>
           <Input
             type="text"
-            id="projectName"
-            name="title"
             placeholder="My awesome project"
             required
-            value={task.title}
-            onChange={handleChange}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="bg-white"
           />
         </div>
@@ -87,12 +78,10 @@ const TasksCreate = () => {
           <Typography as="p">Description</Typography>
           <Input
             type="text"
-            id="description"
-            name="description"
             placeholder="Short description of the project"
             required
-            value={task.description}
-            onChange={handleChange}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="bg-white"
           />
         </div>
@@ -101,11 +90,9 @@ const TasksCreate = () => {
           <Typography as="p">Repository URL</Typography>
           <Input
             type="url"
-            id="repository"
-            name="repository"
             placeholder="https://github.com/user/repo"
-            value={task.repository}
-            onChange={handleChange}
+            value={repository}
+            onChange={(e) => setRepository(e.target.value)}
             className="bg-white"
           />
         </div>
@@ -114,8 +101,8 @@ const TasksCreate = () => {
           <Typography as="p">Markers</Typography>
           <ComboBox
             options={tags}
-            value={task.tag_id}
-            onChange={(value) => setTask({ ...task, tag_id: value })}
+            value={tagId}
+            onChange={(value) => setTagId(value!)}
             placeholder="Selecione uma tag"
           />
         </div>
@@ -124,19 +111,15 @@ const TasksCreate = () => {
           <Typography as="p">Environment Variables</Typography>
           <Textarea
             placeholder="VAR1=value1\nVAR2=value2"
-            id="var_env"
-            name="var_env"
             className="h-48 bg-white"
             required
-            value={task.var_env}
-            onChange={handleChange}
+            value={variablesEnvironment}
+            onChange={(e) => setVariablesEnvironment(e.target.value)}
           />
         </div>
 
         <div className="mt-5 flex justify-between">
-          <Button type="submit" variant="default">
-            Create
-          </Button>
+          <Button type="submit">Create</Button>
           <Button type="button" onClick={() => navigate(-1)}>
             Exit
           </Button>

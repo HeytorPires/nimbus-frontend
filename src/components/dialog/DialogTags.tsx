@@ -8,9 +8,9 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import { tagService } from "@/service/tagService";
+import { useTagService } from "@/services/useTagService";
 import { useAuth } from "@/hooks/useAuth";
-import { Tag } from "@/types/Tag";
+import { ITag } from "@/interfaces/ITag";
 import { toast } from "sonner";
 interface iProps {
   open: boolean;
@@ -21,10 +21,11 @@ interface iProps {
 const DialogMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
   const { user } = useAuth();
   const [name, setName] = useState("");
+  const { create } = useTagService();
 
   const handleSubmit = async () => {
     if (!name.trim()) {
-      toast.error("Tag name is required.");
+      toast.error("ITag name is required.");
       return;
     }
 
@@ -32,15 +33,15 @@ const DialogMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
       toast.error("user not authenticated.");
       return;
     }
-    const newTag: Tag = {
+    const newTag: ITag = {
       name: name.trim(),
       created_by: user.id,
     };
 
     try {
-      await tagService.create(newTag);
+      await create(newTag);
       setName("");
-      toast.success("Tag create successfully");
+      toast.success("ITag create successfully");
       setOpenChange(false);
       onCreated?.();
     } catch (error) {

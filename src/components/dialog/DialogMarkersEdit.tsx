@@ -8,15 +8,15 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import React, { useEffect, useState } from "react";
-import { Tag } from "@/types/Tag";
-import { tagService } from "@/service/tagService";
+import { ITag } from "@/interfaces/ITag";
+import { useTagService } from "@/services/useTagService";
 import { toast } from "sonner";
 
 interface iProps {
   open: boolean;
   setOpenChange: (open: boolean) => void;
   onCreated?: () => void;
-  tagInitial: Tag | undefined;
+  tagInitial: ITag | undefined;
 }
 
 const DialogMarkersEdit = ({
@@ -25,7 +25,8 @@ const DialogMarkersEdit = ({
   onCreated,
   tagInitial,
 }: iProps) => {
-  const [tag, setTag] = useState<Tag | undefined>(tagInitial);
+  const [tag, setTag] = useState<ITag | undefined>(tagInitial);
+  const { update, remove } = useTagService();
   const oldName = tagInitial?.name;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,8 +43,8 @@ const DialogMarkersEdit = ({
         onCreated?.();
         return;
       }
-      await tagService.update(tag?.id, tag);
-      toast.success("Tag create successfully!");
+      await update(tag?.id, tag);
+      toast.success("ITag create successfully!");
       setOpenChange(false);
       onCreated?.();
     } catch (error) {
@@ -60,7 +61,7 @@ const DialogMarkersEdit = ({
     try {
       const id = tag?.id;
       if (id) {
-        await tagService.delete(id);
+        await remove(id);
         toast.success("tag deleted successfully!");
         setOpenChange(false);
       }

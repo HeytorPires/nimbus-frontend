@@ -13,10 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
-import { tagService } from "@/service/tagService";
-import { taskService } from "@/service/taskService";
-import { Tag } from "@/types/Tag";
-import { Task } from "@/types/Task";
+import { useTagService } from "@/services/useTagService";
+import { useProjectService } from "@/services/useProjectService";
+import { IProject } from "@/interfaces/IProject";
+import { ITag } from "@/interfaces/ITag";
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,16 +25,18 @@ import { toast } from "sonner";
 const TasksEdit = () => {
   const { user } = useAuth();
   const params = useParams();
+  const { getAll } = useTagService();
+  const { getById, update, remove } = useProjectService();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [task, setTask] = useState<Task | null>(null);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [project, setProject] = useState<IProject | null>(null);
+  const [tags, setTags] = useState<ITag[]>([]);
 
   const fetchTags = async () => {
     const userId = user?.id;
     try {
       if (userId) {
-        const data = await tagService.getAllByIdUser(userId);
+        const data = await getAll();
         setTags(data ?? []);
       }
     } catch (err) {
@@ -51,11 +53,11 @@ const TasksEdit = () => {
     }
 
     try {
-      const dataTask: Task | null = await taskService.getById(id);
-      if (dataTask) {
-        setTask(dataTask);
+      const dataProject: IProject | null = await getById(id);
+      if (dataProject) {
+        setProject(dataProject);
       } else {
-        toast.error("Task not found.");
+        toast.error("IProject not found.");
       }
     } catch (error: any) {
       toast.error("Error to search tags:");
@@ -71,28 +73,28 @@ const TasksEdit = () => {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const id = task?.id;
+      const id = project?.id;
       if (id) {
-        await taskService.update(id, task);
-        toast.success("Task updated successfully!");
+        await update(id, project);
+        toast.success("IProject updated successfully!");
         navigate("/");
       }
     } catch (error: any) {
-      toast.error("Error to update task");
+      toast.error("Error to update project");
       console.error(error);
     }
   };
 
   const handleDelete = async () => {
     try {
-      const id = task?.id;
+      const id = project?.id;
       if (id) {
-        await taskService.delete(id);
-        toast.success("Task deleted successfully!");
+        await remove(id);
+        toast.success("IProject deleted successfully!");
         navigate(-1);
       }
     } catch (error: any) {
-      toast.error("Error to delete task");
+      toast.error("Error to delete project");
       console.error(error);
     }
   };
@@ -101,20 +103,20 @@ const TasksEdit = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setTask((prev) => (prev ? { ...prev, [name]: value } : prev));
+    setProject((prev) => (prev ? { ...prev, [name]: value } : prev));
   };
 
   const handleTagChange = (value: string | undefined) => {
-    setTask((prev) => ({
+    setProject((prev) => ({
       ...prev!,
-      tag_id: value ?? null,
+      tag_id: value,
     }));
   };
 
   return (
     <div className="p-10">
       <div className="flex flex-row items-center justify-between">
-        <Typography as="h1">Update Env Project</Typography>
+        <Typography as="h1">Update Env IProject</Typography>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button type="button" variant="destructive">
@@ -149,15 +151,15 @@ const TasksEdit = () => {
       </div>
       <Separator className="my-5" />
 
-      {task ? (
+      {project ? (
         <form className="space-y-4" onSubmit={handleUpdate}>
           <div>
-            <Typography as="p">Project Name</Typography>
+            <Typography as="p">IProject Name</Typography>
             <Input
               type="text"
               name="title"
               placeholder="My awesome project"
-              value={task.title}
+              value={project.title}
               onChange={handleChange}
             />
           </div>
@@ -168,7 +170,7 @@ const TasksEdit = () => {
               type="text"
               name="description"
               placeholder="Short description of the project"
-              value={task.description}
+              value={project.description}
               onChange={handleChange}
             />
           </div>
@@ -179,7 +181,7 @@ const TasksEdit = () => {
               type="url"
               name="repository"
               placeholder="https://github.com/user/repo"
-              value={task.repository}
+              value={project.repository}
               onChange={handleChange}
             />
           </div>
@@ -188,7 +190,7 @@ const TasksEdit = () => {
             <Typography as="p">Markers</Typography>
             <ComboBox
               options={tags}
-              value={task.tag_id ?? null}
+              value={project.tag_id ?? null}
               onChange={handleTagChange}
               placeholder="Selecione uma tag"
             />
@@ -197,10 +199,10 @@ const TasksEdit = () => {
           <div>
             <Typography as="p">Environment Variables</Typography>
             <Textarea
-              name="var_env"
+              name="variablesEnvironment"
               placeholder="VAR1=value1\nVAR2=value2"
               className="h-48"
-              value={task.var_env}
+              value={project.variablesEnvironment}
               onChange={handleChange}
             />
           </div>

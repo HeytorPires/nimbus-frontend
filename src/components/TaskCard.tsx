@@ -17,12 +17,12 @@ import {
 } from "./ui/dialog";
 import { Layers2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { Task } from "@/types/Task";
+import { IProject } from "@/interfaces/IProject";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
-import { tagService } from "@/service/tagService";
+import { useTagService } from "@/services/useTagService";
 import { useEffect, useState } from "react";
-import { Tag } from "@/types/Tag";
+import { ITag } from "@/interfaces/ITag";
 
 const LimitedText = ({
   text,
@@ -36,17 +36,18 @@ const LimitedText = ({
   return <p title={text}>{displayText}</p>;
 };
 
-export function TaskCard({
+export function IProjectCard({
   id,
   title,
   description,
   repository,
-  var_env,
+  variablesEnvironment,
   updated_at,
   tag_id,
-}: Task & { type?: "home" | "default" }) {
+}: IProject & { type?: "home" | "default" }) {
+  const { getById } = useTagService();
   const navigate = useNavigate();
-  const [tag, setTag] = useState<Tag>();
+  const [tag, setTag] = useState<ITag>();
 
   const handleCopy = async (textToCopy: string) => {
     try {
@@ -61,7 +62,7 @@ export function TaskCard({
     const fetchTag = async () => {
       if (tag_id) {
         try {
-          const data = await tagService.getById(tag_id);
+          const data = await getById(tag_id);
           setTag(data ?? undefined);
         } catch (err) {
           console.error("Erro ao buscar tag:", err);
@@ -73,7 +74,7 @@ export function TaskCard({
   }, [tag_id]);
 
   const handleEdit = () => {
-    navigate(`/task/${id}`);
+    navigate(`/IProject/${id}`);
   };
 
   return (
@@ -114,7 +115,7 @@ export function TaskCard({
                 </Link>
               </DialogDescription>
               <br />
-              {var_env !== "" ? (
+              {variablesEnvironment !== "" ? (
                 <>
                   <DialogDescription
                     style={{
@@ -123,12 +124,12 @@ export function TaskCard({
                     }}
                     className="max-h-48 w-full overflow-y-auto whitespace-pre-wrap break-words select-none border p-2 rounded bg-gray-100 text-sm"
                   >
-                    {var_env}
+                    {variablesEnvironment}
                   </DialogDescription>
                   <br />
                   <Button
                     className="w-min cursor-pointer"
-                    onClick={() => handleCopy(var_env)}
+                    onClick={() => handleCopy(variablesEnvironment)}
                   >
                     <Layers2 className="mr-2" />
                     Copy
@@ -143,7 +144,7 @@ export function TaskCard({
           className="cursor-pointer"
           onClick={handleEdit}
         >
-          Edit Task
+          Edit IProject
         </Button>
       </CardFooter>
     </Card>

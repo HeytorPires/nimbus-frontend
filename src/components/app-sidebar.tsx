@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { authService } from "@/service/authService";
 import {
   Home,
   Settings,
@@ -22,8 +21,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import DialogSettings from "@/components/dialog/DialogSettings";
-import { tagService } from "@/service/tagService";
-import { Tag } from "@/types/Tag";
+import { useTagService } from "@/services/useTagService";
+import { ITag } from "@/interfaces/ITag";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import DialogMarkers from "./dialog/DialogMarkers";
 import DialogMarkersEdit from "./dialog/DialogMarkersEdit";
@@ -32,13 +31,15 @@ interface Item {
   title: string;
   url: string;
   icon: React.ComponentType;
-  items?: Tag[];
+  items?: ITag[];
 }
 
 export function AppSidebar() {
   const navigate = useNavigate();
-  const { user, setUser, setSession } = useAuth();
-  const [selectedTag, setSelectedTag] = useState<Tag>();
+  const { user, signOut } = useAuth();
+
+  const { getAll } = useTagService();
+  const [selectedTag, setSelectedTag] = useState<ITag>();
   const [markersOpen, setMarkersOpen] = useState(true);
   const [dialogSettingsOpen, setDialogSettingsOpen] = useState(false);
   const [dialogMarkerOpen, setDialogMarkersOpen] = useState<boolean>(false);
@@ -55,18 +56,13 @@ export function AppSidebar() {
   ]);
 
   const handleLogout = async () => {
-    await authService.signOut();
-    setUser(null);
-    setSession(null);
-    setTimeout(() => {
-      navigate("/");
-    }, 5);
+    await signOut();
+    navigate("/login");
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const userId = user?.id;
-      const tags = await tagService.getAllByIdUser(userId);
+      const tags = await getAll();
       setItems((prevItems) =>
         prevItems.map((item) =>
           item.title === "Tags" ? { ...item, items: tags || [] } : item
@@ -75,13 +71,13 @@ export function AppSidebar() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [getAll]);
 
   useEffect(() => {
     if (user?.id) {
       fetchData();
     }
-  }, [user]);
+  }, [user, fetchData]);
 
   return (
     <>

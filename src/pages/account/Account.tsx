@@ -3,17 +3,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { authService } from "@/service/authService";
-import { useEffect, useState } from "react";
-import { User } from "@supabase/supabase-js"; // Tipagem do usuário
+import { useEffect, useState, useCallback } from "react";
+import { IUser } from "@/interfaces/IUser";
+import { useUserService } from "@/services/useUserService";
 
 const Account = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
+  const { getUser } = useUserService();
 
-  const fetchUser = async () => {
-    const { data } = await authService.getUser();
-    setUser(data.user);
-  };
+  const fetchUser = useCallback(async () => {
+    const user = await getUser();
+    setUser(user);
+  }, [getUser]);
 
   useEffect(() => {
     fetchUser();
@@ -29,14 +30,12 @@ const Account = () => {
         <CardContent className="p-6 flex flex-col gap-6 w-full">
           <div className="flex items-center gap-6">
             <Avatar className="w-24 h-24">
-              <AvatarImage src={user?.user_metadata?.avatar_url} />
-              <AvatarFallback>
-                {user?.user_metadata?.full_name?.charAt(0) || "U"}
-              </AvatarFallback>
+              <AvatarImage src={user?.avatar_url} />
+              <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
             </Avatar>
             <div>
               <Typography as="p" className="text-lg font-medium">
-                {user?.user_metadata?.full_name || "Nome não encontrado"}
+                {user?.name || "Nome não encontrado"}
               </Typography>
             </div>
           </div>
@@ -44,12 +43,7 @@ const Account = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Typography>Full Name</Typography>
-              <Input
-                id="name"
-                disabled
-                value={user?.user_metadata?.full_name || ""}
-                readOnly
-              />
+              <Input id="name" disabled value={user?.name || ""} readOnly />
             </div>
 
             <div>
@@ -69,11 +63,7 @@ const Account = () => {
                 type="url"
                 id="github"
                 disabled
-                value={
-                  user?.user_metadata?.user_name
-                    ? `https://github.com/${user.user_metadata.user_name}`
-                    : ""
-                }
+                value={user?.name ? `https://github.com/${user.name}` : ""}
                 readOnly
               />
             </div>

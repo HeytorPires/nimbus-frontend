@@ -1,70 +1,85 @@
-import React, { createContext, useEffect, useState } from "react";
-import { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabaseClient";
+import { IUser } from "@/interfaces/IUser";
+import { useAuthService } from "@/services/useAuthService";
+import React, { createContext, useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: IUser | null;
+  token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
-  setUser: (user: User | null) => void;
-  setSession: (session: Session | null) => void;
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => void;
+  setUser: (user: IUser | null) => void;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
+export const AuthContext = createContext<AuthContextType>(
+  {} as AuthContextType
 );
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const authService = useAuthService();
+  const [user, setUser] = useState<IUser | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
 
-  // Observe que não há lógica de busca de dados aqui.
-  // As funções setUser, setSession e setIsAuthenticated serão chamadas
-  // por outros componentes ou hooks que realizam a verificação de autenticação.
+  const signIn = async (email: string, password: string) => {
+    try {
+      const response = await authService.signIn(email, password);
+
+      if (!response?.token || !response?.user) {
+        throw new Error("Credenciais inválidas");
+      }
+
+      setToken(response.token);
+      setUser(response.user);
+      setIsAuth(true);
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+    } catch {
+      toast.error("Erro ao fazer login");
+    }
+  };
+
+  const signOut = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    setIsAuth(false);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  }, []);
+  const bootstrapAuth = async () => {
+    setLoading(true);
+    try {
+      const storedToken = localStorage.getItem("token");
+      const storedUser = localStorage.getItem("user");
+      if (storedToken && storedUser) {
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser));
+        setIsAuth(true);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (session) {
-        setSession(session);
-        setUser(session.user);
-        setIsAuthenticated(true);
-      }
-      setLoading(false); // Só termina quando verificar
-    };
-
-    fetchSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-        setUser(session?.user || null);
-        setIsAuthenticated(!!session);
-      }
-    );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    bootstrapAuth();
   }, []);
+  const isAuthenticated = isAuth;
 
-  const value = {
+  const value: AuthContextType = {
     user,
-    setUser,
-    session,
+    token,
     loading,
-    setSession,
     isAuthenticated,
-    setIsAuthenticated,
+    signIn,
+    signOut,
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

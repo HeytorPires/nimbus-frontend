@@ -15,7 +15,6 @@ import Account from "@/pages/account/Account";
 
 const Private = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext);
-
   if (auth?.loading) return <div>loading...</div>;
   if (!auth?.isAuthenticated) return <Navigate to="/login" />;
 
