@@ -74,7 +74,7 @@ export function IProjectCard({
   }, [tag_id]);
 
   const handleEdit = () => {
-    navigate(`/IProject/${id}`);
+    navigate(`/Project/${id}`);
   };
 
   return (
@@ -144,7 +144,7 @@ export function IProjectCard({
           className="cursor-pointer"
           onClick={handleEdit}
         >
-          Edit IProject
+          Edit Project
         </Button>
       </CardFooter>
     </Card>

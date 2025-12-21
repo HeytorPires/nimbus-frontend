@@ -2,7 +2,7 @@ import { IProjectCard } from "@/components/TaskCard";
 import { Input } from "@/components/ui/input";
 import { useProjectService } from "@/services/useProjectService";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../components/theme-provider";
 import { toast } from "sonner";
@@ -13,21 +13,26 @@ const Home = () => {
   const { theme } = useTheme();
   const { getAll } = useProjectService();
   const [projects, setProjects] = useState<IProject[] | null>([]);
+  const [perPage] = useState(20);
+  const [currentPage] = useState(1);
   const [filter, setFilter] = useState("");
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dataProject: IProject[] | null =
-          filter !== "" ? await getAll() : await getAll();
 
+  const listallProjects = useCallback(async () => {
+    const url = `perPage=${perPage}&page=${currentPage}`;
+    getAll(url)
+      .then((Response) => {
+        const dataProject = Response.data;
         setProjects(dataProject);
-      } catch (error: any) {
+      })
+      .catch((error) => {
         toast.error(error.message || error);
-      }
-    };
+      });
+  }, [getAll, perPage, currentPage]);
 
-    fetchData();
-  }, [filter]);
+  useEffect(() => {
+    listallProjects();
+  }, [listallProjects, filter]);
+
   return (
     <>
       <div className="flex flex-wrap gap-4  justify-start items-start relative h-screen w-full ">

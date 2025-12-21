@@ -1,15 +1,19 @@
 import AppError from "@/errors/AppError";
 import { IProject } from "../interfaces/IProject";
 import { useRequest } from "./useRequest";
+import { IPaginationReturn } from "@/interfaces/IPaginationReturn";
 
 export const useProjectService = () => {
   const request = useRequest<IProject>();
+  const requestUnique = useRequest<IProject>();
   const path = "projects";
 
-  const getAll = async (): Promise<IProject[]> => {
+  const getAll = async (
+    url: string
+  ): Promise<IPaginationReturn<IProject[]>> => {
     return await request
-      .getMany({
-        path: `${path}`,
+      .getManyPaginated({
+        path: `${path}?${url}`,
         sendAuthorization: true,
       })
       .then((result) => result)
@@ -19,7 +23,7 @@ export const useProjectService = () => {
   };
 
   const getById = async (id: string): Promise<IProject | null> => {
-    return await request
+    return await requestUnique
       .getOne({
         path: `${path}/${id}`,
         sendAuthorization: true,
@@ -33,7 +37,7 @@ export const useProjectService = () => {
   const create = async (
     payload: Omit<IProject, "id" | "created_at">
   ): Promise<IProject> => {
-    return await request
+    return await requestUnique
       .post({
         path: `${path}`,
         body: payload,
@@ -46,7 +50,7 @@ export const useProjectService = () => {
   };
 
   const update = async (id: string, payload: IProject): Promise<IProject> => {
-    return await request
+    return await requestUnique
       .put({
         path: `${path}/${id}`,
         body: payload,

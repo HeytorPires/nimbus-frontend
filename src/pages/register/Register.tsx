@@ -1,14 +1,12 @@
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthService } from "@/services/useAuthService";
 import { toast } from "sonner";
 
 const Register = () => {
-  const { user, setUser } = useAuth();
   const { signUp } = useAuthService();
   const navigate = useNavigate();
 
@@ -25,20 +23,19 @@ const Register = () => {
 
     await signUp(email, password, name)
       .then((response) => {
-        setUser(response);
+        if (response instanceof Error) {
+          toast.error("Error to register: " + response.message);
+          throw response;
+        }
         toast("Success");
-        navigate("/home");
+        toast("You can now log in");
+        navigate("/login");
         return;
       })
       .catch((error) => {
         toast.error("Error to register: " + error.message);
       });
   };
-  useEffect(() => {
-    if (user) {
-      navigate("/home");
-    }
-  }, [user, navigate]);
   return (
     <>
       <div className="flex justify-center items-center min-h-screen relative overflow-hidden w-full">

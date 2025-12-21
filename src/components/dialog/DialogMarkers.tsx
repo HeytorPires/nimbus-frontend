@@ -30,7 +30,7 @@ const DialogMarkers = ({
 
   const handleSubmit = async () => {
     if (!tagName.trim()) {
-      toast.error("ITag name is required.");
+      toast.error("Tag name is required.");
       return;
     }
 
@@ -47,7 +47,7 @@ const DialogMarkers = ({
     try {
       await create(newTag);
       setTagName("");
-      toast.success("ITag created successfully!");
+      toast.success("Tag created successfully!");
       onOpenChange(false);
       onCreated?.();
     } catch (error) {
@@ -63,7 +63,7 @@ const DialogMarkers = ({
           <DialogTitle>Create new tag</DialogTitle>
           <DialogDescription>Create your own tag</DialogDescription>
           <Input
-            placeholder="ITag name"
+            placeholder="Tag name"
             className="my-5"
             onChange={(e) => setTagName(e.target.value)}
           />

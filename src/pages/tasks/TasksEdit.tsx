@@ -57,10 +57,10 @@ const TasksEdit = () => {
       if (dataProject) {
         setProject(dataProject);
       } else {
-        toast.error("IProject not found.");
+        toast.error("Project not found.");
       }
     } catch (error: any) {
-      toast.error("Error to search tags:");
+      toast.error("Error to search projects: " + error.message);
       console.error(error);
     }
   };
@@ -76,7 +76,7 @@ const TasksEdit = () => {
       const id = project?.id;
       if (id) {
         await update(id, project);
-        toast.success("IProject updated successfully!");
+        toast.success("Project updated successfully!");
         navigate("/");
       }
     } catch (error: any) {
@@ -90,7 +90,7 @@ const TasksEdit = () => {
       const id = project?.id;
       if (id) {
         await remove(id);
-        toast.success("IProject deleted successfully!");
+        toast.success("Project deleted successfully!");
         navigate(-1);
       }
     } catch (error: any) {
@@ -116,7 +116,7 @@ const TasksEdit = () => {
   return (
     <div className="p-10">
       <div className="flex flex-row items-center justify-between">
-        <Typography as="h1">Update Env IProject</Typography>
+        <Typography as="h1">Update Env Project</Typography>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button type="button" variant="destructive">
@@ -154,7 +154,7 @@ const TasksEdit = () => {
       {project ? (
         <form className="space-y-4" onSubmit={handleUpdate}>
           <div>
-            <Typography as="p">IProject Name</Typography>
+            <Typography as="p">Project Name</Typography>
             <Input
               type="text"
               name="title"

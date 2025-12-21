@@ -55,7 +55,7 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/task"
+        path="/project"
         element={
           <Private>
             <TasksCreate />
@@ -63,7 +63,7 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/task/:id"
+        path="/project/:id"
         element={
           <Private>
             <TasksEdit />

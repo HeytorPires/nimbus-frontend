@@ -39,8 +39,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsAuth(true);
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
-    } catch {
-      toast.error("Erro ao fazer login");
+    } catch (error: any) {
+      toast.error("Erro ao fazer login: " + error.message);
     }
   };
 

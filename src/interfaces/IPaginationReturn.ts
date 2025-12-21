@@ -3,5 +3,4 @@ export interface IPaginationReturn<T> {
   currentPage: number;
   totalRows: number;
   data: T;
-  reports?: T;
 }

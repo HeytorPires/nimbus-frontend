@@ -14,7 +14,7 @@ export const useAuthService = () => {
   ): Promise<IUser> => {
     return requestUser
       .post({
-        path: `/users`,
+        path: `users`,
         sendAuthorization: false,
         body: { email, password, name },
       })

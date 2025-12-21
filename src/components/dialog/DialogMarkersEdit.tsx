@@ -44,7 +44,7 @@ const DialogMarkersEdit = ({
         return;
       }
       await update(tag?.id, tag);
-      toast.success("ITag create successfully!");
+      toast.success("Tag updated successfully!");
       setOpenChange(false);
       onCreated?.();
     } catch (error) {
