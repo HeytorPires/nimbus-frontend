@@ -18,7 +18,7 @@ const Home = () => {
   const [filter, setFilter] = useState("");
 
   const listallProjects = useCallback(async () => {
-    const url = `perPage=${perPage}&page=${currentPage}`;
+    const url = `perPage=${perPage}&currentPage=${currentPage}`;
     getAll(url)
       .then((Response) => {
         const dataProject = Response.data;
@@ -31,7 +31,7 @@ const Home = () => {
 
   useEffect(() => {
     listallProjects();
-  }, [listallProjects, filter]);
+  }, [setFilter, filter]);
 
   return (
     <>
@@ -56,7 +56,7 @@ const Home = () => {
                   : "w-[290px] h-[290px] border rounded-lg flex items-center justify-center shadow-md  hover:bg-gray-100 transition cursor-pointer"
               }
               aria-label="Adicionar nova tarefa"
-              onClick={() => navigate("/task")}
+              onClick={() => navigate("/project")}
             >
               <Plus size={48} />
             </button>

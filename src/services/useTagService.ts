@@ -31,7 +31,7 @@ export const useTagService = () => {
   };
 
   const create = async (
-    payload: Omit<ITag, "id" | "created_at">
+    payload: Omit<ITag, "id" | "created_at">,
   ): Promise<ITag> => {
     return await request
       .post({
