@@ -62,11 +62,17 @@ export function AppSidebar() {
 
   const fetchData = useCallback(async () => {
     try {
-      const tags = await getAll();
+      const query = `perPage=100&currentPage=1`;
+      const tags = await getAll(query)
+        .then((response) => response?.data ?? [])
+        .catch((error) => {
+          console.error("Error fetching tags:", error);
+          return [];
+        });
       setItems((prevItems) =>
         prevItems.map((item) =>
-          item.title === "Tags" ? { ...item, items: tags || [] } : item
-        )
+          item.title === "Tags" ? { ...item, items: tags || [] } : item,
+        ),
       );
     } catch (err) {
       console.error(err);
@@ -77,7 +83,7 @@ export function AppSidebar() {
     if (user?.id) {
       fetchData();
     }
-  }, [user, fetchData]);
+  }, [user]);
 
   return (
     <>

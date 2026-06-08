@@ -16,7 +16,7 @@ interface IRequestParams {
 interface IRequest<T> {
   post(request: IRequestParams): Promise<T>;
   postAndGetManyPaginated(
-    request: IRequestParams
+    request: IRequestParams,
   ): Promise<IPaginationReturn<T[]>>;
   put(request: IRequestParams): Promise<T>;
   patch(request: IRequestParams): Promise<T>;
@@ -29,7 +29,7 @@ interface IRequest<T> {
 const validateUrl = () => {
   if (!import.meta.env.VITE_API_URL) {
     throw new AppError(
-      "A url base da API não foi informada. É necessário verificar o arquivo .env"
+      "A url base da API não foi informada. É necessário verificar o arquivo .env",
     );
   }
 };
@@ -87,7 +87,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
@@ -120,7 +120,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
@@ -153,7 +153,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
@@ -187,7 +187,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
@@ -219,7 +219,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
@@ -251,13 +251,13 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
 
   const getManyPaginated = async (
-    request: IRequestParams
+    request: IRequestParams,
   ): Promise<IPaginationReturn<T[]>> => {
     validateUrl();
     const headers = { ...request.headers };
@@ -285,13 +285,13 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };
 
   const postAndGetManyPaginated = async (
-    request: IRequestParams
+    request: IRequestParams,
   ): Promise<IPaginationReturn<T[]>> => {
     validateUrl();
     const headers = { ...request.headers };
@@ -320,7 +320,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
             "Ocorreu um erro ao executar o procedimento",
-          error?.response?.status || 400
+          error?.response?.status || 400,
         );
       });
   };

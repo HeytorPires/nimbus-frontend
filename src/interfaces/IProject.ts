@@ -7,5 +7,5 @@ export interface IProject {
   variablesEnvironment: string;
   created_at?: Date;
   updated_at?: Date;
-  created_by: string;
+  user_id: string;
 }

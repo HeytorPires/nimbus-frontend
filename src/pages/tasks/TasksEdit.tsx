@@ -36,8 +36,9 @@ const TasksEdit = () => {
     const userId = user?.id;
     try {
       if (userId) {
-        const data = await getAll();
-        setTags(data ?? []);
+        const query = `perPage=100&currentPage=1`;
+        const response = await getAll(query);
+        setTags(response?.data ?? []);
       }
     } catch (err) {
       console.error("Error to search tags:", err);
@@ -100,7 +101,7 @@ const TasksEdit = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setProject((prev) => (prev ? { ...prev, [name]: value } : prev));

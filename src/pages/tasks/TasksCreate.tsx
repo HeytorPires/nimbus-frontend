@@ -27,8 +27,9 @@ const TasksCreate = () => {
   const [createdBy] = useState("");
 
   const fetchTags = async () => {
-    const data = await getAll();
-    setTags(data ?? []);
+    const query = `perPage=100&currentPage=1`;
+    const response = await getAll(query);
+    setTags(response?.data ?? []);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +41,7 @@ const TasksCreate = () => {
       repository,
       variablesEnvironment,
       tag_id: tagId,
-      created_by: createdBy,
+      user_id: createdBy,
     };
 
     try {

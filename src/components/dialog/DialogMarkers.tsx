@@ -41,7 +41,7 @@ const DialogMarkers = ({
 
     const newTag: ITag = {
       name: tagName.trim(),
-      created_by: user.id,
+      user_id: user.id,
     };
 
     try {

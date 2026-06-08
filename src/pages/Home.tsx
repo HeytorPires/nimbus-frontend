@@ -72,7 +72,7 @@ const Home = () => {
                 updated_at={project.updated_at}
                 created_at={project.created_at}
                 tag_id={project.tag_id}
-                created_by=""
+                user_id=""
                 type="home"
               />
             ))}

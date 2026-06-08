@@ -1,15 +1,16 @@
 import AppError from "@/errors/AppError";
 import { ITag } from "../interfaces/ITag";
 import { useRequest } from "./useRequest";
+import { IPaginationReturn } from "@/interfaces/IPaginationReturn";
 
 export const useTagService = () => {
   const request = useRequest<ITag>();
   const path = "tags";
 
-  const getAll = async (): Promise<ITag[]> => {
+  const getAll = async (query: string): Promise<IPaginationReturn<ITag[]>> => {
     return await request
-      .getMany({
-        path: `${path}`,
+      .getManyPaginated({
+        path: `${path}?${query}`,
         sendAuthorization: true,
       })
       .then((result) => result)

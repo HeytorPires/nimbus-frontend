@@ -1,7 +1,6 @@
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/lib/supabaseClient";
 import { ArrowRight, Github } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,14 +9,14 @@ const Login = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const signInWithGitHub = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-    });
-    if (error) {
-      console.error(error.message);
-    }
-  };
+  // const signInWithGitHub = async () => {
+  //   const { error } = await supabase.auth.signInWithOAuth({
+  //     provider: "github",
+  //   });
+  //   if (error) {
+  //     console.error(error.message);
+  //   }
+  // };
   //trocar de aba
   useEffect(() => {
     if (user) {
@@ -50,7 +49,7 @@ const Login = () => {
             <Button
               className="cursor-pointer"
               color="#00000"
-              onClick={signInWithGitHub}
+              // onClick={signInWithGitHub}
             >
               <Github />
               Login with GitHub

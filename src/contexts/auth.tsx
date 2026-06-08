@@ -1,7 +1,16 @@
 import { IUser } from "@/interfaces/IUser";
 import { useAuthService } from "@/services/useAuthService";
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import { isTokenExpired } from "@/lib/tokenUtils";
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
+import api from "@/api/api";
 
 interface AuthContextType {
   user: IUser | null;
@@ -14,7 +23,7 @@ interface AuthContextType {
 }
 
 export const AuthContext = createContext<AuthContextType>(
-  {} as AuthContextType
+  {} as AuthContextType,
 );
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -25,62 +34,103 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
+  const interceptorId = useRef<number | null>(null);
 
-  const signIn = async (email: string, password: string) => {
-    try {
-      const response = await authService.signIn(email, password);
-
-      if (!response?.token || !response?.user) {
-        throw new Error("Credenciais inválidas");
-      }
-
-      setToken(response.token);
-      setUser(response.user);
-      setIsAuth(true);
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
-    } catch (error: any) {
-      toast.error("Erro ao fazer login: " + error.message);
+  const setupInterceptor = useCallback((currentToken: string) => {
+    if (interceptorId.current !== null) {
+      api.interceptors.request.eject(interceptorId.current);
     }
-  };
+    interceptorId.current = api.interceptors.request.use((config) => {
+      if (currentToken && !isTokenExpired(currentToken)) {
+        config.headers.Authorization = `Bearer ${currentToken}`;
+      }
+      return config;
+    });
+  }, []);
 
   const signOut = useCallback(() => {
     setToken(null);
     setUser(null);
     setIsAuth(false);
-
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
+    if (interceptorId.current !== null) {
+      api.interceptors.request.eject(interceptorId.current);
+      interceptorId.current = null;
+    }
   }, []);
-  const bootstrapAuth = async () => {
-    setLoading(true);
-    try {
-      const storedToken = localStorage.getItem("token");
-      const storedUser = localStorage.getItem("user");
-      if (storedToken && storedUser) {
+
+  const signIn = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const response = await authService.signIn(email, password);
+
+        if (!response?.token || !response?.user) {
+          throw new Error("Credenciais inválidas");
+        }
+
+        setToken(response.token);
+        setUser(response.user);
+        setIsAuth(true);
+        setupInterceptor(response.token);
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+      } catch (error: any) {
+        toast.error("Erro ao fazer login: " + error.message);
+      }
+    },
+    [authService, setupInterceptor],
+  );
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedToken && storedUser) {
+      if (isTokenExpired(storedToken)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      } else {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
         setIsAuth(true);
+        setupInterceptor(storedToken);
       }
-    } finally {
-      setLoading(false);
     }
-  };
+
+    setLoading(false);
+  }, [setupInterceptor]);
 
   useEffect(() => {
-    bootstrapAuth();
-  }, []);
-  const isAuthenticated = isAuth;
+    const id = api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error?.response?.status === 401) {
+          signOut();
+          toast.error("Sua sessão expirou. Faça login novamente.");
+        }
+        return Promise.reject(error);
+      },
+    );
 
-  const value: AuthContextType = {
-    user,
-    token,
-    loading,
-    isAuthenticated,
-    signIn,
-    signOut,
-    setUser,
-  };
+    return () => {
+      api.interceptors.response.eject(id);
+    };
+  }, [signOut]);
+
+  const value = useMemo<AuthContextType>(
+    () => ({
+      user,
+      token,
+      loading,
+      isAuthenticated: isAuth,
+      signIn,
+      signOut,
+      setUser,
+    }),
+    [user, token, loading, isAuth, signIn, signOut],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
