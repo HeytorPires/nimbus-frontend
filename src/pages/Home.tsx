@@ -67,7 +67,6 @@ const Home = () => {
                 id={project.id}
                 title={project.title}
                 description={project.description}
-                repository={project.repository}
                 variablesEnvironment={project.variablesEnvironment}
                 updated_at={project.updated_at}
                 created_at={project.created_at}
