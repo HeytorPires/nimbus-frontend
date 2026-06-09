@@ -21,10 +21,8 @@ const TasksCreate = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [repository, setRepository] = useState("");
   const [variablesEnvironment, setVariablesEnvironment] = useState("");
   const [tagId, setTagId] = useState("");
-  const [createdBy] = useState("");
 
   const fetchTags = async () => {
     const query = `perPage=100&currentPage=1`;
@@ -38,10 +36,8 @@ const TasksCreate = () => {
     const project: IProject = {
       title,
       description,
-      repository,
       variablesEnvironment,
       tag_id: tagId,
-      user_id: createdBy,
     };
 
     try {
@@ -83,17 +79,6 @@ const TasksCreate = () => {
             required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="bg-white"
-          />
-        </div>
-
-        <div>
-          <Typography as="p">Repository URL</Typography>
-          <Input
-            type="url"
-            placeholder="https://github.com/user/repo"
-            value={repository}
-            onChange={(e) => setRepository(e.target.value)}
             className="bg-white"
           />
         </div>

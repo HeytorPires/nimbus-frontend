@@ -127,7 +127,7 @@ const TasksEdit = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader className="m-5">
-              <DialogTitle>Do you want to remove this task?</DialogTitle>
+              <DialogTitle>Do you want to remove this project?</DialogTitle>
               <DialogDescription className="flex flex-row justify-between mt-3">
                 <Button
                   type="button"
@@ -176,17 +176,6 @@ const TasksEdit = () => {
             />
           </div>
 
-          <div>
-            <Typography as="p">Repository URL</Typography>
-            <Input
-              type="url"
-              name="repository"
-              placeholder="https://github.com/user/repo"
-              value={project.repository}
-              onChange={handleChange}
-            />
-          </div>
-
           <div className="w-min">
             <Typography as="p">Markers</Typography>
             <ComboBox
@@ -218,7 +207,7 @@ const TasksEdit = () => {
           </div>
         </form>
       ) : (
-        <Typography as="p">Carregando dados da tarefa...</Typography>
+        <Typography as="p">Loading Data Project...</Typography>
       )}
     </div>
   );

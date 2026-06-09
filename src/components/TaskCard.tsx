@@ -40,8 +40,9 @@ export function IProjectCard({
   id,
   title,
   description,
-  repository,
+  // repository,
   variablesEnvironment,
+  created_at,
   updated_at,
   tag_id,
 }: IProject & { type?: "home" | "default" }) {
@@ -86,7 +87,17 @@ export function IProjectCard({
             <Badge variant="outline">{tag?.name}</Badge>
           )}
         </div>
-        <CardDescription>{updated_at?.toString()}</CardDescription>
+        <CardDescription>
+          created at{" "}
+          {created_at &&
+            new Date(created_at).toLocaleString("pt-BR", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         <LimitedText text={description} />
@@ -103,11 +114,19 @@ export function IProjectCard({
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
               <DialogDescription>
-                Updated at {updated_at?.toString()}
+                Updated at{" "}
+                {updated_at &&
+                  new Date(updated_at).toLocaleString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
               </DialogDescription>
               <DialogDescription>
                 <Link
-                  to={repository}
+                  to={""}
                   target="_blank"
                   className="text-black flex flex-row items-center underline"
                 >
