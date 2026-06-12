@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router basename="/nimbus">
       <ThemeProvider>
         <AuthProvider>
           <SidebarProvider>
