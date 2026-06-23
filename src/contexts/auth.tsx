@@ -49,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const signOut = useCallback(() => {
+    authService.signOut();
     setToken(null);
     setUser(null);
     setIsAuth(false);
@@ -59,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       api.interceptors.request.eject(interceptorId.current);
       interceptorId.current = null;
     }
-  }, []);
+  }, [authService]);
 
   const signIn = useCallback(
     async (email: string, password: string) => {
@@ -106,7 +107,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const id = api.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error?.response?.status === 401) {
+        const requestUrl = error?.config?.url || "";
+        const isLoginRequest = requestUrl.includes("/sessions");
+
+        if (error?.response?.status === 401 && !isLoginRequest) {
           signOut();
           toast.error("Sua sessão expirou. Faça login novamente.");
         }

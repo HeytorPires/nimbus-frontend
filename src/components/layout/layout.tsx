@@ -14,7 +14,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   const shouldShowSidebar =
     !loading &&
-    !["/login", "/register", "/not-found"].includes(location.pathname) &&
+    !["/login", "/login/email", "/register", "/not-found", "/forgot-password", "/reset-password"].includes(location.pathname) &&
     user;
 
   if (loading) {

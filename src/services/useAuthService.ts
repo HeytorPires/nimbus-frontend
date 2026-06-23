@@ -5,6 +5,7 @@ import { IResponseAuth } from "@/interfaces/IResponseAuth";
 export const useAuthService = () => {
   const requestUser = useRequest<IUser>();
   const request = useRequest<IResponseAuth>();
+  const requestVoid = useRequest<void>();
   const path = "sessions";
 
   const signUp = async (
@@ -38,7 +39,7 @@ export const useAuthService = () => {
         return result;
       })
       .catch((error) => {
-        return error;
+        throw new Error(error.message || "Credenciais inválidas");
       });
   };
 
@@ -46,6 +47,7 @@ export const useAuthService = () => {
     return requestUser
       .getOne({
         path: `users/me`,
+        sendAuthorization: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -53,8 +55,15 @@ export const useAuthService = () => {
       });
   };
 
-  const signOut = async () => {
-    return null;
+  const signOut = async (): Promise<void> => {
+    return requestVoid
+      .remove({
+        path: `${path}`,
+        sendAuthorization: true,
+      })
+      .catch(() => {
+        // Silently fail - local cleanup will happen regardless
+      });
   };
 
   return { signUp, signIn, getUser, signOut };

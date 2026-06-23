@@ -12,6 +12,8 @@ import TasksEdit from "@/pages/tasks/TasksEdit";
 import TasksCreate from "@/pages/tasks/TasksCreate";
 import LoginEmail from "@/pages/login/LoginEmail";
 import Account from "@/pages/account/Account";
+import ForgotPassword from "@/pages/password/ForgotPassword";
+import ResetPassword from "@/pages/password/ResetPassword";
 
 const Private = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext);
@@ -32,6 +34,8 @@ export const AppRoutes: React.FC = () => {
       <Route path="/login/email" element={<LoginEmail />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* Redirecionar / para /home se autenticado, senão /login */}
       <Route

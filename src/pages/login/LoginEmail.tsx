@@ -21,62 +21,68 @@ const LoginEmail = () => {
     }
     await signIn(email, password);
   };
-  //trocar de aba
+
   useEffect(() => {
     if (user) {
       navigate("/home");
     }
-  });
+  }, [user, navigate]);
 
   return (
-    <>
-      <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
-        <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410] z-10">
-          <form
-            className="flex flex-col justify-center items-center gap-4 p-4 w-full"
-            onSubmit={handleSubmit}
-          >
-            <h1 className="text-8xl">Nimbus</h1>
-            <DecryptedText
-              text="Manage your environment powerfully and easily"
-              speed={50}
-              maxIterations={50}
-              animateOn="view"
-              revealDirection="start"
-              useOriginalCharsOnly={true}
-              sequential={true}
-            />
-            <Input
-              type="email"
-              placeholder="Write your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              // required
-            />
-            <Input
-              type="password"
-              placeholder="Write your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+    <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
+      <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
+        <form
+          className="flex flex-col justify-center items-center gap-4 p-4 w-full"
+          onSubmit={handleSubmit}
+        >
+          <h1 className="text-8xl">Nimbus</h1>
+          <DecryptedText
+            text="Manage your environment powerfully and easily"
+            speed={50}
+            maxIterations={50}
+            animateOn="view"
+            revealDirection="start"
+            useOriginalCharsOnly={true}
+            sequential={true}
+          />
+          <Input
+            type="email"
+            placeholder="Write your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            // required
+          />
+          <Input
+            type="password"
+            placeholder="Write your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-            <Button className="cursor-pointer w-full" type="submit">
-              Entrar
-            </Button>
-            <p className="text-[10px] flex items-center justify-center gap-1">
-              <ArrowLeft size={15} className="text-blue-700" />
+          <Button className="cursor-pointer w-full" type="submit">
+            Entrar
+          </Button>
+          <p className="text-[10px] flex items-center justify-center gap-1">
+            <span
+              className="text-blue-700 cursor-pointer"
+              onClick={() => navigate("/forgot-password")}
+            >
+              Esqueceu sua senha?
+            </span>
+          </p>
+          <p className="text-[10px] flex items-center justify-center gap-1">
+            <ArrowLeft size={15} className="text-blue-700" />
 
-              <span
-                className="text-blue-700 cursor-pointer"
-                onClick={() => navigate(-1)}
-              >
-                Other Login options
-              </span>
-            </p>
-          </form>
-        </div>
+            <span
+              className="text-blue-700 cursor-pointer"
+              onClick={() => navigate(-1)}
+            >
+              Other Login options
+            </span>
+          </p>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

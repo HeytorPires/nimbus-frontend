@@ -42,20 +42,13 @@ export const useRequest = <T>(): IRequest<T> => {
   const sessionStorage = useSessionStorage();
 
   const getIsLogin = (url: string): boolean => {
-    return url?.split("/").indexOf("login") !== -1;
+    return url?.includes("sessions");
   };
 
   const setUnauthorized = (): void => {
     sessionStorage.clear();
     navigate("/login");
-    setUser({
-      accessToken: "",
-      avatar_url: "",
-      created_at: "",
-      email: "",
-      id: "",
-      name: "",
-    });
+    setUser(null);
     throw new AppError("Sua sessão expirou. Faça o login novamente!");
   };
 

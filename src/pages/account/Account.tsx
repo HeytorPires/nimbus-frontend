@@ -1,24 +1,80 @@
 import { Typography } from "@/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useState, useCallback } from "react";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { IUser } from "@/interfaces/IUser";
+import { useProfileService } from "@/services/useProfileService";
 import { useUserService } from "@/services/useUserService";
+import { toast } from "sonner";
 
 const Account = () => {
   const [user, setUser] = useState<IUser | null>(null);
-  const { getUser } = useUserService();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { getProfile, updateProfile } = useProfileService();
+  const { updateAvatar } = useUserService();
 
   const fetchUser = useCallback(async () => {
-    const user = await getUser();
-    setUser(user);
-  }, [getUser]);
+    const userData = await getProfile();
+    setUser(userData);
+    setName(userData.name);
+    setEmail(userData.email);
+  }, [getProfile]);
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+  const handleUpdateProfile = async () => {
+    setLoading(true);
+    try {
+      const payload: {
+        name: string;
+        email: string;
+        old_password?: string;
+        password?: string;
+        password_confirmation?: string;
+      } = { name, email };
+
+      if (oldPassword && newPassword) {
+        payload.old_password = oldPassword;
+        payload.password = newPassword;
+        payload.password_confirmation = passwordConfirmation;
+      }
+
+      const updatedUser = await updateProfile(payload);
+      setUser(updatedUser);
+      setOldPassword("");
+      setNewPassword("");
+      setPasswordConfirmation("");
+      toast.success("Perfil atualizado com sucesso!");
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao atualizar perfil");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const updatedUser = await updateAvatar(file);
+      setUser(updatedUser);
+      toast.success("Avatar atualizado com sucesso!");
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao atualizar avatar");
+    }
+  };
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6 w-screen h-screen flex flex-col justify-center">
@@ -29,48 +85,95 @@ const Account = () => {
       <Card>
         <CardContent className="p-6 flex flex-col gap-6 w-full">
           <div className="flex items-center gap-6">
-            <Avatar className="w-24 h-24">
-              <AvatarImage src={user?.avatar_url} />
-              <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
-            </Avatar>
+            <div className="relative cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+              <Avatar className="w-24 h-24">
+                <AvatarImage src={user?.avatar_url || undefined} />
+                <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
+              </Avatar>
+              <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                <span className="text-white text-xs">Alterar</span>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+            </div>
             <div>
               <Typography as="p" className="text-lg font-medium">
                 {user?.name || "Nome não encontrado"}
+              </Typography>
+              <Typography as="p" className="text-sm text-muted-foreground">
+                Clique no avatar para alterar a foto
               </Typography>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Typography>Full Name</Typography>
-              <Input id="name" disabled value={user?.name || ""} readOnly />
+              <Typography>Nome</Typography>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
 
             <div>
               <Typography>Email</Typography>
               <Input
                 type="email"
-                disabled
                 id="email"
-                value={user?.email || ""}
-                readOnly
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+          </div>
 
-            <div>
-              <Typography>GitHub</Typography>
-              <Input
-                type="url"
-                id="github"
-                disabled
-                value={user?.name ? `https://github.com/${user.name}` : ""}
-                readOnly
-              />
+          <div className="border-t pt-4">
+            <Typography as="h2" className="text-lg font-medium mb-4">
+              Alterar Senha
+            </Typography>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Typography>Senha Atual</Typography>
+                <Input
+                  type="password"
+                  id="old_password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
+              <div>
+                <Typography>Nova Senha</Typography>
+                <Input
+                  type="password"
+                  id="new_password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
+              <div>
+                <Typography>Confirmar Senha</Typography>
+                <Input
+                  type="password"
+                  id="password_confirmation"
+                  value={passwordConfirmation}
+                  onChange={(e) => setPasswordConfirmation(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
-            <div className="col-span-full">
-              <Typography>Bio</Typography>
-              <Textarea id="bio" placeholder="Short description about you..." />
-            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <Button onClick={handleUpdateProfile} disabled={loading}>
+              {loading ? "Salvando..." : "Salvar Alterações"}
+            </Button>
           </div>
         </CardContent>
       </Card>
