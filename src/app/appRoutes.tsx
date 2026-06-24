@@ -30,14 +30,14 @@ export const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
-      {/* Rotas públicas */}
+      {/* Public routes */}
       <Route path="/login/email" element={<LoginEmail />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* Redirecionar / para /home se autenticado, senão /login */}
+      {/* Redirect / to /home if authenticated, otherwise /login */}
       <Route
         path="/"
         element={
@@ -49,7 +49,7 @@ export const AppRoutes: React.FC = () => {
         }
       />
 
-      {/* Rotas protegidas */}
+      {/* Protected routes */}
       <Route
         path="/home"
         element={
@@ -83,7 +83,7 @@ export const AppRoutes: React.FC = () => {
         }
       />
 
-      {/* Rota 404 */}
+      {/* 404 route */}
       <Route path="/not-found" element={<NotFound />} />
       <Route path="*" element={<Navigate to="/not-found" />} />
     </Routes>

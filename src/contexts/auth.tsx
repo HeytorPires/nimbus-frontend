@@ -48,8 +48,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
-  const signOut = useCallback(() => {
-    authService.signOut();
+  const signOut = useCallback(async () => {
+    await authService.signOut();
     setToken(null);
     setUser(null);
     setIsAuth(false);
@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const response = await authService.signIn(email, password);
 
         if (!response?.token || !response?.user) {
-          throw new Error("Credenciais inválidas");
+          throw new Error("Invalid credentials");
         }
 
         setToken(response.token);
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         localStorage.setItem("token", response.token);
         localStorage.setItem("user", JSON.stringify(response.user));
       } catch (error: any) {
-        toast.error("Erro ao fazer login: " + error.message);
+        toast.error("Login error: " + error.message);
       }
     },
     [authService, setupInterceptor],
@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         if (error?.response?.status === 401 && !isLoginRequest) {
           signOut();
-          toast.error("Sua sessão expirou. Faça login novamente.");
+          toast.error("Your session has expired. Please log in again.");
         }
         return Promise.reject(error);
       },

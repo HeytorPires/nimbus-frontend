@@ -19,27 +19,27 @@ const ResetPassword = () => {
     event.preventDefault();
 
     if (!password || !passwordConfirmation) {
-      toast.error("Preencha todos os campos");
+      toast.error("Please fill in all fields");
       return;
     }
 
     if (password !== passwordConfirmation) {
-      toast.error("As senhas não coincidem");
+      toast.error("Passwords do not match");
       return;
     }
 
     if (!token) {
-      toast.error("Token inválido");
+      toast.error("Invalid token");
       return;
     }
 
     setLoading(true);
     try {
       await resetPassword(password, passwordConfirmation, token);
-      toast.success("Senha redefinida com sucesso!");
+      toast.success("Password reset successfully!");
       navigate("/login/email");
     } catch (error: any) {
-      toast.error(error.message || "Erro ao redefinir senha");
+      toast.error(error.message || "Error resetting password");
     } finally {
       setLoading(false);
     }
@@ -52,19 +52,19 @@ const ResetPassword = () => {
           className="flex flex-col justify-center items-center gap-4 p-4 w-full"
           onSubmit={handleSubmit}
         >
-          <h1 className="text-3xl font-semibold">Redefinir Senha</h1>
+          <h1 className="text-3xl font-semibold">Reset Password</h1>
           <p className="text-sm text-muted-foreground text-center">
-            Digite sua nova senha abaixo.
+            Enter your new password below.
           </p>
           <Input
             type="password"
-            placeholder="Nova senha"
+            placeholder="New password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <Input
             type="password"
-            placeholder="Confirme a nova senha"
+            placeholder="Confirm new password"
             value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
           />
@@ -73,7 +73,7 @@ const ResetPassword = () => {
             type="submit"
             disabled={loading}
           >
-            {loading ? "Redefinindo..." : "Redefinir Senha"}
+            {loading ? "Resetting..." : "Reset Password"}
           </Button>
         </form>
       </div>

@@ -29,7 +29,7 @@ interface IRequest<T> {
 const validateUrl = () => {
   if (!import.meta.env.VITE_API_URL) {
     throw new AppError(
-      "A url base da API não foi informada. É necessário verificar o arquivo .env",
+      "The base API URL was not provided. Please check the .env file.",
     );
   }
 };
@@ -48,8 +48,8 @@ export const useRequest = <T>(): IRequest<T> => {
   const setUnauthorized = (): void => {
     sessionStorage.clear();
     navigate("/login");
-    setUser(null);
-    throw new AppError("Sua sessão expirou. Faça o login novamente!");
+    setUser?.(null);
+    throw new AppError("Your session has expired. Please log in again.");
   };
 
   const post = async (request: IRequestParams): Promise<T> => {
@@ -79,7 +79,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -112,7 +112,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -145,7 +145,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -179,7 +179,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -211,7 +211,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -243,7 +243,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -277,7 +277,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });
@@ -312,7 +312,7 @@ export const useRequest = <T>(): IRequest<T> => {
             error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.validation?.query?.message ||
             error?.response?.data?.message ||
-            "Ocorreu um erro ao executar o procedimento",
+            "An error occurred while executing the procedure",
           error?.response?.status || 400,
         );
       });

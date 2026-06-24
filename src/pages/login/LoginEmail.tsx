@@ -16,7 +16,7 @@ const LoginEmail = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email || !password) {
-      toast.error("Preencha todos os dados");
+      toast.error("Please fill in all fields");
       return;
     }
     await signIn(email, password);
@@ -60,14 +60,14 @@ const LoginEmail = () => {
           />
 
           <Button className="cursor-pointer w-full" type="submit">
-            Entrar
+            Login
           </Button>
           <p className="text-[10px] flex items-center justify-center gap-1">
             <span
               className="text-blue-700 cursor-pointer"
               onClick={() => navigate("/forgot-password")}
             >
-              Esqueceu sua senha?
+              Forgot your password?
             </span>
           </p>
           <p className="text-[10px] flex items-center justify-center gap-1">

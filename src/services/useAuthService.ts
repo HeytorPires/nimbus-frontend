@@ -11,7 +11,7 @@ export const useAuthService = () => {
   const signUp = async (
     email: string,
     password: string,
-    name: string
+    name: string,
   ): Promise<IUser> => {
     return requestUser
       .post({
@@ -27,7 +27,7 @@ export const useAuthService = () => {
 
   const signIn = async (
     email: string,
-    password: string
+    password: string,
   ): Promise<IResponseAuth> => {
     return request
       .post({
@@ -39,7 +39,7 @@ export const useAuthService = () => {
         return result;
       })
       .catch((error) => {
-        throw new Error(error.message || "Credenciais inválidas");
+        throw new Error(error.message || "Invalid credentials");
       });
   };
 

@@ -55,9 +55,9 @@ const Account = () => {
       setOldPassword("");
       setNewPassword("");
       setPasswordConfirmation("");
-      toast.success("Perfil atualizado com sucesso!");
+      toast.success("Profile updated successfully!");
     } catch (error: any) {
-      toast.error(error.message || "Erro ao atualizar perfil");
+      toast.error(error.message || "Error updating profile");
     } finally {
       setLoading(false);
     }
@@ -70,9 +70,9 @@ const Account = () => {
     try {
       const updatedUser = await updateAvatar(file);
       setUser(updatedUser);
-      toast.success("Avatar atualizado com sucesso!");
+      toast.success("Avatar updated successfully!");
     } catch (error: any) {
-      toast.error(error.message || "Erro ao atualizar avatar");
+      toast.error(error.message || "Error updating avatar");
     }
   };
 
@@ -85,13 +85,16 @@ const Account = () => {
       <Card>
         <CardContent className="p-6 flex flex-col gap-6 w-full">
           <div className="flex items-center gap-6">
-            <div className="relative cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+            <div
+              className="relative cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <Avatar className="w-24 h-24">
                 <AvatarImage src={user?.avatar_url || undefined} />
                 <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
               </Avatar>
               <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                <span className="text-white text-xs">Alterar</span>
+                <span className="text-white text-xs">Change</span>
               </div>
               <input
                 ref={fileInputRef}
@@ -103,17 +106,17 @@ const Account = () => {
             </div>
             <div>
               <Typography as="p" className="text-lg font-medium">
-                {user?.name || "Nome não encontrado"}
+                {user?.name || "Name not found"}
               </Typography>
               <Typography as="p" className="text-sm text-muted-foreground">
-                Clique no avatar para alterar a foto
+                Click the avatar to change photo
               </Typography>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Typography>Nome</Typography>
+              <Typography>Name</Typography>
               <Input
                 id="name"
                 value={name}
@@ -134,11 +137,11 @@ const Account = () => {
 
           <div className="border-t pt-4">
             <Typography as="h2" className="text-lg font-medium mb-4">
-              Alterar Senha
+              Change Password
             </Typography>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <Typography>Senha Atual</Typography>
+                <Typography>Current Password</Typography>
                 <Input
                   type="password"
                   id="old_password"
@@ -148,7 +151,7 @@ const Account = () => {
                 />
               </div>
               <div>
-                <Typography>Nova Senha</Typography>
+                <Typography>New Password</Typography>
                 <Input
                   type="password"
                   id="new_password"
@@ -158,7 +161,7 @@ const Account = () => {
                 />
               </div>
               <div>
-                <Typography>Confirmar Senha</Typography>
+                <Typography>Confirm Password</Typography>
                 <Input
                   type="password"
                   id="password_confirmation"
@@ -172,7 +175,7 @@ const Account = () => {
 
           <div className="flex justify-end">
             <Button onClick={handleUpdateProfile} disabled={loading}>
-              {loading ? "Salvando..." : "Salvar Alterações"}
+              {loading ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </CardContent>

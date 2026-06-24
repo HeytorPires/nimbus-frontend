@@ -1,9 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth"; // Importe o useAuth aqui
+import { useAuth } from "@/hooks/useAuth";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import ParticlesWrapper from "../background/ParticlesWrapper";
+import ParticlesBackground from "../background/ParticlesBackground";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   const shouldShowSidebar =
     !loading &&
-    !["/login", "/login/email", "/register", "/not-found", "/forgot-password", "/reset-password"].includes(location.pathname) &&
+    ![
+      "/login",
+      "/login/email",
+      "/register",
+      "/not-found",
+      "/forgot-password",
+      "/reset-password",
+    ].includes(location.pathname) &&
     user;
 
   if (loading) {
@@ -32,8 +39,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         {shouldShowSidebar && (
           <header className="z-20">{<SidebarTrigger />}</header>
         )}
-        <div className={`flex-grow ${shouldShowSidebar ? "ml-..." : ""}`}>
-          <ParticlesWrapper> {children}</ParticlesWrapper>
+        <div
+          className={`flex-grow relative ${shouldShowSidebar ? "ml-..." : ""}`}
+        >
+          <ParticlesBackground />
+          <div className="relative z-10">{children}</div>
         </div>
       </main>
     </>

@@ -89,7 +89,7 @@ const TasksCreate = () => {
             options={tags}
             value={tagId}
             onChange={(value) => setTagId(value!)}
-            placeholder="Selecione uma tag"
+            placeholder="Select a tag"
           />
         </div>
 

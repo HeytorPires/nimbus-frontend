@@ -55,7 +55,7 @@ const Home = () => {
                   ? "w-[290px] h-[290px] border border-gray-300 rounded-lg flex items-center justify-center shadow-md hover:bg-stone-900 transition cursor-pointer"
                   : "w-[290px] h-[290px] border rounded-lg flex items-center justify-center shadow-md  hover:bg-gray-100 transition cursor-pointer"
               }
-              aria-label="Adicionar nova tarefa"
+              aria-label="Add new task"
               onClick={() => navigate("/project")}
             >
               <Plus size={48} />

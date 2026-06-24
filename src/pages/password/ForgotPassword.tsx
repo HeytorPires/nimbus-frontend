@@ -16,7 +16,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email) {
-      toast.error("Informe seu email");
+      toast.error("Please enter your email");
       return;
     }
 
@@ -24,9 +24,9 @@ const ForgotPassword = () => {
     try {
       await forgotPassword(email);
       setSent(true);
-      toast.success("Email de recuperação enviado!");
+      toast.success("Recovery email sent!");
     } catch (error: any) {
-      toast.error(error.message || "Erro ao enviar email de recuperação");
+      toast.error(error.message || "Error sending recovery email");
     } finally {
       setLoading(false);
     }
@@ -37,15 +37,15 @@ const ForgotPassword = () => {
       <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
         {sent ? (
           <div className="flex flex-col items-center gap-4 text-center">
-            <h1 className="text-3xl font-semibold">Email enviado!</h1>
+            <h1 className="text-3xl font-semibold">Email sent!</h1>
             <p className="text-muted-foreground">
-              Verifique sua caixa de entrada para redefinir sua senha.
+              Check your inbox to reset your password.
             </p>
             <Button
               className="cursor-pointer w-full"
               onClick={() => navigate("/login/email")}
             >
-              Voltar ao Login
+              Back to Login
             </Button>
           </div>
         ) : (
@@ -53,13 +53,14 @@ const ForgotPassword = () => {
             className="flex flex-col justify-center items-center gap-4 p-4 w-full"
             onSubmit={handleSubmit}
           >
-            <h1 className="text-3xl font-semibold">Recuperar Senha</h1>
+            <h1 className="text-3xl font-semibold">Recover Password</h1>
             <p className="text-sm text-muted-foreground text-center">
-              Informe seu email e enviaremos um link para redefinir sua senha.
+              Enter your email and we will send you a link to reset your
+              password.
             </p>
             <Input
               type="email"
-              placeholder="Digite seu email"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -68,7 +69,7 @@ const ForgotPassword = () => {
               type="submit"
               disabled={loading}
             >
-              {loading ? "Enviando..." : "Enviar Email de Recuperação"}
+              {loading ? "Sending..." : "Send Recovery Email"}
             </Button>
             <p className="text-[10px] flex items-center justify-center gap-1">
               <ArrowLeft size={15} className="text-blue-700" />
@@ -76,7 +77,7 @@ const ForgotPassword = () => {
                 className="text-blue-700 cursor-pointer"
                 onClick={() => navigate("/login/email")}
               >
-                Voltar ao Login
+                Back to Login
               </span>
             </p>
           </form>

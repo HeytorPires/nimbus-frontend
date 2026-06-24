@@ -182,7 +182,7 @@ const TasksEdit = () => {
               options={tags}
               value={project.tag_id ?? null}
               onChange={handleTagChange}
-              placeholder="Selecione uma tag"
+              placeholder="Select a tag"
             />
           </div>
 

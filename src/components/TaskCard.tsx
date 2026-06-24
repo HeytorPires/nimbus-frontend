@@ -55,7 +55,7 @@ export function IProjectCard({
       await navigator.clipboard.writeText(textToCopy);
       toast.success("Env copied successfully");
     } catch (err) {
-      console.error("Erro ao copiar: ", err);
+      console.error("Error copying: ", err);
     }
   };
 
@@ -66,7 +66,7 @@ export function IProjectCard({
           const data = await getById(tag_id);
           setTag(data ?? undefined);
         } catch (err) {
-          console.error("Erro ao buscar tag:", err);
+          console.error("Error fetching tag:", err);
         }
       }
     };
@@ -90,7 +90,7 @@ export function IProjectCard({
         <CardDescription>
           created at{" "}
           {created_at &&
-            new Date(created_at).toLocaleString("pt-BR", {
+            new Date(created_at).toLocaleString("en-US", {
               day: "2-digit",
               month: "2-digit",
               year: "2-digit",
@@ -116,7 +116,7 @@ export function IProjectCard({
               <DialogDescription>
                 Updated at{" "}
                 {updated_at &&
-                  new Date(updated_at).toLocaleString("pt-BR", {
+                  new Date(updated_at).toLocaleString("en-US", {
                     day: "2-digit",
                     month: "2-digit",
                     year: "2-digit",

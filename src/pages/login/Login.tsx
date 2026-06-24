@@ -17,7 +17,7 @@ const Login = () => {
   //     console.error(error.message);
   //   }
   // };
-  //trocar de aba
+  // redirect if already logged in
   useEffect(() => {
     if (user) {
       navigate("/home");
