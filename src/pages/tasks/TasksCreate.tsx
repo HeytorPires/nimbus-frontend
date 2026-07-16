@@ -60,7 +60,7 @@ const TasksCreate = () => {
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <Typography as="p">IProject Name</Typography>
+          <Typography as="p">Project Name</Typography>
           <Input
             type="text"
             placeholder="My awesome project"

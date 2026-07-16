@@ -16,7 +16,7 @@ export const useAuthService = () => {
     return requestUser
       .post({
         path: `users`,
-        sendAuthorization: false,
+        withCredentials: true,
         body: { email, password, name },
       })
       .then((result) => result)
@@ -32,13 +32,14 @@ export const useAuthService = () => {
     return request
       .post({
         path: `${path}`,
-        sendAuthorization: false,
+        withCredentials: true,
         body: { email, password },
       })
       .then((result) => {
         return result;
       })
       .catch((error) => {
+        console.log("useAuthService signIn result:", error);
         throw new Error(error.message || "Invalid credentials");
       });
   };
@@ -47,7 +48,7 @@ export const useAuthService = () => {
     return requestUser
       .getOne({
         path: `users/me`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -59,7 +60,7 @@ export const useAuthService = () => {
     return requestVoid
       .remove({
         path: `${path}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .catch(() => {
         // Silently fail - local cleanup will happen regardless

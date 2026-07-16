@@ -11,7 +11,7 @@ export const useTagService = () => {
     return await request
       .getManyPaginated({
         path: `${path}?${query}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -23,7 +23,7 @@ export const useTagService = () => {
     return await request
       .getOne({
         path: `${path}/${id}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -38,7 +38,7 @@ export const useTagService = () => {
       .post({
         path: `${path}`,
         body: payload,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -51,7 +51,7 @@ export const useTagService = () => {
       .put({
         path: `${path}/${id}`,
         body: payload,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -63,7 +63,7 @@ export const useTagService = () => {
     return await request
       .remove({
         path: `${path}/${id}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .catch((error) => {
         throw new AppError(error.message);

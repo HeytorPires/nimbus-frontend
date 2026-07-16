@@ -18,7 +18,7 @@ export const useProfileService = () => {
     return request
       .getOne({
         path,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -31,7 +31,7 @@ export const useProfileService = () => {
       .put({
         path,
         body: payload,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {

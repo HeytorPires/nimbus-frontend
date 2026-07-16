@@ -1,16 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { IPaginationReturn } from "../interfaces/IPaginationReturn";
+import AppError from "@/errors/AppError";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/auth";
 import { useSessionStorage } from "../hooks/providers/useSessionStorage";
-import AppError from "@/errors/AppError";
+import { IPaginationReturn } from "../interfaces/IPaginationReturn";
 
 interface IRequestParams {
   path?: string;
   body?: any;
   headers?: any;
-  sendAuthorization?: boolean;
+  withCredentials?: boolean;
 }
 
 interface IRequest<T> {
@@ -38,7 +38,7 @@ export const useRequest = <T>(): IRequest<T> => {
   const navigate = useNavigate();
   const [baseUrl] = useState(import.meta.env.VITE_API_URL);
   const authContext = useContext(AuthContext);
-  const { setUser, token } = authContext || {};
+  const { setUser } = authContext || {};
   const sessionStorage = useSessionStorage();
 
   const getIsLogin = (url: string): boolean => {
@@ -54,14 +54,11 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const post = async (request: IRequestParams): Promise<T> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "POST",
-      headers,
+      withCredentials: request.withCredentials,
       data: { ...request.body },
     })
       .then((res) => {
@@ -87,14 +84,11 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const put = async (request: IRequestParams): Promise<any> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "PUT",
-      headers,
+      withCredentials: request.withCredentials,
       data: { ...request.body },
     })
       .then((res) => {
@@ -120,14 +114,10 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const patch = async (request: IRequestParams): Promise<any> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "PATCH",
-      headers,
+      withCredentials: request.withCredentials,
       data: request.body,
     })
       .then((res) => {
@@ -153,14 +143,12 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const remove = async (request: IRequestParams): Promise<void> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "DELETE",
-      headers,
+      withCredentials: request.withCredentials,
+
       data: { ...request.body },
     })
       .then((res) => {
@@ -187,14 +175,11 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const getOne = async (request: IRequestParams): Promise<T> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "GET",
-      headers,
+      withCredentials: request.withCredentials,
     })
       .then((res) => {
         return res.data;
@@ -219,14 +204,11 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const getMany = async (request: IRequestParams): Promise<T[]> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "GET",
-      headers,
+      withCredentials: request.withCredentials,
     })
       .then((res) => {
         return res.data;
@@ -253,14 +235,11 @@ export const useRequest = <T>(): IRequest<T> => {
     request: IRequestParams,
   ): Promise<IPaginationReturn<T[]>> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "GET",
-      headers,
+      withCredentials: request.withCredentials,
     })
       .then((res) => {
         return res.data;
@@ -287,14 +266,11 @@ export const useRequest = <T>(): IRequest<T> => {
     request: IRequestParams,
   ): Promise<IPaginationReturn<T[]>> => {
     validateUrl();
-    const headers = { ...request.headers };
-    if (request.sendAuthorization) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+
     return await axios({
       url: `${baseUrl}/${request.path}`,
       method: "POST",
-      headers,
+      withCredentials: request.withCredentials,
       data: { ...request.body },
     })
       .then((res) => {

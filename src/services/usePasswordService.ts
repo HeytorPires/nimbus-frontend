@@ -9,7 +9,7 @@ export const usePasswordService = () => {
     return request
       .post({
         path: `${path}/forgot`,
-        sendAuthorization: false,
+        withCredentials: false,
         body: { email },
       })
       .then(() => undefined)
@@ -21,12 +21,12 @@ export const usePasswordService = () => {
   const resetPassword = async (
     password: string,
     password_confirmation: string,
-    token: string
+    token: string,
   ): Promise<void> => {
     return request
       .put({
         path: `${path}/reset`,
-        sendAuthorization: false,
+        withCredentials: false,
         body: { password, password_confirmation, token },
       })
       .then(() => undefined)

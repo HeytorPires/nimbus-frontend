@@ -11,7 +11,7 @@ export const useUserService = () => {
     return request
       .getOne({
         path: `${path}/me`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -23,7 +23,7 @@ export const useUserService = () => {
     return requestMany
       .getMany({
         path,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -38,14 +38,12 @@ export const useUserService = () => {
     return request
       .patch({
         path: `${path}/avatar`,
-        sendAuthorization: true,
+        withCredentials: true,
         body: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
       .catch((error) => {
-        throw new AppError(
-          error?.message || "Erro ao atualizar avatar"
-        );
+        throw new AppError(error?.message || "Erro ao atualizar avatar");
       });
   };
 

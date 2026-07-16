@@ -1,6 +1,11 @@
+import api from "@/api/api";
 import { IUser } from "@/interfaces/IUser";
+import {
+  clearAuthCookies,
+  getUserCookie,
+  setUserCookie,
+} from "@/lib/cookieUtils";
 import { useAuthService } from "@/services/useAuthService";
-import { isTokenExpired } from "@/lib/tokenUtils";
 import React, {
   createContext,
   useCallback,
@@ -10,7 +15,6 @@ import React, {
   useState,
 } from "react";
 import { toast } from "sonner";
-import api from "@/api/api";
 
 interface AuthContextType {
   user: IUser | null;
@@ -36,14 +40,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuth, setIsAuth] = useState(false);
   const interceptorId = useRef<number | null>(null);
 
-  const setupInterceptor = useCallback((currentToken: string) => {
+  const setupInterceptor = useCallback(() => {
     if (interceptorId.current !== null) {
       api.interceptors.request.eject(interceptorId.current);
     }
+    // Com cookies HttpOnly, o navegador envia automaticamente
+    // Não precisamos adicionar o token ao header Authorization
     interceptorId.current = api.interceptors.request.use((config) => {
-      if (currentToken && !isTokenExpired(currentToken)) {
-        config.headers.Authorization = `Bearer ${currentToken}`;
-      }
       return config;
     });
   }, []);
@@ -53,8 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setToken(null);
     setUser(null);
     setIsAuth(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    clearAuthCookies();
 
     if (interceptorId.current !== null) {
       api.interceptors.request.eject(interceptorId.current);
@@ -67,16 +69,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const response = await authService.signIn(email, password);
 
-        if (!response?.token || !response?.user) {
+        console.log("SignIn response:", response);
+
+        if (!response?.user) {
           throw new Error("Invalid credentials");
         }
 
-        setToken(response.token);
+        // O token HttpOnly é gerenciado automaticamente pelo navegador
+        // Apenas armazenamos o usuário e marcamos como autenticado
+        setToken("authenticated"); // Marcador de autenticação
         setUser(response.user);
         setIsAuth(true);
-        setupInterceptor(response.token);
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("user", JSON.stringify(response.user));
+        setupInterceptor();
+        setUserCookie(response.user);
       } catch (error: any) {
         toast.error("Login error: " + error.message);
       }
@@ -85,19 +90,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const storedUser = getUserCookie();
 
-    if (storedToken && storedUser) {
-      if (isTokenExpired(storedToken)) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-      } else {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-        setIsAuth(true);
-        setupInterceptor(storedToken);
-      }
+    if (storedUser) {
+      // Se tem usuário armazenado, o token HttpOnly também deve estar presente
+      setToken("authenticated");
+      setUser(storedUser);
+      setIsAuth(true);
+      setupInterceptor();
     }
 
     setLoading(false);

@@ -9,12 +9,12 @@ export const useProjectService = () => {
   const path = "projects";
 
   const getAll = async (
-    url: string
+    url: string,
   ): Promise<IPaginationReturn<IProject[]>> => {
     return await request
       .getManyPaginated({
         path: `${path}?${url}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -26,7 +26,7 @@ export const useProjectService = () => {
     return await requestUnique
       .getOne({
         path: `${path}/${id}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -35,13 +35,13 @@ export const useProjectService = () => {
   };
 
   const create = async (
-    payload: Omit<IProject, "id" | "created_at">
+    payload: Omit<IProject, "id" | "created_at">,
   ): Promise<IProject> => {
     return await requestUnique
       .post({
         path: `${path}`,
         body: payload,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -54,7 +54,7 @@ export const useProjectService = () => {
       .put({
         path: `${path}/${id}`,
         body: payload,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .then((result) => result)
       .catch((error) => {
@@ -66,7 +66,7 @@ export const useProjectService = () => {
     return await request
       .remove({
         path: `${path}/${id}`,
-        sendAuthorization: true,
+        withCredentials: true,
       })
       .catch((error) => {
         throw new AppError(error.message);
