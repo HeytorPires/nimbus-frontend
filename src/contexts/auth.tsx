@@ -69,8 +69,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const response = await authService.signIn(email, password);
 
-        console.log("SignIn response:", response);
-
         if (!response?.user) {
           throw new Error("Invalid credentials");
         }
