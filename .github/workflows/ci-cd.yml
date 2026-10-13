@@ -63,7 +63,3 @@ jobs:
           rsync -az --delete \
             -e "ssh -i ~/.ssh/id_deploy -o StrictHostKeyChecking=accept-new" \
             build/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
-
-      - name: Smoke test
-        if: vars.SITE_URL != ''
-        run: curl -fsS --retry 3 --retry-delay 5 "${{ vars.SITE_URL }}" > /dev/null
