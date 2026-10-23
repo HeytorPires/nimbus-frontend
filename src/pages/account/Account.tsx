@@ -24,6 +24,7 @@ const Account = () => {
 
   const fetchUser = useCallback(async () => {
     const userData = await getProfile();
+
     setUser(userData);
     setName(userData.name);
     setEmail(userData.email);
@@ -90,7 +91,7 @@ const Account = () => {
               onClick={() => fileInputRef.current?.click()}
             >
               <Avatar className="w-24 h-24">
-                <AvatarImage src={user?.avatar_url || undefined} />
+                <AvatarImage src={user?.avatarUrl || undefined} />
                 <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
               </Avatar>
               <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
