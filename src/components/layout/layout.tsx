@@ -1,5 +1,6 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -17,6 +18,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const shouldShowSidebar =
     !loading &&
     ![
+      "/",
       "/login",
       "/login/email",
       "/register",
@@ -25,6 +27,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       "/reset-password",
     ].includes(location.pathname) &&
     user;
+
+  const shouldShowBackLink = !shouldShowSidebar && location.pathname !== "/";
 
   if (loading) {
     return <FullPageLoader />;
@@ -47,6 +51,15 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           }`}
         >
           <ParticlesBackground />
+          {shouldShowBackLink && (
+            <Link
+              to="/"
+              className="absolute left-4 top-4 z-20 inline-flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1.5 text-sm font-semibold backdrop-blur transition-colors hover:bg-accent"
+            >
+              <ArrowLeft className="size-4" />
+              Nimbus
+            </Link>
+          )}
           <div className="relative z-10 flex flex-1 flex-col">{children}</div>
           <Footer />
         </div>

@@ -15,6 +15,7 @@ import Account from "@/pages/account/Account";
 import ForgotPassword from "@/pages/password/ForgotPassword";
 import ResetPassword from "@/pages/password/ResetPassword";
 import About from "@/pages/about/About";
+import Landing from "@/pages/landing/Landing";
 import FullPageLoader from "@/components/layout/full-page-loader";
 
 const Private = ({ children }: { children: JSX.Element }) => {
@@ -40,17 +41,8 @@ export const AppRoutes: React.FC = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/about" element={<About />} />
 
-      {/* Redirect / to /home if authenticated, otherwise /login */}
-      <Route
-        path="/"
-        element={
-          auth?.isAuthenticated ? (
-            <Navigate to="/home" replace />
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        }
-      />
+      {/* Presentation page, shown to everyone */}
+      <Route path="/" element={<Landing />} />
 
       {/* Protected routes */}
       <Route
