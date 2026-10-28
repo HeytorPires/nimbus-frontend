@@ -52,7 +52,7 @@ const TasksCreate = () => {
     setSubmitting(true);
     try {
       await create(project);
-      navigate(-1);
+      navigate("/home");
     } catch (error: any) {
       toast.error(error);
       console.error(error);

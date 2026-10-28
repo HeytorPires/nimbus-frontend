@@ -86,7 +86,7 @@ const TasksEdit = () => {
       if (id) {
         await update(id, project);
         toast.success("Project updated successfully!");
-        navigate("/");
+        navigate("/home");
       }
     } catch (error: any) {
       toast.error("Error to update project");
@@ -103,7 +103,7 @@ const TasksEdit = () => {
       if (id) {
         await remove(id);
         toast.success("Project deleted successfully!");
-        navigate(-1);
+        navigate("/home");
       }
     } catch (error: any) {
       toast.error("Error to delete project");
