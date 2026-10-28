@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import {
   Home,
+  Info,
   Settings,
   CircleUserRound,
   LogOut,
@@ -166,6 +167,15 @@ export function AppSidebar() {
 
                 {/* Bottom section */}
                 <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link to="/about">
+                        <Info />
+                        <span>About</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a

@@ -33,7 +33,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border">
+    <div className="flex justify-center items-center flex-1 w-full relative overflow-hidden border">
       <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
         {sent ? (
           <div className="flex flex-col items-center gap-4 text-center">

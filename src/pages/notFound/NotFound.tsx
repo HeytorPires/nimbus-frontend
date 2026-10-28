@@ -7,7 +7,7 @@ const NotFound = () => {
   const { isAuthenticated } = useAuth();
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
+      <div className="flex justify-center items-center flex-1 w-full relative overflow-hidden border ">
         <div
           style={{
             position: "absolute",
@@ -33,7 +33,7 @@ const NotFound = () => {
         <div className="flex flex-col justify-center items-center gap-4 p-4 w-96 z-10">
           <h1 className="text-8xl">Nimbus</h1>
           <DecryptedText
-            text="Your tasks made easier"
+            text="Your .envs made easier"
             speed={50}
             maxIterations={50}
             animateOn="view"

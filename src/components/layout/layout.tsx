@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import ParticlesBackground from "../background/ParticlesBackground";
+import Footer from "./footer";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -40,10 +41,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           <header className="z-20">{<SidebarTrigger />}</header>
         )}
         <div
-          className={`flex-grow relative ${shouldShowSidebar ? "ml-..." : ""}`}
+          className={`flex-grow relative flex flex-col min-h-screen ${
+            shouldShowSidebar ? "ml-..." : ""
+          }`}
         >
           <ParticlesBackground />
-          <div className="relative z-10">{children}</div>
+          <div className="relative z-10 flex flex-1 flex-col">{children}</div>
+          <Footer />
         </div>
       </main>
     </>

@@ -1,6 +1,6 @@
 # Nimbus Frontend ☁️
 
-Interface web do Nimbus, construída com **React 19 + TypeScript + Vite**. Consome a [`api-nimbus`](../api-nimbus) e permite cadastrar usuários, autenticar, gerenciar projetos e tags e editar o perfil.
+Interface web do Nimbus, construída com **React 19 + TypeScript + Vite**. Consome a [`api-nimbus`](www.github.com.br/HeytorPires/api-nimbus) e permite cadastrar usuários, autenticar, guardar e organizar os `.env` das suas aplicações (projetos com variáveis de ambiente cifradas, classificados por tags) e editar o perfil.
 
 ---
 
@@ -20,7 +20,7 @@ Interface web do Nimbus, construída com **React 19 + TypeScript + Vite**. Conso
 
 - Node.js 20+
 - npm
-- [`api-nimbus`](../api-nimbus) rodando (por padrão em `http://localhost:3000`)
+- [`api-nimbus`](www.github.com.br/HeytorPires/api-nimbus) rodando (por padrão em `http://localhost:3000`)
 
 ---
 
@@ -46,8 +46,8 @@ O Vite exibe no terminal a URL local (normalmente `http://localhost:5173`).
 
 ## ⚙️ Variáveis de ambiente
 
-| Variável       | Descrição                                       | Exemplo                 |
-| -------------- | ----------------------------------------------- | ----------------------- |
+| Variável       | Descrição                                          | Exemplo                 |
+| -------------- | -------------------------------------------------- | ----------------------- |
 | `VITE_API_URL` | URL base da API consumida pelo front (obrigatória) | `http://localhost:3000` |
 
 Variáveis `VITE_*` são embutidas no bundle em tempo de build. Nunca coloque segredos nelas.
@@ -56,31 +56,31 @@ Variáveis `VITE_*` são embutidas no bundle em tempo de build. Nunca coloque se
 
 ## 📜 Scripts
 
-| Comando               | O que faz                                                         |
-| --------------------- | ----------------------------------------------------------------- |
-| `npm run dev`         | Servidor de desenvolvimento com HMR                               |
+| Comando               | O que faz                                                          |
+| --------------------- | ------------------------------------------------------------------ |
+| `npm run dev`         | Servidor de desenvolvimento com HMR                                |
 | `npm run build`       | Checa tipos (`tsc -b`) e gera o build no `outDir` do `vite.config` |
-| `npm run build:local` | Checa tipos e gera o build em `./build`                           |
-| `npm run lint`        | Executa o ESLint                                                  |
-| `npm run preview`     | Serve o build gerado para conferência local                       |
+| `npm run build:local` | Checa tipos e gera o build em `./build`                            |
+| `npm run lint`        | Executa o ESLint                                                   |
+| `npm run preview`     | Serve o build gerado para conferência local                        |
 
 ---
 
 ## 🗺️ Rotas
 
-| Rota               | Acesso    | Página                       |
-| ------------------ | --------- | ---------------------------- |
+| Rota               | Acesso    | Página                                                  |
+| ------------------ | --------- | ------------------------------------------------------- |
 | `/`                | —         | Redireciona para `/home` ou `/login`, conforme a sessão |
-| `/login`           | Pública   | Login                        |
-| `/login/email`     | Pública   | Login com e-mail             |
-| `/register`        | Pública   | Cadastro                     |
-| `/forgot-password` | Pública   | Solicitar recuperação de senha |
-| `/reset-password`  | Pública   | Redefinir senha              |
-| `/home`            | Protegida | Listagem de projetos         |
-| `/project`         | Protegida | Criar projeto                |
-| `/project/:id`     | Protegida | Editar projeto               |
-| `/account`         | Protegida | Perfil da conta              |
-| `/not-found`       | Pública   | Página 404 (rotas desconhecidas redirecionam para cá) |
+| `/login`           | Pública   | Login                                                   |
+| `/login/email`     | Pública   | Login com e-mail                                        |
+| `/register`        | Pública   | Cadastro                                                |
+| `/forgot-password` | Pública   | Solicitar recuperação de senha                          |
+| `/reset-password`  | Pública   | Redefinir senha                                         |
+| `/home`            | Protegida | Listagem de projetos                                    |
+| `/project`         | Protegida | Criar projeto                                           |
+| `/project/:id`     | Protegida | Editar projeto                                          |
+| `/account`         | Protegida | Perfil da conta                                         |
+| `/not-found`       | Pública   | Página 404 (rotas desconhecidas redirecionam para cá)   |
 
 As rotas protegidas usam o componente `Private` (`src/app/appRoutes.tsx`), que consulta o `AuthContext` e redireciona para `/login` quando não há sessão.
 

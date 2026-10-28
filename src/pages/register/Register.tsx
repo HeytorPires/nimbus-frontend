@@ -38,7 +38,7 @@ const Register = () => {
   };
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen relative overflow-hidden w-full">
+      <div className="flex justify-center items-center flex-1 relative overflow-hidden w-full">
         <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
           <form
             className="flex flex-col justify-center items-center gap-4 p-4 w-full"

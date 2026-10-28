@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-4  justify-start items-start relative h-screen w-full ">
+      <div className="flex flex-wrap gap-4  justify-start items-start relative flex-1 w-full ">
         <div className="flex flex-col w-full mx-6">
           <div className="flex flex-col">
             <Input

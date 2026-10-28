@@ -14,6 +14,7 @@ import LoginEmail from "@/pages/login/LoginEmail";
 import Account from "@/pages/account/Account";
 import ForgotPassword from "@/pages/password/ForgotPassword";
 import ResetPassword from "@/pages/password/ResetPassword";
+import About from "@/pages/about/About";
 
 const Private = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext);
@@ -36,6 +37,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/about" element={<About />} />
 
       {/* Redirect / to /home if authenticated, otherwise /login */}
       <Route

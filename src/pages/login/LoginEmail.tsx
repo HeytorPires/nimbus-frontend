@@ -29,7 +29,7 @@ const LoginEmail = () => {
   }, [user, navigate]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-full relative overflow-hidden border ">
+    <div className="flex justify-center items-center flex-1 w-full relative overflow-hidden border ">
       <div className="flex flex-col justify-center items-center gap-4 p-4 w-[410px] z-10">
         <form
           className="flex flex-col justify-center items-center gap-4 p-4 w-full"

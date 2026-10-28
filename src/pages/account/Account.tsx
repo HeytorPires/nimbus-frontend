@@ -78,7 +78,7 @@ const Account = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6 w-screen h-screen flex flex-col justify-center">
+    <div className="p-6 max-w-4xl mx-auto space-y-6 w-screen flex-1 flex flex-col justify-center">
       <Typography as="h1" className="text-3xl font-semibold">
         Profile Settings
       </Typography>
