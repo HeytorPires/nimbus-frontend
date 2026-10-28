@@ -15,10 +15,11 @@ import Account from "@/pages/account/Account";
 import ForgotPassword from "@/pages/password/ForgotPassword";
 import ResetPassword from "@/pages/password/ResetPassword";
 import About from "@/pages/about/About";
+import FullPageLoader from "@/components/layout/full-page-loader";
 
 const Private = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext);
-  if (auth?.loading) return <div>loading...</div>;
+  if (auth?.loading) return <FullPageLoader />;
   if (!auth?.isAuthenticated) return <Navigate to="/login" />;
 
   return children;
@@ -27,7 +28,7 @@ const Private = ({ children }: { children: JSX.Element }) => {
 export const AppRoutes: React.FC = () => {
   const auth = useContext(AuthContext);
 
-  if (auth?.loading) return <div>loading routes...</div>;
+  if (auth?.loading) return <FullPageLoader />;
 
   return (
     <Routes>

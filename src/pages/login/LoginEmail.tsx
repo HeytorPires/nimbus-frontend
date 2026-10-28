@@ -12,6 +12,7 @@ const LoginEmail = () => {
   const { user, signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,7 +20,12 @@ const LoginEmail = () => {
       toast.error("Please fill in all fields");
       return;
     }
-    await signIn(email, password);
+    setSubmitting(true);
+    try {
+      await signIn(email, password);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -59,7 +65,11 @@ const LoginEmail = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <Button className="cursor-pointer w-full" type="submit">
+          <Button
+            className="cursor-pointer w-full"
+            type="submit"
+            loading={submitting}
+          >
             Login
           </Button>
           <p className="text-[10px] flex items-center justify-center gap-1">
@@ -75,7 +85,7 @@ const LoginEmail = () => {
 
             <span
               className="text-blue-700 cursor-pointer"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/login")}
             >
               Other Login options
             </span>

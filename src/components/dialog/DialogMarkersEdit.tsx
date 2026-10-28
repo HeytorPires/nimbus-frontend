@@ -27,6 +27,8 @@ const DialogMarkersEdit = ({
 }: iProps) => {
   const [tag, setTag] = useState<ITag | undefined>(tagInitial);
   const { update, remove } = useTagService();
+  const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const oldName = tagInitial?.name;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +39,7 @@ const DialogMarkersEdit = ({
   };
 
   const handleEdit = async () => {
+    setUpdating(true);
     try {
       if (!tag?.id) {
         toast.error("impossible update a tag without ID");
@@ -50,6 +53,8 @@ const DialogMarkersEdit = ({
     } catch (error) {
       console.error("Erro to update tag:", error);
       toast.error("Erro to update tag. try again.");
+    } finally {
+      setUpdating(false);
     }
     onCreated?.();
   };
@@ -58,6 +63,7 @@ const DialogMarkersEdit = ({
       ...prevTag,
       name: "",
     }));
+    setDeleting(true);
     try {
       const id = tag?.id;
       if (id) {
@@ -68,6 +74,8 @@ const DialogMarkersEdit = ({
     } catch (error: any) {
       toast.error("Error to update task");
       console.error(error);
+    } finally {
+      setDeleting(false);
     }
     onCreated?.();
   };
@@ -90,13 +98,20 @@ const DialogMarkersEdit = ({
             onChange={handleChange}
           />
           <div className="flex justify-between">
-            <Button className="w-min" onClick={handleEdit}>
+            <Button
+              className="w-min"
+              onClick={handleEdit}
+              loading={updating}
+              disabled={deleting}
+            >
               Update
             </Button>
             <Button
               className="w-min"
               variant="destructive"
               onClick={handleDelete}
+              loading={deleting}
+              disabled={updating}
             >
               Remove
             </Button>

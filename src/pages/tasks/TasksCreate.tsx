@@ -3,6 +3,7 @@ import { Separator } from "@/components/Separator";
 import { Typography } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useTagService } from "@/services/useTagService";
 import { useProjectService } from "@/services/useProjectService";
@@ -23,11 +24,19 @@ const TasksCreate = () => {
   const [description, setDescription] = useState("");
   const [variablesEnvironment, setVariablesEnvironment] = useState("");
   const [tagId, setTagId] = useState("");
+  const [tagsLoading, setTagsLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const fetchTags = async () => {
     const query = `perPage=100&currentPage=1`;
-    const response = await getAll(query);
-    setTags(response?.data ?? []);
+    try {
+      const response = await getAll(query);
+      setTags(response?.data ?? []);
+    } catch (error: any) {
+      toast.error(error.message || "Error loading tags");
+    } finally {
+      setTagsLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,12 +49,15 @@ const TasksCreate = () => {
       tag_id: tagId,
     };
 
+    setSubmitting(true);
     try {
       await create(project);
       navigate(-1);
     } catch (error: any) {
       toast.error(error);
       console.error(error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -85,12 +97,16 @@ const TasksCreate = () => {
 
         <div className="w-min">
           <Typography as="p">Markers</Typography>
-          <ComboBox
-            options={tags}
-            value={tagId}
-            onChange={(value) => setTagId(value!)}
-            placeholder="Select a tag"
-          />
+          {tagsLoading ? (
+            <Skeleton className="h-9 w-[200px]" />
+          ) : (
+            <ComboBox
+              options={tags}
+              value={tagId}
+              onChange={(value) => setTagId(value!)}
+              placeholder="Select a tag"
+            />
+          )}
         </div>
 
         <div>
@@ -105,7 +121,9 @@ const TasksCreate = () => {
         </div>
 
         <div className="mt-5 flex justify-between">
-          <Button type="submit">Create</Button>
+          <Button type="submit" loading={submitting}>
+            Create
+          </Button>
           <Button type="button" onClick={() => navigate(-1)}>
             Exit
           </Button>

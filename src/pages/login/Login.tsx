@@ -1,7 +1,7 @@
 import DecryptedText from "@/components/framer/framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowRight, Github } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,14 +9,6 @@ const Login = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // const signInWithGitHub = async () => {
-  //   const { error } = await supabase.auth.signInWithOAuth({
-  //     provider: "github",
-  //   });
-  //   if (error) {
-  //     console.error(error.message);
-  //   }
-  // };
   // redirect if already logged in
   useEffect(() => {
     if (user) {
@@ -45,14 +37,6 @@ const Login = () => {
               onClick={() => navigate("email")}
             >
               Continue with Email <ArrowRight />
-            </Button>
-            <Button
-              className="cursor-pointer"
-              color="#00000"
-              // onClick={signInWithGitHub}
-            >
-              <Github />
-              Login with GitHub
             </Button>
             <div className="flex justify-center">
               <p className="text-[10px]">

@@ -67,7 +67,7 @@ const ForgotPassword = () => {
             <Button
               className="cursor-pointer w-full"
               type="submit"
-              disabled={loading}
+              loading={loading}
             >
               {loading ? "Sending..." : "Send Recovery Email"}
             </Button>

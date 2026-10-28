@@ -13,6 +13,7 @@ const Register = () => {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,6 +22,7 @@ const Register = () => {
       return;
     }
 
+    setSubmitting(true);
     await signUp(email, password, name)
       .then((response) => {
         if (response instanceof Error) {
@@ -34,7 +36,8 @@ const Register = () => {
       })
       .catch((error) => {
         toast.error("Error to register: " + error.message);
-      });
+      })
+      .finally(() => setSubmitting(false));
   };
   return (
     <>
@@ -84,7 +87,11 @@ const Register = () => {
                 here
               </span>
             </p>
-            <Button className="cursor-pointer w-full" type="submit">
+            <Button
+              className="cursor-pointer w-full"
+              type="submit"
+              loading={submitting}
+            >
               Register
             </Button>
           </form>

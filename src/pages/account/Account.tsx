@@ -8,6 +8,8 @@ import { IUser } from "@/interfaces/IUser";
 import { useProfileService } from "@/services/useProfileService";
 import { useUserService } from "@/services/useUserService";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 const Account = () => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -17,17 +19,25 @@ const Account = () => {
   const [newPassword, setNewPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { getProfile, updateProfile } = useProfileService();
   const { updateAvatar } = useUserService();
 
   const fetchUser = useCallback(async () => {
-    const userData = await getProfile();
+    try {
+      const userData = await getProfile();
 
-    setUser(userData);
-    setName(userData.name);
-    setEmail(userData.email);
+      setUser(userData);
+      setName(userData.name);
+      setEmail(userData.email);
+    } catch (error: any) {
+      toast.error(error.message || "Error loading profile");
+    } finally {
+      setFetching(false);
+    }
   }, [getProfile]);
 
   useEffect(() => {
@@ -68,12 +78,15 @@ const Account = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setUploadingAvatar(true);
     try {
       const updatedUser = await updateAvatar(file);
       setUser(updatedUser);
       toast.success("Avatar updated successfully!");
     } catch (error: any) {
       toast.error(error.message || "Error updating avatar");
+    } finally {
+      setUploadingAvatar(false);
     }
   };
 
@@ -90,13 +103,25 @@ const Account = () => {
               className="relative cursor-pointer"
               onClick={() => fileInputRef.current?.click()}
             >
-              <Avatar className="w-24 h-24">
-                <AvatarImage src={user?.avatarUrl || undefined} />
-                <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
-              </Avatar>
-              <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                <span className="text-white text-xs">Change</span>
-              </div>
+              {fetching ? (
+                <Skeleton className="size-24 rounded-full" />
+              ) : (
+                <Avatar className="w-24 h-24">
+                  <AvatarImage src={user?.avatarUrl || undefined} />
+                  <AvatarFallback>
+                    {user?.name?.charAt(0) || "U"}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              {uploadingAvatar ? (
+                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center">
+                  <Loader2 className="size-6 animate-spin text-white" />
+                </div>
+              ) : (
+                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs">Change</span>
+                </div>
+              )}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -106,9 +131,13 @@ const Account = () => {
               />
             </div>
             <div>
-              <Typography as="p" className="text-lg font-medium">
-                {user?.name || "Name not found"}
-              </Typography>
+              {fetching ? (
+                <Skeleton className="mb-2 h-6 w-40" />
+              ) : (
+                <Typography as="p" className="text-lg font-medium">
+                  {user?.name || "Name not found"}
+                </Typography>
+              )}
               <Typography as="p" className="text-sm text-muted-foreground">
                 Click the avatar to change photo
               </Typography>
@@ -118,21 +147,29 @@ const Account = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Typography>Name</Typography>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              {fetching ? (
+                <Skeleton className="h-9 w-full" />
+              ) : (
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              )}
             </div>
 
             <div>
               <Typography>Email</Typography>
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              {fetching ? (
+                <Skeleton className="h-9 w-full" />
+              ) : (
+                <Input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              )}
             </div>
           </div>
 
@@ -175,7 +212,7 @@ const Account = () => {
           </div>
 
           <div className="flex justify-end">
-            <Button onClick={handleUpdateProfile} disabled={loading}>
+            <Button onClick={handleUpdateProfile} loading={loading}>
               {loading ? "Saving..." : "Save Changes"}
             </Button>
           </div>

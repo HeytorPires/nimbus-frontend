@@ -1,4 +1,5 @@
 import { IProjectCard } from "@/components/TaskCard";
+import { ProjectCardSkeleton } from "@/components/ProjectCardSkeleton";
 import { Input } from "@/components/ui/input";
 import { useProjectService } from "@/services/useProjectService";
 import { Plus } from "lucide-react";
@@ -16,6 +17,7 @@ const Home = () => {
   const [perPage] = useState(20);
   const [currentPage] = useState(1);
   const [filter, setFilter] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const listallProjects = useCallback(async () => {
     const url = `perPage=${perPage}&currentPage=${currentPage}`;
@@ -26,7 +28,8 @@ const Home = () => {
       })
       .catch((error) => {
         toast.error(error.message || error);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [getAll, perPage, currentPage]);
 
   useEffect(() => {
@@ -61,7 +64,18 @@ const Home = () => {
               <Plus size={48} />
             </button>
 
-            {projects?.map((project) => (
+            {loading &&
+              Array.from({ length: 6 }).map((_, index) => (
+                <ProjectCardSkeleton key={index} />
+              ))}
+
+            {!loading && projects?.length === 0 && (
+              <p className="self-center text-muted-foreground">
+                No projects yet. Click + to create your first one.
+              </p>
+            )}
+
+            {!loading && projects?.map((project) => (
               <IProjectCard
                 key={project.id}
                 id={project.id}

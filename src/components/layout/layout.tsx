@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import ParticlesBackground from "../background/ParticlesBackground";
 import Footer from "./footer";
+import FullPageLoader from "./full-page-loader";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -26,7 +27,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     user;
 
   if (loading) {
-    return <div></div>;
+    return <FullPageLoader />;
   }
 
   return (

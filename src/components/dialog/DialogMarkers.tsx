@@ -26,6 +26,7 @@ const DialogMarkers = ({
 }: DialogMarkersProps) => {
   const { user } = useAuth();
   const [tagName, setTagName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { create } = useTagService();
 
   const handleSubmit = async () => {
@@ -44,6 +45,7 @@ const DialogMarkers = ({
       user_id: user.id,
     };
 
+    setSubmitting(true);
     try {
       await create(newTag);
       setTagName("");
@@ -53,6 +55,8 @@ const DialogMarkers = ({
     } catch (error) {
       console.error("Error creating tag:", error);
       alert("Failed to create tag. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -68,7 +72,11 @@ const DialogMarkers = ({
             onChange={(e) => setTagName(e.target.value)}
           />
           <div className="flex justify-between">
-            <Button className="w-min" onClick={handleSubmit}>
+            <Button
+              className="w-min"
+              onClick={handleSubmit}
+              loading={submitting}
+            >
               Create
             </Button>
             <Button

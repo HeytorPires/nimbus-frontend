@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { useTagService } from "@/services/useTagService";
@@ -31,6 +32,9 @@ const TasksEdit = () => {
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState<IProject | null>(null);
   const [tags, setTags] = useState<ITag[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchTags = async () => {
     const userId = user?.id;
@@ -50,6 +54,7 @@ const TasksEdit = () => {
     const { id } = params;
     if (!id) {
       toast.error("ID task not found.");
+      setLoading(false);
       return;
     }
 
@@ -63,6 +68,8 @@ const TasksEdit = () => {
     } catch (error: any) {
       toast.error("Error to search projects: " + error.message);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,6 +80,7 @@ const TasksEdit = () => {
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setUpdating(true);
     try {
       const id = project?.id;
       if (id) {
@@ -83,10 +91,13 @@ const TasksEdit = () => {
     } catch (error: any) {
       toast.error("Error to update project");
       console.error(error);
+    } finally {
+      setUpdating(false);
     }
   };
 
   const handleDelete = async () => {
+    setDeleting(true);
     try {
       const id = project?.id;
       if (id) {
@@ -97,6 +108,8 @@ const TasksEdit = () => {
     } catch (error: any) {
       toast.error("Error to delete project");
       console.error(error);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -133,6 +146,7 @@ const TasksEdit = () => {
                   type="button"
                   variant="destructive"
                   size="lg"
+                  loading={deleting}
                   onClick={handleDelete}
                 >
                   <Trash />
@@ -152,7 +166,14 @@ const TasksEdit = () => {
       </div>
       <Separator className="my-5" />
 
-      {project ? (
+      {loading ? (
+        <div className="space-y-4">
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-9 w-[200px]" />
+          <Skeleton className="h-48 w-full" />
+        </div>
+      ) : project ? (
         <form className="space-y-4" onSubmit={handleUpdate}>
           <div>
             <Typography as="p">Project Name</Typography>
@@ -198,7 +219,7 @@ const TasksEdit = () => {
           </div>
 
           <div className="mt-5 flex justify-between">
-            <Button type="submit" variant="default">
+            <Button type="submit" variant="default" loading={updating}>
               Update
             </Button>
             <Button type="button" onClick={() => navigate(-1)}>
@@ -207,7 +228,7 @@ const TasksEdit = () => {
           </div>
         </form>
       ) : (
-        <Typography as="p">Loading Data Project...</Typography>
+        <Typography as="p">Project not found.</Typography>
       )}
     </div>
   );

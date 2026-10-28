@@ -20,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { IProject } from "@/interfaces/IProject";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
+import { Skeleton } from "./ui/skeleton";
 import { useTagService } from "@/services/useTagService";
 import { useEffect, useState } from "react";
 import { ITag } from "@/interfaces/ITag";
@@ -49,6 +50,7 @@ export function IProjectCard({
   const { getById } = useTagService();
   const navigate = useNavigate();
   const [tag, setTag] = useState<ITag>();
+  const [tagLoading, setTagLoading] = useState(!!tag_id);
 
   const handleCopy = async (textToCopy: string) => {
     try {
@@ -62,11 +64,14 @@ export function IProjectCard({
   useEffect(() => {
     const fetchTag = async () => {
       if (tag_id) {
+        setTagLoading(true);
         try {
           const data = await getById(tag_id);
           setTag(data ?? undefined);
         } catch (err) {
           console.error("Error fetching tag:", err);
+        } finally {
+          setTagLoading(false);
         }
       }
     };
@@ -83,7 +88,9 @@ export function IProjectCard({
       <CardHeader>
         <div className="flex flex-row items-center justify-between">
           <CardTitle>{title}</CardTitle>
-          {tag_id === null ? null : (
+          {tag_id === null ? null : tagLoading ? (
+            <Skeleton className="h-5 w-16" />
+          ) : (
             <Badge variant="outline">{tag?.name}</Badge>
           )}
         </div>

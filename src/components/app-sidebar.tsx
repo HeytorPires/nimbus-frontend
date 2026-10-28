@@ -10,6 +10,7 @@ import {
   Bookmark,
   ChevronRight,
   Plus,
+  Loader2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -20,6 +21,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import DialogSettings from "@/components/dialog/DialogSettings";
 import { useTagService } from "@/services/useTagService";
@@ -42,6 +44,8 @@ export function AppSidebar() {
   const { getAll } = useTagService();
   const [selectedTag, setSelectedTag] = useState<ITag>();
   const [markersOpen, setMarkersOpen] = useState(true);
+  const [tagsLoading, setTagsLoading] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
   const [dialogSettingsOpen, setDialogSettingsOpen] = useState(false);
   const [dialogMarkerOpen, setDialogMarkersOpen] = useState<boolean>(false);
   const [dialogMarkerEditOpen, setDialogMarkerEdit] = useState(false);
@@ -57,8 +61,13 @@ export function AppSidebar() {
   ]);
 
   const handleLogout = async () => {
-    await signOut();
-    navigate("/login");
+    setLoggingOut(true);
+    try {
+      await signOut();
+      navigate("/login");
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
   const fetchData = useCallback(async () => {
@@ -77,6 +86,8 @@ export function AppSidebar() {
       );
     } catch (err) {
       console.error(err);
+    } finally {
+      setTagsLoading(false);
     }
   }, [getAll]);
 
@@ -131,7 +142,11 @@ export function AppSidebar() {
                                   </button>
                                 </SidebarMenuButton>
                               </SidebarMenuItem>
-                              {item.items?.map((tag) => (
+                              {tagsLoading &&
+                                Array.from({ length: 3 }).map((_, index) => (
+                                  <SidebarMenuSkeleton key={index} showIcon />
+                                ))}
+                              {!tagsLoading && item.items?.map((tag) => (
                                 <SidebarMenuItem key={tag.id}>
                                   <SidebarMenuButton asChild>
                                     <button
@@ -191,7 +206,11 @@ export function AppSidebar() {
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={handleLogout}>
                       <a className="cursor-pointer">
-                        <LogOut />
+                        {loggingOut ? (
+                          <Loader2 className="animate-spin" />
+                        ) : (
+                          <LogOut />
+                        )}
                         <span>Log out</span>
                       </a>
                     </SidebarMenuButton>

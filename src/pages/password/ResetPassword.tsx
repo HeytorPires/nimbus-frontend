@@ -71,7 +71,7 @@ const ResetPassword = () => {
           <Button
             className="cursor-pointer w-full"
             type="submit"
-            disabled={loading}
+            loading={loading}
           >
             {loading ? "Resetting..." : "Reset Password"}
           </Button>
