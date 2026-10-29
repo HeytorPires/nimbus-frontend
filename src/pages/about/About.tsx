@@ -12,6 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/useAuth";
 
 const features = [
   {
@@ -69,6 +70,8 @@ const backendStack = [
 ];
 
 const About: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 py-12">
       <section className="flex flex-col gap-3 text-center">
@@ -148,7 +151,10 @@ const About: React.FC = () => {
             <Github className="size-4" /> nimbus-frontend
           </a>
         </div>
-        <Link to="/" className="text-sm text-muted-foreground hover:underline">
+        <Link
+          to={isAuthenticated ? "/home" : "/"}
+          className="text-sm text-muted-foreground hover:underline"
+        >
           Back to home page
         </Link>
       </section>
