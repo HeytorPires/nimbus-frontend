@@ -81,7 +81,7 @@ const Landing = () => {
 
   return (
     <div className="w-full">
-      <header className="absolute inset-x-0 top-0 z-20 mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <header className="absolute inset-x-0 top-0 z-20 mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
         <span className="text-xl font-extrabold tracking-tight ">
           Nimbus
         </span>
@@ -93,21 +93,21 @@ const Landing = () => {
         </nav>
       </header>
       {/* Hero */}
-      <section className="relative flex min-h-[92vh] w-full flex-col items-center justify-center overflow-hidden bg-linear-to-b from-muted to-background px-6 py-24 text-center">
+      <section className="relative flex min-h-[92svh] w-full flex-col items-center justify-center overflow-hidden bg-linear-to-b from-muted to-background px-4 pb-16 pt-24 text-center sm:px-6 sm:py-24">
         <CloudSky raining={raining} />
 
-        <div className="relative z-10 flex w-full flex-col items-center gap-6">
+        <div className="relative z-10 flex w-full flex-col items-center gap-5 sm:gap-6">
           <motion.span
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 rounded-full border bg-background/60 px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground backdrop-blur"
+            className="inline-flex items-center gap-2 rounded-full border bg-background/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider sm:px-4 sm:text-xs sm:tracking-widest text-muted-foreground backdrop-blur"
           >
             <span className="size-2 animate-pulse rounded-full bg-foreground" />
             your .envs made easier
           </motion.span>
 
           <h1
-            className="cursor-pointer select-none text-[clamp(4.5rem,18vw,11rem)] font-extrabold leading-none tracking-tighter text-foreground"
+            className="cursor-pointer select-none text-[clamp(3.75rem,20vw,11rem)] font-extrabold leading-none tracking-tighter text-foreground"
             aria-label="Nimbus"
             onClick={() => setRaining((v) => !v)}
           >
@@ -126,12 +126,12 @@ const Landing = () => {
             ))}
           </h1>
 
-          <p className="max-w-md text-xl text-muted-foreground">
+          <p className="max-w-md text-lg text-muted-foreground sm:text-xl">
             Light as a cloud. Your secrets stay{" "}
             <span className="font-semibold text-foreground">locked in the sky.</span>
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:justify-center">
             {isAuthenticated ? (
               <Button size="lg" asChild>
                 <Link to="/home">
@@ -161,23 +161,27 @@ const Landing = () => {
             </Button>
           </div>
 
-          <div className="mt-6 flex w-full justify-center">
+          <div className="mt-4 flex w-full justify-center sm:mt-6">
             <EnvVault />
           </div>
 
           <p className="font-mono text-xs text-muted-foreground">
-            tip: move your mouse to blow the clouds · click the title to make it rain
+            <span className="hidden sm:inline">
+              tip: move your mouse to blow the clouds ·{" "}
+            </span>
+            <span className="sm:hidden">tip: </span>
+            click the title to make it rain
           </p>
         </div>
       </section>
 
       {/* Features */}
-      <section className="mx-auto flex max-w-5xl flex-col gap-10 px-6 py-20">
+      <section className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-14 sm:gap-10 sm:px-6 sm:py-20">
         <div className="flex flex-col gap-3 text-center">
           <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             what's inside the cloud
           </span>
-          <h2 className="text-4xl font-bold tracking-tight">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Everything your .env needs
           </h2>
         </div>
@@ -212,16 +216,16 @@ const Landing = () => {
       </section>
 
       {/* How it works */}
-      <section className="mx-auto flex max-w-5xl flex-col gap-10 px-6 pb-20">
+      <section className="mx-auto flex max-w-5xl flex-col gap-8 px-4 pb-14 sm:gap-10 sm:px-6 sm:pb-20">
         <div className="flex flex-col gap-3 text-center">
           <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             flight plan
           </span>
-          <h2 className="text-4xl font-bold tracking-tight">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             From the ground to the cloud in 3 steps
           </h2>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
           {steps.map((step, i) => (
             <motion.div
               key={step.title}
@@ -242,16 +246,16 @@ const Landing = () => {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-5xl px-6 pb-24">
+      <section className="mx-auto max-w-5xl px-4 pb-16 sm:px-6 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl bg-foreground px-6 py-16 text-center text-background shadow-xl"
+          className="relative overflow-hidden rounded-3xl bg-foreground px-5 py-12 text-center sm:px-6 sm:py-16 text-background shadow-xl"
         >
           <CloudSky tone="inverse" />
           <div className="relative z-10 flex flex-col items-center gap-4">
-            <h2 className="text-4xl font-bold tracking-tight">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Ready for clear skies?
             </h2>
             <p className="max-w-md opacity-80">

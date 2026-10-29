@@ -51,8 +51,8 @@ export function EnvVault() {
   }, []);
 
   return (
-    <div className="w-full max-w-xl overflow-hidden rounded-xl border bg-card text-left text-card-foreground shadow-lg">
-      <div className="flex items-center justify-between border-b px-4 py-2.5">
+    <div className="w-full min-w-0 max-w-xl overflow-hidden rounded-xl border bg-card text-left text-card-foreground shadow-lg">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b px-3 py-2.5 sm:px-4">
         <div className="flex items-center gap-2">
           <span className="size-3 rounded-full border" />
           <span className="size-3 rounded-full border" />
@@ -70,9 +70,9 @@ export function EnvVault() {
           {locked ? "AES-256 · encrypted" : "plain text · exposed"}
         </span>
       </div>
-      <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-7">
+      <pre className="whitespace-pre-wrap break-all p-3 font-mono text-xs leading-7 sm:p-4 sm:text-[13px]">
         {LINES.map(([key, value]) => (
-          <div key={key} className="whitespace-nowrap">
+          <div key={key}>
             <span className="font-semibold">{key}</span>
             <span className="text-muted-foreground">=</span>
             <span className={locked ? "text-muted-foreground" : undefined}>
