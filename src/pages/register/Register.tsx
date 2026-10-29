@@ -82,7 +82,7 @@ const Register = () => {
               You already have an account? Click{" "}
               <span
                 className="text-blue-700 underline cursor-pointer"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/login")}
               >
                 here
               </span>

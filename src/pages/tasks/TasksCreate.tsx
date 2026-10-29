@@ -46,7 +46,7 @@ const TasksCreate = () => {
       title,
       description,
       variablesEnvironment,
-      tag_id: tagId,
+      tagId: tagId,
     };
 
     setSubmitting(true);

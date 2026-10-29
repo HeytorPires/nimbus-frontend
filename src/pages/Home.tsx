@@ -82,10 +82,10 @@ const Home = () => {
                 title={project.title}
                 description={project.description}
                 variablesEnvironment={project.variablesEnvironment}
-                updated_at={project.updated_at}
-                created_at={project.created_at}
-                tag_id={project.tag_id}
-                user_id=""
+                updatedAt={project.updatedAt}
+                createdAt={project.createdAt}
+                tagId={project.tagId}
+                userId=""
                 type="home"
               />
             ))}

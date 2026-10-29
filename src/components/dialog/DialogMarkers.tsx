@@ -42,7 +42,7 @@ const DialogMarkers = ({
 
     const newTag: ITag = {
       name: tagName.trim(),
-      user_id: user.id,
+      userId: user.id,
     };
 
     setSubmitting(true);

@@ -5,9 +5,9 @@ import AppError from "@/errors/AppError";
 interface IUpdateProfile {
   name: string;
   email: string;
-  old_password?: string;
+  oldPassword?: string;
   password?: string;
-  password_confirmation?: string;
+  passwordConfirmation?: string;
 }
 
 export const useProfileService = () => {

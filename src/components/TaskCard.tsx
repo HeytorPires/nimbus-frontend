@@ -43,14 +43,14 @@ export function IProjectCard({
   description,
   // repository,
   variablesEnvironment,
-  created_at,
-  updated_at,
-  tag_id,
+  createdAt,
+  updatedAt,
+  tagId,
 }: IProject & { type?: "home" | "default" }) {
   const { getById } = useTagService();
   const navigate = useNavigate();
   const [tag, setTag] = useState<ITag>();
-  const [tagLoading, setTagLoading] = useState(!!tag_id);
+  const [tagLoading, setTagLoading] = useState(!!tagId);
 
   const handleCopy = async (textToCopy: string) => {
     try {
@@ -63,10 +63,10 @@ export function IProjectCard({
 
   useEffect(() => {
     const fetchTag = async () => {
-      if (tag_id) {
+      if (tagId) {
         setTagLoading(true);
         try {
-          const data = await getById(tag_id);
+          const data = await getById(tagId);
           setTag(data ?? undefined);
         } catch (err) {
           console.error("Error fetching tag:", err);
@@ -77,7 +77,7 @@ export function IProjectCard({
     };
 
     fetchTag();
-  }, [tag_id]);
+  }, [tagId]);
 
   const handleEdit = () => {
     navigate(`/Project/${id}`);
@@ -88,7 +88,7 @@ export function IProjectCard({
       <CardHeader>
         <div className="flex flex-row items-center justify-between">
           <CardTitle>{title}</CardTitle>
-          {tag_id === null ? null : tagLoading ? (
+          {tagId === null ? null : tagLoading ? (
             <Skeleton className="h-5 w-16" />
           ) : (
             <Badge variant="outline">{tag?.name}</Badge>
@@ -96,8 +96,8 @@ export function IProjectCard({
         </div>
         <CardDescription>
           created at{" "}
-          {created_at &&
-            new Date(created_at).toLocaleString("en-US", {
+          {createdAt &&
+            new Date(createdAt).toLocaleString("en-US", {
               day: "2-digit",
               month: "2-digit",
               year: "2-digit",
@@ -122,8 +122,8 @@ export function IProjectCard({
               <DialogDescription>{description}</DialogDescription>
               <DialogDescription>
                 Updated at{" "}
-                {updated_at &&
-                  new Date(updated_at).toLocaleString("en-US", {
+                {updatedAt &&
+                  new Date(updatedAt).toLocaleString("en-US", {
                     day: "2-digit",
                     month: "2-digit",
                     year: "2-digit",

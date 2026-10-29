@@ -20,14 +20,14 @@ export const usePasswordService = () => {
 
   const resetPassword = async (
     password: string,
-    password_confirmation: string,
+    passwordConfirmation: string,
     token: string,
   ): Promise<void> => {
     return request
       .put({
         path: `${path}/reset`,
         withCredentials: false,
-        body: { password, password_confirmation, token },
+        body: { password, passwordConfirmation, token },
       })
       .then(() => undefined)
       .catch((error) => {

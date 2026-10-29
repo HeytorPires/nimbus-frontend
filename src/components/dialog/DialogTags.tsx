@@ -35,7 +35,7 @@ const DialogMarkers = ({ open, setOpenChange, onCreated }: iProps) => {
     }
     const newTag: ITag = {
       name: name.trim(),
-      user_id: user.id,
+      userId: user.id,
     };
 
     try {

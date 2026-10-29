@@ -50,15 +50,15 @@ const Account = () => {
       const payload: {
         name: string;
         email: string;
-        old_password?: string;
+        oldPassword?: string;
         password?: string;
-        password_confirmation?: string;
+        passwordConfirmation?: string;
       } = { name, email };
 
       if (oldPassword && newPassword) {
-        payload.old_password = oldPassword;
+        payload.oldPassword = oldPassword;
         payload.password = newPassword;
-        payload.password_confirmation = passwordConfirmation;
+        payload.passwordConfirmation = passwordConfirmation;
       }
 
       const updatedUser = await updateProfile(payload);
@@ -182,7 +182,7 @@ const Account = () => {
                 <Typography>Current Password</Typography>
                 <Input
                   type="password"
-                  id="old_password"
+                  id="oldPassword"
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
                   placeholder="••••••••"
@@ -202,7 +202,7 @@ const Account = () => {
                 <Typography>Confirm Password</Typography>
                 <Input
                   type="password"
-                  id="password_confirmation"
+                  id="passwordConfirmation"
                   value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   placeholder="••••••••"

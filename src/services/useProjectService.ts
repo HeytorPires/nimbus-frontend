@@ -35,7 +35,7 @@ export const useProjectService = () => {
   };
 
   const create = async (
-    payload: Omit<IProject, "id" | "created_at">,
+    payload: Omit<IProject, "id" | "createdAt">,
   ): Promise<IProject> => {
     return await requestUnique
       .post({

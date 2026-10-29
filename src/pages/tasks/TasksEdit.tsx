@@ -123,7 +123,7 @@ const TasksEdit = () => {
   const handleTagChange = (value: string | undefined) => {
     setProject((prev) => ({
       ...prev!,
-      tag_id: value,
+      tagId: value,
     }));
   };
 
@@ -201,7 +201,7 @@ const TasksEdit = () => {
             <Typography as="p">Markers</Typography>
             <ComboBox
               options={tags}
-              value={project.tag_id ?? null}
+              value={project.tagId ?? null}
               onChange={handleTagChange}
               placeholder="Select a tag"
             />
