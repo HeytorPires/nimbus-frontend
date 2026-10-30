@@ -76,15 +76,13 @@ const fadeUp = {
 };
 
 const Landing = () => {
-  const [raining, setRaining] = useState(false);
+  const [raining, setRaining] = useState(true);
   const { isAuthenticated } = useAuth();
 
   return (
     <div className="w-full">
       <header className="absolute inset-x-0 top-0 z-20 mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-        <span className="text-xl font-extrabold tracking-tight ">
-          Nimbus
-        </span>
+        <span className="text-xl font-extrabold tracking-tight ">Nimbus</span>
         <nav className="flex items-center gap-2">
           <Button variant="ghost" asChild>
             <Link to="/about">About</Link>
@@ -118,7 +116,11 @@ const Landing = () => {
                 className="inline-block"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.07, type: "spring", stiffness: 140 }}
+                transition={{
+                  delay: 0.1 + i * 0.07,
+                  type: "spring",
+                  stiffness: 140,
+                }}
                 whileHover={{ y: -16, rotate: -4 }}
               >
                 {letter}
@@ -128,7 +130,9 @@ const Landing = () => {
 
           <p className="max-w-md text-lg text-muted-foreground sm:text-xl">
             Light as a cloud. Your secrets stay{" "}
-            <span className="font-semibold text-foreground">locked in the sky.</span>
+            <span className="font-semibold text-foreground">
+              locked in the sky.
+            </span>
           </p>
 
           <div className="flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:justify-center">
@@ -239,7 +243,9 @@ const Landing = () => {
                 0{i + 1}
               </span>
               <h3 className="text-lg font-semibold">{step.title}</h3>
-              <p className="text-sm text-muted-foreground">{step.description}</p>
+              <p className="text-sm text-muted-foreground">
+                {step.description}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -262,7 +268,12 @@ const Landing = () => {
               Create your account in seconds and move your secrets out of the
               chat history.
             </p>
-            <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90" asChild>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-background text-foreground hover:bg-background/90"
+              asChild
+            >
               <Link to={isAuthenticated ? "/home" : "/register"}>
                 {isAuthenticated ? "Open Nimbus" : "Create free account"}{" "}
                 <ArrowRight />

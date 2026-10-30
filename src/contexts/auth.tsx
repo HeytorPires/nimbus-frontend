@@ -109,6 +109,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const isLoginRequest = requestUrl.includes("/sessions");
 
         if (error?.response?.status === 401 && !isLoginRequest) {
+          // clear before the signOut request so a stale user cookie never survives a reload
+          clearAuthCookies();
           signOut();
           toast.error("Your session has expired. Please log in again.");
         }

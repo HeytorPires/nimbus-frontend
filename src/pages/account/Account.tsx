@@ -91,14 +91,14 @@ const Account = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6 w-screen flex-1 flex flex-col justify-center">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto space-y-6 w-full min-w-0 flex-1 flex flex-col justify-center">
       <Typography as="h1" className="text-3xl font-semibold">
         Profile Settings
       </Typography>
 
       <Card>
-        <CardContent className="p-6 flex flex-col gap-6 w-full">
-          <div className="flex items-center gap-6">
+        <CardContent className="p-4 sm:p-6 flex flex-col gap-6 w-full">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <div
               className="relative cursor-pointer"
               onClick={() => fileInputRef.current?.click()}

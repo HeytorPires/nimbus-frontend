@@ -1,4 +1,5 @@
 import AppError from "@/errors/AppError";
+import { clearAuthCookies } from "@/lib/cookieUtils";
 import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +48,7 @@ export const useRequest = <T>(): IRequest<T> => {
 
   const setUnauthorized = (): void => {
     sessionStorage.clear();
+    clearAuthCookies();
     navigate("/login");
     setUser?.(null);
     throw new AppError("Your session has expired. Please log in again.");

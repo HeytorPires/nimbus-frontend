@@ -128,7 +128,10 @@ const Particles: React.FC<ParticlesProps> = ({
       renderer.setSize(width, height);
       camera.perspective({ aspect: width / height });
     };
-    window.addEventListener("resize", resize);
+    // observe the container, not the window: its height changes on route
+    // changes without any window resize event
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
     resize();
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -221,7 +224,7 @@ const Particles: React.FC<ParticlesProps> = ({
 
     return () => {
       cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
       if (moveParticlesOnHover) {
         container.removeEventListener("mousemove", handleMouseMove);
       }

@@ -11,7 +11,7 @@ const ParticlesBackground: React.FC = React.memo(() => {
   const particleColors = isLightTheme ? "#000000" : "#FFFFFF";
 
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none">
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
       <Particles
         particleColors={[particleColors, particleColors]}
         particleCount={200}
